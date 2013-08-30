@@ -1,0 +1,13 @@
+MAKE iC; iC-control; none
+MAKE LCR; Agilent E4980A; GPIB=17
+
+%%%%%%%%%
+%% config
+
+LCR setAC_Amplitude 0.05
+LCR setDCBias 0
+LCR configCircuitMode CpRp
+LCR setAveraging Medium; 3
+
+
+LCR SweepFthenV 100.0; 100.0E3; 10.0; true; -0.5; 0.5; 1.0; false; 250; .CV.txt

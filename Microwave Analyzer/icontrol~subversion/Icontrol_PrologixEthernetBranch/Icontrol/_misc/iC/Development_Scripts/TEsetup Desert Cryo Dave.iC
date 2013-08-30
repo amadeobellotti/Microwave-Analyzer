@@ -1,0 +1,24 @@
+///////////////////////////////////////////////
+// configure setup for Dave's Desert Cryogenics
+// for thermoelectric measurements
+
+MAKE iC; iC-control; none
+ 
+MAKE Tstage; Lakeshore 340; GPIB=12
+Tstage configDefaults A; 1 
+ 
+MAKE InnerShield; Lakeshore 340; GPIB=12
+InnerShield configDefaults B; 2
+ 
+MAKE OuterShield; Lakeshore 332; GPIB=13
+OuterShield configDefaults A; 2
+ 
+
+// define Thermistors
+// MAKE Therm; Lakeshore 340; GPIB=4   // to address both Thermistors
+ 
+MAKE Therm1; Lakeshore 340; GPIB=4   // to address Thermistor 1
+Therm1 configDefaults A; 1
+
+MAKE Therm2; Lakeshore 340; GPIB=4   // to address Thermistor 2
+Therm2 configDefaults B; 1

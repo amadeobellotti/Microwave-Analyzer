@@ -1,0 +1,11 @@
+// Generic GPIB command definitions
+// for an Agilent 4155C Semiconductor Parameter Analyzer
+//
+// These commands extend the commands already defined in the Java class Agilent4155
+// 
+// Done by KPP in 2012!
+
+
+// Set the Integration Time
+IntegrationTime {sets the Integration Time} | :PAGE:MEASure:MSETup:ITIMe %s | Short, Medium, or Long {Can be 'Short', 'Medium', or 'Long'} (Medium)
+

@@ -1,0 +1,15 @@
+// Generic GPIB command definitions
+// for an Agilent 4155C Semiconductor Parameter Analyzer
+//
+// These commands extend the commands already defined in the Java class Agilent4155
+// 
+// Done by KPP in 2012!
+
+
+// Set the Integration Time
+IntegrationTime {sets the Integration Time} | :PAGE:MEASure:MSETup:ITIMe %s | Short, Medium, or Long {Can be 'Short', 'Medium', or 'Long'} (Medium)
+
+
+// Define a User Function
+// It would be nice to define this in Java to be able to call checkErrorQueue to ensure proper spelling
+UserFunction {allows to set up to 6 user functions} | :PAGE:CHANnels:UFUNction:DEFine '%s','%s','%s' | Name {6 characters, must start with a letter} | Unit {can be empty} | Definition {e.g. ABS(Id)}

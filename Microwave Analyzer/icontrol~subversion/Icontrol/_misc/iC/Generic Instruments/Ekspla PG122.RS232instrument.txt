@@ -1,0 +1,20 @@
+%% Definitions of Generic Commands for the 
+%% Ekspla PG122 Optical Parametric Oscillator
+%% Author: KPP
+
+% General Message format: [ReceiverName:MessageBody\SenderName]
+% 
+% A message might contain one or more commands and up to 127 bytes. Commands are
+% space delimited.
+% 
+% Receiver Names:   NL ... Laser
+%                   MS ... Main Control Program (Error Messages)
+%                   D1 ... The PG122 optical parametric oscillator (OPO)
+%
+% Use a straight RS232 cable where pins 2-2, 3-3, 5-5 are connected
+% Our PG122 is set to 38400 bauds, 8 data bits, 1 stop bit, parity none
+
+// Set the Wavelength
+// The wavelength is limited by the port we use in our setup and the safety 
+// goggles we use.
+setWavelength | [D1:W1/S%.2f\iC] | Wavelength \[nm\] (600) [420, 542]

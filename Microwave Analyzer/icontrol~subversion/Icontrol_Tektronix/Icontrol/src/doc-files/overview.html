@@ -1,0 +1,465 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>iC Overview</title></head>
+<body>
+<h2>Instrument Control (iC) - Overview</h2>
+
+
+<p><span style="text-decoration: underline;"> Automate (scientific)
+test equipment via GPIB, RS232, or USB with this JAVA
+program.</span> <br>
+</p>
+<p>It has become common practice to automate data acquisition from
+programmable instrumentation and a range of different software
+solutions fulfill this task. Many routine measurements require
+sequential processing of certain tasks, for instance to adjust the
+temperature of a sample stage, take a measurement, and repeat that
+cycle for other temperatures. Instrument Control (iC) is an open-source
+Java program that processes a series of text-based commands that define
+the measurement sequence. These commands are in an intuitive format
+which provides great flexibility and allows quick and easy adaptation
+to various measurement needs. For each of these commands, the
+iC-framework calls a corresponding Java method that addresses the
+specified instrument to perform the desired task. The way iC was
+designed enables one to quickly extend the functionality of Instrument
+Control with minimal programming effort in Java, by writing Python scripts, or by defining new commands in
+a text file without any programming.</p>
+KPP dedicates this work in devotion to Bhagavan Sri Sathya
+Sai Baba.<br>
+<br>
+If you like iC, please cite <a href="http://dx.doi.org/10.6028/jres.117.010" target="_blank">http://dx.doi.org/10.6028/jres.117.010</a>.<br>
+
+
+<h3>Content:</h3>
+
+<ul>
+  <li><a href="#Project_Homepage">Project Website</a></li>
+  <li><a href="#Screenshot">Screenshot</a></li>
+  <li><a href="#Tutorial_Videos">Tutorials<br>
+</a></li>
+  <li><a href="#Supported_GPIB_controllers">Supported Controllers</a></li>
+  <li><a href="#Supported_Instruments">Supported Instruments</a><br></li>
+  <li><a href="#System_requirements">System requirements</a><br></li>
+  <li><a href="#Installation">Installation</a></li>
+  <li><a target="_blank" href="doc-files/iC_Framework.html">How the iC-Framework works</a></li>
+  <ul>
+    <li><a target="_blank" href="doc-files/iC_Framework.html#Naming_Conventions">Naming Conventions</a><br></li>
+  </ul>
+  <li><a target="_blank" href="doc-files/genericInstruments.html">How to write new generic Instrument definitions</a><br>
+</li>
+  <li><a href="doc-files/adPython.html" target="_blank">How to use Python in iC</a></li>
+  <li><a target="_blank" href="doc-files/programmatic.html">How to write new Instrument-Classes</a></li>
+
+  <li><a href="doc-files/newCommPort.html" target="_blank">How to implement support for a new Communication Port</a></li><li><a href="doc-files/JUnitTests.html" target="_blank">JUnit Tests</a></li>
+
+
+  <li><a href="#FAQ">FAQ</a></li>
+  <li><a href="#Known_issues">Known Issues</a><br>
+  </li>
+
+  <li><a href="#Credits">Credits</a></li><li><a href="#Disclaimer">Disclaimer</a></li>
+</ul>
+
+<h3><a name="Project_Homepage"></a>Project Website / Contact<br>
+</h3>
+
+
+
+<p>A compiled version of Instrument Control (iC) is available from <a target="_blank" href="http://java.net/projects/icontrol/downloads">http://java.net/projects/icontrol/downloads</a>. <br>
+</p>
+<p>A developer's version as well as the complete <a target="_blank" href="http://icontrol.java.net/">javadoc</a> can be
+accessed from <a target="_blank" href="http://java.net/projects/icontrol">http://java.net/projects/icontrol</a>.</p>
+
+Bugs and feature requests can be filed at the Issue Tracker at <a target="_blank" href="http://java.net/projects/icontrol">http://java.net/projects/icontrol</a>.<br>
+<p>To contact the developer (Kurt Pernstich) send an eMail to pernstich@alumni.ethz.ch.</p>
+<p>A publication describing iC can be downloaded from <a href="http://dx.doi.org/10.6028/jres.117.010" target="_blank">http://dx.doi.org/10.6028/jres.117.010</a>.<br>
+</p>
+
+
+
+<h3><a name="Screenshot"></a>Screenshot</h3>
+
+<a href="/doc-files/iC-Screenshot.jpg"><img src="doc-files/iC-Screenshot.jpg" title="Click to enlarge" alt="iC-Screenshot" style="border: 0px solid ; width: 640px; height: 430px;"></a><br>
+
+<h3><a name="Tutorial_Videos"></a>Tutorials<br>
+</h3>
+
+You can watch the following video tutorials online. Please note that the screen casts might be a bit out-of-date.<br>
+<ul>
+  <li><a href="http://java.net/projects/icontrol/downloads/download/Tutorial_Videos/iC_Tutorial_nr1_Usage.mov" target="_blank">Video tutorial #1 - Usage</a> (QuickTime, 39 MB): This tutorial introduces the
+basic concepts of Instrument Control, and after watching it, you will
+know how to install and use the Instrument Control program for your own
+tasks.<span style="text-decoration: underline;"></span><br>
+ </li>
+
+  
+  <li><a href="http://java.net/projects/icontrol/downloads/download/Tutorial_Videos/iC_Tutorial_nr2_Generic_GPIB_Instruments.mov" target="_blank">Video tutorial #2 - generic GPIB Instruments</a> (QuickTime, 34 MB): This
+tutorial introduces the concept of generic GPIB Instruments, and after
+watching it, you will know how to define new commands for an Instrument
+using text files.</li>
+  <li><a href="doc-files/programmatic.html">Step-by-step instructions</a> to write new Device-Commands in Java.<br>
+  </li>
+
+
+
+</ul>
+<h3><a name="Supported_GPIB_controllers"></a>Supported Controllers<br>
+</h3>
+The Instrument Control (iC) program has been tested with the following configurations:<br>
+<ul>
+  <li>Windows XP: National Instruments PCI-GPIB card with NI 488.2
+(version 2.4) drivers - this is the typical configuration and most work
+was done using this configuration<br>
+</li>
+  <li>Windows XP: Agilent 82357B USB/GPIB interface with the
+Agilent IO Suite (version 15.1) - an *IDN? query worked as expected; no
+more tests were performed<br>
+</li>
+  
+  <li>Windows XP: Prologix GPIB-USB controller (version 4.2
+and 6.0) with the&nbsp; direct drivers (version&nbsp; 2.08.08) - the
+program logged 5 temperatures every second for 20 h without problems</li>
+  <li>Windows 7: IOtech Micro 488/A GPIB-RS232 controller - the program
+sucessfully set the frequency and amplitude of an HP frequency
+generator.<br>
+  </li>
+
+  <li>Mac
+OS 10.6: National Instruments GPIB-USB-HS controller with NI 488.2
+(version 2.5) - an *IDN? query worked as expected; no more tests were
+performed</li>
+  <li>Support for the Prologix GPIB-Ethernet controller is in development.</li>
+  <li>Windows XP: Using the RS232 port to log temperatures of a Eurotherm temperature controller worked for days without problems</li>
+  <li>Windows
+XP: Using the USB port with Yokogawa's TMCTL library to communicate
+with a Yokogawa DL9240L oscilloscope worked without problems; special USB drivers for this oscilloscope need to be installed.<br>
+  </li>
+
+
+
+
+  
+
+</ul>
+<h3><a name="Supported_Instruments"></a>Supported Instruments</h3>
+A subset of available commands of the following Instruments is supported:<br>
+<ul>
+
+  <li>Agilent<br>
+</li>
+  <ul>
+    <li>Agilent 4155 Semiconductor Parameter Analyzer</li>
+    <li>Agilent E4980A Precision LCR Meter</li>
+
+  </ul>
+  <li>Cryomagnetics</li>
+  <ul>
+    <li>Cryomagnetics LM-500 Liquid Cryogen Level Monitor<br>
+    </li>
+  </ul>
+
+  <li>Ekspla</li>
+  <ul>
+    <li>Ekspla NT340 Series Tuneable Nd:YAG Pulsed Laser System</li>
+    <li>Ekspla PG122 Optical Parametric Oscillator<br>
+    </li>
+
+  </ul>
+
+  <li>Eurotherm</li>
+  <ul>
+    <li>Series 3200 PID Temperature Controller<br>
+    </li>
+  </ul>
+
+  <li>HP</li>
+  <ul>
+    <li>HP 4192 Impedance Analyzer</li>
+  </ul>
+  <li>Keithley</li>
+  <ul>
+    <li>Keithley 2600A/2635 System SourceMeter</li>
+    <li>Keithley 7001 Switch System<br>
+    </li>
+
+  </ul>
+
+  <li>Lakeshore</li>
+  <ul>
+    <li>Lakeshore 332 Temperature Controller<br>
+    </li>
+    <li>Lakeshore 340 Temperature Controller</li>
+    <li>Lakeshore 625 Superconducting Magnet Power Supply</li>
+  </ul>
+  <li>Stanford Research Systems</li>
+  <ul>
+    <li>SRS DS345 Synthesized Function Generator<br>
+    </li>
+  </ul>
+
+  <li>Yokogawa</li>
+  <ul>
+    <li>Yokogawa DL9000 Series Oscilloscope (DL9240L)<br>
+    </li>
+  </ul>
+
+
+
+  
+  
+</ul>
+
+<h3><a name="System_requirements"></a>System requirements</h3>A Java SE
+Runtime Environment (version 6.0 or later)
+and one of the above GPIB cards with the appropriate
+drivers installed should be enough to run the program.<br>
+<br>
+
+
+
+<h3><a name="Installation"></a>Installation</h3>
+<h4>
+Release version</h4>
+<ul>
+<li>Download the zip-file and extract it to folder of your choice.</li><li>Double-click on the <code>Icontrol.jar</code> file to run. If your system is not configured to run .jar files read this <a href="http://netbeans.org/kb/articles/javase-deploy.html#troubleshooting">instruction</a>.</li>
+  <li>If you like, you can copy the 'iC' folder to your home directory so that it is neatly stowed away. If
+you are not sure what directory is the user's home directory start the
+program which will present a dialog showing the user's directory.</li>
+</ul>
+<h4>Developer's version</h4>
+<ul>
+<li>Download and install the <a href="http://netbeans.org/downloads/7.0.1/" target="_blank">Netbeans IDE v7.0.1 with the Java Development Kit</a>. Use Netbeans version 7.0.1 as later versions do not support the Swing Application framework!<br>
+</li><li>Register at <a target="_blank" href="http://java.net/">java.net</a> and subscribe to the <a target="_blank" href="http://java.net/projects/icontrol">Instrument Control project</a>.</li><li>In
+Netbeans, log into the Team Server (Team/Team Server/Login ...). You
+might have to install the Team server support (Tools/Plugins: Team
+Server) and the SVN bundle.<br>
+</li>
+  <li>Get
+the Source code (Team/Team Server/Open Team Project...). There might be
+multiple repository folders. The 'Icontrol' directory contains the
+latest development source code, while other directories are branches to
+develop certain funtionality, for instance support for RS232
+communication. Once development in those branches is finished, they
+will be merged into 'Icontrol'.<br>
+    <a href="doc-files/CheckOutFolder.png"><img title="Click to enlarge" style="border: 0px solid ; width: 500px; height: 172px;" alt="Check Out Folders" src="doc-files/CheckOutFolder.png"></a><br>
+<br>
+    <a href="doc-files/CheckOutPage.png"><img title="Click to enlarge" style="border: 0px solid ; width: 500px; height: 234px;" alt="Check out page" src="doc-files/CheckOutPage.png"></a><br>
+  </li>
+<li>Compile the source code by pressing 'Clean&amp;Build'. This
+also copies the 'iC' directory to the user's home directory.<br>
+</li>
+  <li>To access additional libraries when starting the program from Netbeans, add <code>-Djava.library.path=${dist.dir}</code> to the VM Options in the project's properties. This setting is sometimes not synched via SVN.<br>
+  </li>
+<li>Run the program by clicking the green 'Play' button in Netbeans.</li>
+  <li>Once compiled, the .jar file (in the 'dist' directory) can be started from outside Netbeans.</li>
+  <li>To
+generate local javadoc, set the correct path in the project properties
+(Build/Documentation) and then right click on the Icontrol project in
+Netbeans and choose Generate Javadoc.<br>
+</li>
+  <li>[Advanced users]: To enable debug mode add 'iC.Debug=1' to
+the Run arguments in the Project properties, or simply add the line to
+the <code>iC_User.properties</code> file in the iC directory.<br>
+ </li>
+  
+  <li>[Advanced users]: If you like to access JFreeChart's source code directly from within Netbeans, install <a href="http://www.jfree.org/jfreechart/download.html">JFreeChart</a>
+as described in the included installation instructions, and add the
+path to the source code to the project properties (Library/Include)
+accordingly. A copy of JFreeChart
+is also included in the _misc directory in the source code. The javadoc
+should be accessible from Netbeans because a zip-ed version of
+JFreeChart's javadoc is included (and referenced) in the _misc
+directory.</li>
+</ul>
+<h3>How the iC Framework works<br>
+</h3>
+<a target="_blank" href="doc-files/iC_Framework.html">
+This document</a> outlines in rough sketches how the iC-Framework works.<br>
+<h3>How to write new generic Instrument definitions</h3>
+<a target="_blank" href="doc-files/genericInstruments.html">
+This document</a> explains how to define new commands for an instrument in the generic way using text files.<br>
+<h3>How to use Python in iC</h3>
+<a target="_blank" href="doc-files/adPython.html">
+This document</a> explains how Python commands and scripts can be used in Instrument-Control (iC).<br>
+<br>
+<h3>How to write new Instrument classes and extend existing ones </h3>
+
+
+<a href="doc-files/programmatic.html">This tutorial</a>
+presents step-by-step instructions to implement new commands in Java
+and also includes naming conventions used in the source code.<br>
+<h3>How to implement support for a new Communication Port</h3><a href="doc-files/newCommPort.html" target="_blank">This document</a>
+presents step-by-step instructions to implement support for a new
+Communication Port using the RS 232 serial port as an example.<br>
+<br><h3>JUnit Tests</h3><a href="doc-files/JUnitTests.html" target="_blank">This document</a> discusses details about JUnit tests.<br>
+
+ 
+<h3><a name="FAQ"></a>FAQ</h3>
+<ul>
+  <li>Java.net versus Kenai.com - I am confused</li>
+  <ul>
+    <li>It was announced that Kenai.com will be shut down and all
+projects have to be migrated to java.net. It is not clear when this
+happens, but becuase I am in the process of publishing a paper
+describing iC, it makes sense to migrate now and include the proper
+link to the paper. As of March 2012 only the java.net site will be
+updated.<br>
+    </li>
+  </ul>
+  <li>I cannot access the source code on java.net.</li>
+
+  <ul>
+    <li>You need to register (for free) at Java.net and become a
+member of the Instrument Control project. Registration is required to
+manage check-out/commit permissions.<br>
+    </li>
+  </ul>
+  <li>Which command line arguments are supported?</li>
+
+  <ul>
+    <li>It is possible to set every property using the general form:<br>
+      <code>PropertyName=Value<br>
+      </code>for instance: <code>iC.Debug=1</code> or <code>iC.Debug=0</code><br>
+Note that no spaces are allowed.<br>
+    </li>
+  </ul>
+  <li>Can I use iC on non-Windows machines (Mac, Linux)?</li>
+
+  <ul>
+    <li>Yes, see the section <a href="#Supported_GPIB_controllers">Supported GPIB controllers</a> above.<br>
+</li>
+  </ul>
+  <li>Why does iC log the GPIB traffic?</li>
+  <ul>
+    <li>Why not? I once experimented with very high-voltage and there
+it happened (I should not admit that, but well - you asked) that when
+my decive broke down (at a few kV), the computer standing next to the
+device (and me) crashed on a regular basis, and to recover the last
+data point(s), a GPIB log came in handy. It is also helpful
+during debuggin, and serves as a last-resort-backup of the measured data. You can disable GPIB logging from the Options Menu. To
+disable GPIB logging permanently, change the file <code>iC.properties</code> or <code>iC_User.properties</code>.</li>
+  </ul>
+  <li>How can I change the <code>iC.properties</code> file in the distribution version?</li><ul><li>First a question: Why do you want to? All properties can also be changed in the file <code>iC_User.properties</code> which resides in the home directory.</li></ul>
+  <ul>
+    <li>Rename <span style="font-style: italic;">Icontrol.jar</span> to&nbsp; <span style="font-style: italic;">Icontrol.jar.zip</span></li>
+    <li>Browse the content and copy the file 'icontrol/resources/iC.properties' to a temporary folder, for instance the Desktop</li>
+    <li>Make desired changes using a text editor</li>
+    <li>Replace the old file with the new one<code></code> <br>
+    </li>
+    <li>Reanme <span style="font-style: italic;">Icontrol.jar.zip</span> to <span style="font-style: italic;">Icontrol.jar</span>&nbsp;</li>
+
+  </ul>
+</ul>
+<h3><a name="Known_issues"></a>Known issues</h3>
+<ul>
+  <li>Charts</li>
+  <ul>
+    <li>Only the last 1000 data point are displayed in a chart (all
+data points are saved though). This is because the Java Virtual Machine
+crashed repeatedly when 5 charts where displayed simultaneously during
+testing of iC after displaying. <br>
+</li>
+    <li>Displaying many data points on a chart slows down the
+response of iC. This is because events to update the chart are queued
+and I don't know how to hook into the event queue.<br>
+    </li>
+  </ul>
+</ul>
+<br>
+
+
+
+<h3><a name="Credits"></a>Credits</h3>Without the following programs
+the Instrument Control (iC) program
+would not have been possible. Thank's a lot to the developers of these
+open source and freeware programs !! <br>All
+required files are included in the distribution, and the original files
+are included in the Deveoper's version for convenience.<br>
+Thanks to David J. for initial testing of the JPIB package, to Abdul
+from Prologix and to all who answered my questions on diverse forums !!
+<ul>
+<li>JNA: <a href="http://jna.java.net" target="_blank">http://jna.java.net</a></li><li>JFreeChart:&nbsp;<a target="_blank" href="http://www.jfree.org/jfreechart/">http://www.jfree.org/jfreechart</a></li>
+  <li>Jython: <a href="http://www.jython.org" target="_blank">http://www.jython.org</a><br>
+</li>
+  <li>RxTx:&nbsp; <a href="http://rxtx.qbang.org/wiki/index.php/Main_Page" target="_blank">http://rxtx.qbang.org</a><br>
+</li>
+  <li>Apache Commons Math: <a href="http://commons.apache.org/math" target="_blank">http://commons.apache.org/math</a><br>
+  </li>
+
+
+<li>Netbeans: <a target="_blank" href="http://www.netbeans.com/">http://www.netbeans.com</a></li><li>Hosting: <a target="_blank" href="http://java.net/">http://java.net</a></li><li>KompoZer: <a target="_blank" href="http://www.kompozer.net/">http://www.kompozer.net</a><br></li>
+</ul>
+
+
+<h3><a name="Disclaimer"></a>Disclaimer</h3>
+
+This software was developed at the National Institute of Standards and
+Technology by a guest researcher in the course of his official duties
+and with the partial support of the Swiss National Science Foundation.
+Pursuant to title 17 Section 105 of the United States Code this
+software is not subject to copyright protection and is in the public
+domain. The Instrument Control (iC) software is an experimental
+system. Neither NIST, nor the Swiss National Science Foundation
+nor any of the authors assumes any responsibility whatsoever for
+its use by other parties, and makes no guarantees, expressed or
+implied, about its quality, reliability, or any other
+characteristic. We would appreciate your citation if the
+software is used. The publication introducing this program is
+planned to be published in 2011/12 with K. P. Pernstich as first
+author.
+<p>This software can be
+redistributed and/or modified freely under
+the terms of the GNU Public Licence and provided that any
+derivative works bear some notice that they are derived from it, and
+any modified versions bear some notice that they have been modified.</p>
+
+<p>This software is distributed in
+the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+the
+GNU Public License for more details. http://www.fsf.org</p>This software relies on other open source projects; please see the accompanying <code>_ReadMe_iC.txt</code>
+or the Credit section above for a list of included packages. Thank's
+very much to those developers !! Without your effort, iC would not have
+been possible!<br>
+<p><br>
+</p>
+
+
+<br>
+
+
+  
+
+</body></html>

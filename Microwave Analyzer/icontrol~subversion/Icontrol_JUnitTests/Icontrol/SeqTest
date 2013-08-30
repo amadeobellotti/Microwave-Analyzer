@@ -1,0 +1,18 @@
+% iC: date and time of the evaluation: 120811_004159
+
+Isc = -1.6976E-05 V
+Voc = 5.6609E-01 A
+
+V @ max power = 3.3700E-01 V
+I @ max power = -1.0008E-05 A
+
+Fill Factor = 3.5094E-01
+The Fill Factor is calculated with respect to V=I=0, not the dark curve.
+
+PLEASE TEST THE CALCULATION OF Rseries & Rshunt AND LET ME KNOW IF THEY ARE CORRECT.
+Estimated Rseries = 1.3801E+04 Ohm (from the slope of I(V) @ Voc)
+Estimated Rshunt = 7.1865E+04 Ohm (from the slope of I(V) @ Isc)
+
+Assuming a device area of 4.0000E-02 cm^2
+and a light intensity of 1.0004E-01 W/cm^2
+the Power Conversion Efficiency is -0,00 %

@@ -1,0 +1,80 @@
+MAKE iC; iC-control; none
+MAKE laser; Ekspla NT340; COM3, 19200, 8, 1, none
+MAKE opo; Ekspla PG122; COM4, 38400, 8, 1, none
+ 
+
+
+%% check RS232 connection
+
+laser getStatus
+opo getStatus
+
+
+%% Trigger Source
+
+laser configTriggerSource 0  // internal Trigger (for the Flash lamps)
+
+
+
+%% Nr. of Pulses
+
+laser setNrPulses 2
+iC WaitForUser 2 Pulses?
+
+laser setNrPulses 1
+iC WaitForUser 1 Pulse?
+
+
+
+
+
+%% test wavelength
+
+opo setWavelength 529
+iC WaitForUser 529 nm?
+
+opo setWavelength 528
+iC WaitForUser 528 nm?
+
+
+
+%% test Output Power
+
+laser OutputPower Adjust   
+iC WaitForUser Output Power: Adjustment Mode?
+
+laser OutputPower Max
+iC WaitForUser Output Power Max?
+
+laser OutputPower Off   
+iC WaitForUser Output Power: Off?
+
+
+
+%% Flash Lamps
+
+// start Flash lamps
+laser Start
+iC WaitForUser Flash lamps started?
+
+
+%% fire a pulse
+
+laser OutputPower Adjust
+laser setNrPulses 1
+
+laser firePacket
+iC WaitForUser Was a pulse fired?
+
+laser firePacket
+iC WaitForUser Was a pulse fired?
+
+laser firePacket
+iC WaitForUser Was a pulse fired?
+
+
+
+
+// stop Flash lamps
+laser Stop
+iC WaitForUser Flash lamps stopped?

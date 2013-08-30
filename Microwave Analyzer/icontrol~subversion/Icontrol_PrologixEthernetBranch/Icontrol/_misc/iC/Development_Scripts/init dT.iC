@@ -1,0 +1,42 @@
+// init the low-Relay to be in manual mode
+dT Relay; low; manual; false 
+
+// Enable ramping of loop 1 with a ramp rate of 6 K/min
+dT RampRate; 1; true; 6
+
+// Configure Control Loop Display Parameters
+// CDISP p. 9-27
+
+// CFILT p. 9-27
+
+// set heater resistance p. 6-8
+// can not be set via GPIB?
+
+
+/////////////////////////
+// set Heater compliance
+
+// Control Loop Limit Parameters p. 9-28
+% loop#
+% Set-Point limit
+% pos slope [%/sec]
+% neg slope
+% set max. current to 'User'
+% max. heater range 2
+dT ControlLoopLimit; 1; 350; 10; 50; 5; 2
+
+// set User current limit p. 9-28
+dT setHeaterCurrentLimit; 0.1
+
+
+
+// Control Loop Mode p. 9-29
+% 1=Manual PI, 5=Auto Tune PI
+dT Send; CMODE 1, 1
+
+// Control Loop Parameters p. 9-31
+dT ConfigureLoopParameters; 1; A; K
+
+
+// Input Type Parameters
+dT Send; INTYP A, 0, 2, 2, 10, 10

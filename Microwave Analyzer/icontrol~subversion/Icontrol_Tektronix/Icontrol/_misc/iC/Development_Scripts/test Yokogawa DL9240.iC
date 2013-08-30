@@ -1,0 +1,3 @@
+MAKE osci; Yokogawa DL9000; TMCTL: USBTMC(DL9000) = 27E826755
+
+osci SaveWaveform 1,2; _ch12.txt; true

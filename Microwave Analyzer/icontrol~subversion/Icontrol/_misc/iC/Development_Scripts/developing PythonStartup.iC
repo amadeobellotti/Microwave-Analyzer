@@ -1,0 +1,9 @@
+ 
+// develop PythonStartup.py
+ 
+MAKE iC; iC-control; none
+MAKE Tstage; Lakeshore 340; GPIB=4
+
+
+
+print 'No Communication Mode: ' + is_no_communication_mode()

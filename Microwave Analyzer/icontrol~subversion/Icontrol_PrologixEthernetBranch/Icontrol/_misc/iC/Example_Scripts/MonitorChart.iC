@@ -1,0 +1,20 @@
+MAKE iC; iC-control; none
+ 
+MAKE dT; Lakeshore 340; GPIB 4
+dT configDefaults A; 1
+ 
+MAKE SampleStage; Lakeshore 340; GPIB=6
+SampleStage configDefaults A; 1
+ 
+MAKE MagnetStage; Lakeshore 340; GPIB=6
+MagnetStage configDefaults B; 2
+ 
+MAKE InnerShield; Lakeshore 332; GPIB=8
+InnerShield configDefaults A; 2
+ 
+MAKE OuterShield; Lakeshore 332; GPIB=8
+OuterShield configDefaults B; 1
+ 
+iC MonitorChart 1; Temperature [K]; .monT; "dT getTemp default"; "SampleStage getTemp default"; "MagnetStage getTemp default"; "InnerShield getTemp default"; "OuterShield getTemp default"
+iC Wait 3
+iC WaitForStop

@@ -1,0 +1,7 @@
+// Extension of the Keithley2600 class
+// Some not so important commands are implemented here as it is faster.
+// The comes at the expense that the Syntax check is not so rigurous.
+// author: KPP
+
+// set Analog filters
+configAnalogFilters {controls the use of an analog filter when measuring on the lowest current ranges } | smu%s.measure.analogfilter = %d | Channel Name \{a, b\} {The Channel name is case sensitive!} (a) | Filter On/Off \{0, 1\} [0,1] (1)

@@ -1,0 +1,88 @@
+%% This script changes the temperature of the cryostat
+%% and measures the temperatures of two Si Diodes that are
+%% mounted next ot each other on a copper block.
+%% Most of the "Math" is done in Python, and the results
+%% are also written to a file from Python.
+%% kpp 120814
+
+MAKE iC; iC-control; none
+MAKE Tgas; Lakeshore 332; GPIB=11
+MAKE Tstage; Lakeshore 332; GPIB=11
+MAKE Tsample; Lakeshore 332; GPIB=12 // for checking Tsample with Si diode from Curt
+MAKE LM; Cryomagnetics LM 500; COM2,9600,8,1,none 
+ 
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% config Temperature Controller
+ 
+Tgas configDefaults A; 1
+Tgas setHeaterRange 3
+Tgas setRampRate 0; true; 10.0
+ 
+Tstage configDefaults B; 2
+Tstage setHeaterRange 1
+Tstage setRampRate 0; true; 10.0
+
+Tsample configDefaults A; 1
+Tsample setHeaterRange 0
+
+ 
+%% end configurations
+ 
+ 
+iC MonitorChart 1.0; Temperature [K]; .monT; "Tgas getTemp default"; "Tstage getTemp default"; "Tsample getTemp default"; ""; ""
+iC MonitorChart 20.0; LN2 level; .monLN2; "LM Measure 2"; ""; ""; ""; ""
+ 
+
+|if not is_syntax_check_mode():
+|
+|   # open file
+|   FileName = get_file_name('_cal.txt')
+|   file = open(FileName, 'w')
+|
+|   # print header line
+|   print 'Tgas\tTstage\tTsample'
+|   file.write('Tgas\tTstage\tTsample' + '\n')
+|   
+|   for T in [80, 100, 125, 150, 175, 200, 225, 250, 275, 295]:
+|   
+|      # check for Stop Button
+|      if is_stop_scripting():
+|         break      
+|      
+|      # go to next temperature
+|      dispatch_command('Tgas', 'setTemp', 0, T-20, False, 0.2, 300)
+|      dispatch_command('Tstage', 'setTemp', 0, T, True, 0.25, 300)
+|      dispatch_command('iC', 'Wait', 300)
+|      
+|      # print Temperatures including averages
+|      Tstageavg = 0
+|      Tsampleavg = 0
+|      Tgasavg = 0
+|      for i in range(1,11):
+|         Tstage = dispatch_command('Tstage', 'getTemp', 'Default')
+|         Tsample = dispatch_command('Tsample', 'getTemp', 'Default')
+|         Tgas = dispatch_command('Tgas', 'getTemp', 'Default')
+|
+|         Tstageavg += Tstage
+|         Tsampleavg += Tsample
+|         Tgasavg += Tgas
+|      
+|      # calc averages
+|      Tstageavg /= 10
+|      Tsampleavg /= 10
+|      Tgasavg /= 10
+|      
+|      # display and save to file
+|      print str(Tgasavg) + '\t' + str(Tstageavg) + '\t' + str(Tsampleavg)
+|      file.write(str(Tgasavg) + '\t' + str(Tstageavg) + '\t' + str(Tsampleavg) + '\n')
+|      file.flush() # might also require os.fsync(file.fileno())
+|      
+|   # close file
+|   file.close()
+
+
+
+// go back to RT
+Tstage setTemp 0; 295.0; false; 0.1; 180.0

@@ -1,0 +1,6 @@
+MAKE iC; iC-control; none
+
+MAKE dT; Lakeshore 340; GPIB=4
+dT configDefaults A; 1
+ 
+dT setTemp 0; 295.0

@@ -1,0 +1,71 @@
+%% Measure the cut-off frequency or bandwidth using an oscilloscope
+%% kpp 120810
+%% Channel 1 is the input voltage to our CELIV setup
+%% Channel 2 is the current measured with a transimpedance amplifier
+%% The Python output can be potted to find the cut-off frequency of the system by
+%% either finding the frequency when the amplitude ratio is -3dB = 1/sqrt(2) or the phase difference is 45deg
+%% The scope's capability to measure time delay, peak-to-peak voltages and 1/Frequency are used
+
+MAKE iC; iC-control; none
+MAKE fg; SRS DS345; GPIB=4
+MAKE osci; Yokogawa DL9000; TMCTL: USBTMC(DL9000) = 27E826755
+
+
+// define the frequency range to measure
+|NrPointsPerDecade = 20
+|fstart = 100
+|fstop = 10e6
+|WaitTime = 3   # it takes time to change the TimeBase and to average (if enabled on the scope)
+
+|f = fstart
+|q = 10**(1.0/NrPointsPerDecade)
+
+|if not is_syntax_check_mode():
+|
+|   # open file
+|   FileName = get_file_name('_fc.txt')
+|   file = open(FileName, 'w')
+|   
+|   # print header line
+|   print 'Frequency\tAmplitude ratio\tPhase difference'
+|   file.write('Frequency\tAmplitude ratio\tPhase difference' + '\n')
+|   
+|   # iterate through all frequencies
+|   while f <= fstop+1 :
+|
+|      # check for stop button
+|      if is_stop_scripting():
+|         break
+|
+|      # set frequency
+|      dispatch_command('fg', 'setFrequency', f)
+|
+|      # set Time base
+|      TB = 1.0 / f * 3 / 10.0   # show 3 full periods
+|      dispatch_command('osci', 'setTimeBase', TB)
+|
+|      # wait a bit
+|      dispatch_command('iC', 'Wait', WaitTime)
+|   
+|      # get parameters from scope
+|      Vpp1 = dispatch_command('osci', 'getParameter', 1, 1, 'PTOP')
+|      Vpp2 = dispatch_command('osci', 'getParameter', 2, 1, 'PTOP')
+|      Delay1 = dispatch_command('osci', 'getParameter', 1, 1, 'DELAY')
+|      Delay2 = dispatch_command('osci', 'getParameter', 2, 1, 'DELAY')
+|      Period = dispatch_command('osci', 'getParameter', 1, 1, 'PERFrequency')
+|   
+|      # calculate
+|      phase = 360 / Period * (Delay2 - Delay1)
+|      if (phase < 0): phase += 360
+|      ampl = Vpp2 / Vpp1
+|   
+|      # print result
+|      s = str(f) + '\t' + str(ampl) + '\t' + str(phase)
+|      print s
+|      file.write(s + '\n')
+|
+|      # update frequency
+|      f *= q
+|
+|   # close the file
+|   file.close()

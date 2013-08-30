@@ -1,0 +1,2 @@
+MAKE lan; LAN_Instrument; URL=http://localhost/127.0.0.1
+lan DemoCommand

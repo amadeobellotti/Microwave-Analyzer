@@ -1,0 +1,94 @@
+%% Setup the CELIV rig (oscilloscope, preamp, ...)
+%% kpp + Linday 120711
+%%
+%% see configuration section below for detials on how to connect and setup the instrument
+
+MAKE iC; iC-control; none
+MAKE fg; SRS DS345; GPIB=4
+MAKE osci; Yokogawa DL9000; TMCTL: USBTMC(DL9000) = 27E826755
+MAKE laser; Ekspla NT340; COM3, 19200, 8, 1, none
+MAKE opo; Ekspla PG122; COM4, 38400, 8, 1, none
+
+%%%%%%%%%%%%%%%%%
+%% prepare Python
+
+//|import time
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% config Frequency Generator
+
+%% use frontpanel of function generator to set the DC bias
+
+// output
+fg setOutputFunction Arbitrary
+fg setOffset 0
+
+// Triggering (for illumination)
+fg setModulationType Burst
+fg setTriggerSource -Slope External
+fg setBurstCount 1.0
+fg enableModulation true
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%% config oscilloscope
+
+%% CH1 ... voltage of fg
+%% Ch2 ... Current
+%% CH3 ... Trigger out (goes to fg)
+%% CH4 ... APD photodiode (Trigger on this channel)
+%% manually set averaging to 16(?) or use acquisition mode normal on the scope
+%% set sampling length to e.g. 125kW
+
+
+%%%%%%%%%%%%%%%
+%% config Laser (for continuous bursts)
+
+laser getStatus
+opo getStatus
+
+opo setWavelength 532
+//laser setNrPulses 1
+laser setRepetionRateDivider 5
+
+// internal Trigger
+laser configTriggerSource 0
+
+
+laser OutputPower Off   // switch off electrooptics
+laser Start             // start Flash lamps
+
+
+
+
+
+%%%%%%%%%%%%%%%
+%% measurements
+
+
+// stop & start the scope to reset the display
+osci Stop
+osci Start
+
+// program new CELIV pulse
+fg setARBtoCELIV 25.0; -1000; 0.7; 0.0
+
+
+// Safety goggles reminder
+iC StopOrGo Put on safety goggles, switching on the Laser...
+
+// start Electrooptics
+laser OutputPower Max
+
+
+iC WaitForUser Adjust the scope, the bias on the function generator, and the preamp.
+
+
+
+// stop Electrooptics
+laser OutputPower Off
+
+
+// stop Flash Lamps
+laser Stop

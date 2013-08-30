@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Write and extend Instrument-Classes</title></head><body>
+<br>
+
+<h2>How to write a new Instrument-Class and extend existing ones<br>
+</h2>
+An Instrument-Class, or Driver-Class, implements all commands related
+to an Instrument.
+It is so to speak the driver for that Instrument. This tutorial
+presents step-by-step instructions to implement new commands in Java. <br>
+Note that it is also possible to use the Python integration to create new functionality as explained <a href="doc-files/adPython.html" target="_blank">here</a>.<br>
+
+<h3>Write a new Instrument-Class</h3>
+
+The easiest way to a new Driver-Class is by using the template <code>NewInstrument.java</code>
+in the package <code>icontrol.instruments</code>:<br>
+
+<ul>
+
+</ul>
+
+<ol>
+
+  <li>Duplicate <code>NewInstrument.java</code> and rename <br>
+  </li>
+  <ul>
+    <li>the file <br>
+    </li>
+    <li>the class, and <br>
+    </li>
+    <li>the name of the Logger</li>
+  </ul>
+  <ol>
+    <ul>
+      <li>Note that the Logger level is automatically set to inherit
+the level of the parent
+Logger in the constructor of the <code>Device</code> class.</li>
+    </ul>
+  </ol>
+  <ul>
+    <li>Note that all Instrument-Classes need to be a descendent from class <code>Device</code><code></code>.</li>
+    <li>Note: Netbeans 7 can get confused by manually renaming a class
+file. If iC does not compile after this step, quite Netbeans and delete
+the cache directory userdir\.netbeans\[version]\var\cache\<br>
+    </li>
+
+  </ul>
+  <li>Update the <code>iC_Annotation</code> at the declaration of the
+class&nbsp;</li>
+  <ul>
+    <li>to declare which communication protocolls are supported, and <br>
+    </li>
+    <li>to define the name used to access Instruments of this kind from
+the Script-Commands.</li>
+  </ul>
+  <li>Update the javadoc section at the beginning of the class</li>
+  <ul>
+    <li>with your name and <br>
+    </li>
+    <li>a description of the Instrument.</li>
+  </ul>
+  <li>Add you Instrument's response to a '*IDN?' query to the file <code>iC.properties</code><br>
+  </li>
+  <ul>
+    <li>What is this good for?&nbsp;</li>
+    <ul>
+      <li>If an Instrument returns an unexpected ressponse to a *IDN?
+query , the User is presented a <code>WrongIDN</code> dialog with some
+options on how to proceed further.</li>
+    </ul>
+    <li>Add a line <code>YourClassName.InstrumentNameIdentifier = abc</code>
+where <code>abc</code>&nbsp; is the response of your Instrument to a
+*IDN? query</li>
+    <li><code>abc</code> should only contain that part of the response
+that identifies
+the <span style="font-style: italic;">family</span> of Instrument, not
+an individual Instrument, hence it is
+recommended to strip the serial number returned by many Instruments.</li>
+    <li>To find <code>abc</code> start a script that MAKEs your new
+Instrument with <code>abc</code> being an empty String. iC will show
+you the response. <br>
+    </li>
+    <li>If your Instrument does not support IEEE 488.2 or you do not
+want iC to perform a IDN-check you don't have to add this line, or you
+can leave <code>abc</code> blank.</li>
+    <li>For more details consult the description in <code>Device.getInstrumentNameIdentifier</code>.</li>
+  </ul>
+</ol>
+
+This is it! <br>
+
+Your new Instrument-Class should be accessible from Instrument-Control.
+Start iC and check if you can MAKE a new Instrument with the class you
+just created. Note that the methods that were implemented in <code>NewInstrument.java</code>
+are already available as script-commands. <br>
+
+<h3>General remarks about methods implementing script-commands</h3>
+
+<ol>
+
+</ol>
+
+<ol>
+
+  <li> Methods that should be able to be called from a script
+(Device-Commands) must be <code>public</code> to be visible for the
+Reflection mechanism.</li>
+  <li>If these commands should also be shown in the GUI's Command-List
+they must bare an <code>@AutoGUIAnnotation</code> annotation.</li>
+  <ul>
+    <li>Note that commands can be used as script-command even if no <code>@AutoGUIAnnotation</code>
+is provided<br>
+    </li>
+  </ul>
+  <li>Such methods can only use the supported data types, which are: <br>
+  </li>
+  <ul>
+    <li><code>int</code></li>
+    <li><code>float</code></li>
+    <li><code>double</code></li>
+    <li><code>boolean</code></li>
+    <li><code>String</code> </li>
+  </ul>
+  <li> Add every Device Command to the 'Device Commands:' section of
+the class' javadoc.</li>
+  <ul>
+    <li>This is the <span style="text-decoration: underline;">very
+important for other users</span> because this is (at the time of
+writing) the only way to know which device-commands are available
+without having to look at the source code.</li>
+    <li>Please use the template in <code>NewInstrument.java</code>.</li>
+  </ul>
+</ol>
+
+<h3><a name="Syntax-check_mode"></a>Syntax-check mode</h3>
+
+<ul>
+
+  <li>It is advisable to implement a Syntax-Check for every
+method. <br>
+  </li>
+  <li>Methods that implement a Syntax-Check are called by the
+    <code>Dispatcher</code> during Syntax-Check Mode and they <span style="text-decoration: underline;">must</span> return after the
+Syntax-Check
+    <span style="text-decoration: underline;">without</span> any
+IO-Communication becasue IO-Communication has not been initialized at
+that point. They also should not perform any other operations. </li>
+  <li>An
+example can be found in <code>NewInstrument.ReferenceImplementation</code>.
+  </li>
+  <li>The Syntax-Check should always be performed before checking the
+No-Communication Mode.</li>
+</ul>
+
+<h3>No-Communication mode</h3>
+
+<ul>
+
+  <li>Use <code>Device.inNoCommunicationMode</code> to query the
+status of No-Communication Mode.</li>
+  <li> When in No-Communication-Mode, methods might want to return a
+value that is similar to a real answer but clearly distinguishable from
+a real answer (for instance return a temperature of -1.1 Kelvin). <br>
+  </li>
+  <ul>
+    <li>This allows other parts of the program to be tested while the
+user can clearly identify when this mode is accidentally enabled. </li>
+  </ul>
+  <li>Per default, read and write operations (<code>SendViaGPIB</code>
+or <code>QueryViaGPIB</code>) simply return without any IO operations,
+hence, they return an empty response that might me unexpected. <br>
+  </li>
+  <li>There
+is a global No-Communication switch which enables No-Communication Mode
+for
+all Instruments, and a local No-Communication switch which enables this
+mode for individual Instruments. <br>
+  </li>
+</ul>
+
+<h3>Error handling in Java methods</h3>
+
+Whenever an error occurs in a method one of the following three <code>Exceptions</code> should be thrown:<br>
+<ul>
+  <li>A new <code>ScriptException</code>
+should be thrown for general errors.</li>
+  <ul>
+    <li>These Exceptions are automatically presented to the user and will, in general, bring processing of the script to a halt. See <a href="iC_Framework.html#Exception_handling">these</a> additional comments.</li>
+  </ul>
+  <li>A new <code>DataFormatException</code> should be thrown when the Syntax-check was not successful. See also <a href="#Syntax-check_mode">this</a>.</li>
+  <li>A new <code>IOException</code> should be thrown when IO communication failed. Such <code>Exceptions</code> are usually only thrown by the iC-Framework, and need only be declared possible.<br>
+  </li>
+</ul>
+Also consider this:<br>
+<ul>
+  <li>The Exceptions should contain a String describing in detail the
+cause of the error, the consequences, and if available, a suggested
+cure.</li>
+  <li>The text of these exception will be presented to the
+user by the iC-Framework and execution of the script is , in general, stopped. </li>
+  <li>This
+text, is automatically logged to <code>m_Logger</code> by the
+iC-Framework.</li>
+  <li>More details can be found <a href="iC_Framework.html#Exception_handling">here</a>.<br>
+  </li>
+</ul>
+
+  
+<ul>
+
+  
+  
+</ul>
+
+<ol>
+
+</ol>
+
+<h3>Lengthy Java methods - Stop &amp; Pause signal<br>
+</h3>
+
+Methods that do not return instantaneously (for instance because
+they wait for a certain temperature to be reached) should periodically
+check <br>
+
+<ul>
+
+  <li>if Scripting has been stopped (by checking <code>m_StopScripting</code>)
+and</li>
+  <li>if Scripting has been paused (by calling <code>isPaused(true)</code>)</li>
+</ul>
+
+<h3>Concurrent Java methods</h3>
+
+<ul>
+
+  
+  <li>Methods can start new Threads, but the Thread needs to terminate
+itself when Scripting is stopped (by checking <code>m_StopScripting</code>). <br>
+  </li>
+  <li>Processing the thread should also be interrupted when Scripting is
+paused (by calling <code>isPaused(true)</code>).</li>
+</ul>
+<h3>Additional Initializations</h3>
+<ul>
+
+  
+  <li>If a class needs extra initialization after IO communication
+was established implement a method&nbsp; <code>Open()</code>.</li>
+  <li>The default
+implementation of <code>Device.Open</code>&nbsp;clears
+the Instrument's interface (*CLS) and performs an IDN-check, therefore, if the
+new Instrument supports IEEE 488.2 function calls, it is recommended to
+invoke the base class'&nbsp;<code>Open</code>&nbsp;method. <br>
+  </li>
+  <li>Note that
+the&nbsp;<code>Open</code>&nbsp;method
+is only called during the 'real' run and not while in Syntax-check mode
+and not when in No-Communication mode.</li>
+  <li>See <code>Device.Open</code> for more details.</li>
+  <li>See <code>HP4192.Open</code> and <code>Agilent4155.Open</code> for examples.</li>
+  <li>See also <a href="#Older_Instruments_not_suporting_488.2">these</a> remarks.<br>
+  </li>
+</ul>
+<h3><a name="Older_Instruments_not_suporting_488.2"></a>Older Instruments not suporting 488.2</h3>
+<ol>
+
+  
+</ol>
+<ul>
+  <li>If the new Instrument does not support IEEE 488.2 function calls,
+in particular the *CLS and *IDN? commands, it is necessary to override the <code>Open</code><span style="font-family: monospace;"> </span>method to avoid communication
+errors. <br>
+  </li>
+  <li>An example can be found in the <code>HP4192</code> class.</li>
+</ul>
+<ol>
+
+  
+</ol>
+<h3>Additional Clean-up</h3>
+<ul>
+  <li>If a class needs extra clean-up after the Script has been
+processed (before the instance of the Instrument is garbage collected)
+implement the <code>Close</code> method.</li>
+  <li><code>Close</code> is called by the iC-Framework for every
+Instrument instance (<code>m_UsedInstruments</code>) after processing
+of the Script. <br>
+  </li>
+  <li>An example can be found in <code>Lakeshore340.Close</code>.<br>
+  </li>
+</ul>
+<ol>
+
+  
+</ol>
+<h3>Processing Script-Commands in Java methods</h3>
+<ul>
+  <li>Methods can easily processs Script-Commands (also during Syntax-Check mode) and use the returned <code>Object</code>
+for further processing.</li>
+  <li>The recommended procedure to process a Script-Command is to  create a temporary object of class <code>Device</code> and
+invoke it's <code>DispatchCommand</code>
+method.</li>
+  <li>For an example see<code></code> <code>NewInstrument.ReferenceImplementation</code> or <code>Agilent4155.Measure</code>.</li>
+</ul>
+<h3>Some Tips</h3>
+<ol>
+
+  <li>To make sure all <code>Exceptions</code> are handled properly and are also
+described properly in the javadoc, comment the <code>throws</code>
+line for the method
+and check Netbeans' error messages that appear as the little icons or
+when building the javadoc.</li>
+  <li>So far it was never necessary, but some&nbsp;new methods might need to be <code>synchronized</code>
+or
+variables might need to be declared <code>volatile</code> when the
+same object will be /
+can be accessed from multiple threads.<br>
+  </li>
+</ol>
+
+<ul>
+
+</ul>
+
+</body></html>

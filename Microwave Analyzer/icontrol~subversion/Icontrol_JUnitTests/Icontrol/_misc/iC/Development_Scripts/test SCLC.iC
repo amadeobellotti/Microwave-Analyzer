@@ -1,0 +1,85 @@
+MAKE iC; iC-control; none
+MAKE SM; Keithley 2600; GPIB=1
+MAKE switch; Keithley 7001; GPIB=7
+MAKE Tgas; Lakeshore 332; GPIB=11
+MAKE Tstage; Lakeshore 332; GPIB=11
+
+
+// for checking sample temperature with Si diode from Curt
+//MAKE Tsample; Lakeshore 332; GPIB=12
+//Tstage configDefaults A; 1
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Setup the Source Meter
+
+%% SMU A
+ 
+SM configSMUChannel A; V    // force V measure I
+SM configNPLC a; 1.0        // Integration Aperture
+SM configFilters A; Repeat; 1; true; true
+SM configVoltageSourceRange A; true; 0
+
+// enable Auto Delay & set the Delay Factor to 1
+SM configDelayTime A; -1.0; 1.0
+
+// config the Sweep
+SM SweepVmeasureIconfig A; 0; 100; 3; 3; false	// testing
+//SM SweepVmeasureIconfig A; 250; 100; 5; 3; false	// closer to real config
+
+
+
+%% SMU B
+ 
+SM configSMUChannel B; V    // force V measure I
+SM configNPLC b; 1.0        // Integration Aperture
+SM configFilters B; Repeat; 1; true; true
+SM configVoltageSourceRange B; true; 0
+
+// enable Auto Delay & set the Delay Factor to 1
+SM configDelayTime B; -1.0; 1.0
+
+// config the Sweep
+SM SweepVmeasureIconfig B; 0; 100; 3; 3; false	// testing
+//SM SweepVmeasureIconfig B; 250; 100; 5; 3; false	// closer to real config
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%% setup the Switch
+
+switch OpenSwitch All
+switch DefineChannelList pin6; 1!1!5
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% config Temperature Controller
+
+Tgas configDefaults A; 1
+Tstage configDefaults B; 2
+
+
+
+%% end configurations
+
+
+// measure with SMU A
+SM OutputState A; On
+SM SweepVmeasureI A; 1.0E-3; 10.0; 5.0; true; smuA.txt
+//SM SweepVmeasureI A; 1.0E-3; 100.0; 10.0; true; -100V.txt
+SM OutputState A; highZ
+
+
+
+// measure with SMU B
+switch CloseOnly pin6
+
+SM OutputState B; On
+SM SweepVmeasureI B; 1.0E-3; 10.0; 5.0; true; smuBswitched.txt
+//SM SweepVmeasureI B; 1.0E-3; 100.0; 10.0; true; -100V.txt
+SM OutputState B; highZ
+ 
+ 
+//iC WaitForStop

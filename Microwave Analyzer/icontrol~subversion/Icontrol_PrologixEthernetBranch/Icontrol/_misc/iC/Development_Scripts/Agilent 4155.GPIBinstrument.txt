@@ -1,0 +1,10 @@
+   % comment
+	// comment
+	  %comment
+% Instrument-Class-Name | Script-Method-Name {Description for user} | GPIB String: use %s, %d | Parameter-Name {ToolTip text} [Min Value, Max Value] | Parameter-Name 2 ...
+
+% configureVSU
+Agilent 4155 | configureVSU {desc \{curly braces\} test \| for user} | PAGE:CHAN:CDEF:VMU%3d:VNAME '%s' | VSU# \{1, 2\} {can be 1 or 2} [1, 2] (1) | VSU function {can be CONST, Var1, Var2, Var1'}
+Agilent 4155 | configVMUname {Set the name of the Voltage-Measure-Unit} | PAGE:CHAN:CDEF:VMU%d:VNAME '%s' | VMU# {can be 1 or 2} [1,2] | VMU name {max. 8 characters}
+Agilent 4155 | configVMUmode {Set the operation mode of the Voltage-Measure-Unit} | PAGE:CHAN:CDEF:VMU%d:MODE '%s' | VMU# {can be 1 or 2} [1,2] | VMU mode {can be V, DVOLT, DeleteRow}
+SRS DS345 | setAC | SETAC %E | AC amplitude

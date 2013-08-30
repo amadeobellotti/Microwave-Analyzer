@@ -1,0 +1,7 @@
+MAKE iC; iC-control; none
+MAKE SM; Keithley 2600; GPIB=27
+
+
+SM SweepVmeasureIconfig A; 10; 10; 1; 1; false
+
+SM MeasureOPV A; -0.5; 0.5; 0.05; false; .opv1.txt

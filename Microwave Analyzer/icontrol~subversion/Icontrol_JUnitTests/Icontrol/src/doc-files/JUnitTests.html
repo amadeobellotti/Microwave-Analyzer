@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  <title>JUnit Tests in iC</title>
+
+  
+</head><body>
+<br>
+
+<h2>JUnit Tests in iC<br>
+</h2>
+
+Starting with version around v1.3.469 JUnit tests were implemented in
+iC. To do so, the iC-Framework had to be decoupled from the View (which
+also comes in handy once the new GUI will be implemented). To do so, a
+new interface <code>GUI_Interface</code> was defined which declares
+all GUI related methods that are called by the iC-Framework. The most
+prominent of such member is the <code>DisplayStatusMessage</code> method.<br>
+In the course of decoupling it was discovered, that not all classes that accessed the View (mainly, if not exclusively, the <code>DisplayStatusMessage </code>method) had a <code>M_GUI </code>defined. Previously this was solved by declaring <code>DisplayStatusMessage</code> as<span style="font-family: monospace;"> static</span><code> </code>but this was no longer possible with the new Interface. To solve this, it was chosen to implement a <code>getView </code>in <code>IcontrolApp </code>which allows to get access to the GUI at runtime.<br>
+<h3>Write a new Instrument-Class</h3>
+<br>
+</body></html>

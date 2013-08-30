@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Write and extend Instrument-Classes</title></head><body>
+<br>
+
+<h2><span style="font-weight: bold;"></span>How to write generic Instrument definitions<br>
+</h2>
+Any text file containing '.GPIBInstrument' (case insensitive) in it's
+filename is considered a definition for a generic GPIB Instrument, and
+similarly, '.RS232instrument' defines a new generic Instrument that
+uses RS232 communication. An optional
+extension is allowed, for instance '.txt'.<br>
+<br>
+The characters before the first occurrence of a'.' (dot) are taken as
+the Instrument-Class-Name (the name that shows up in the GUI in the
+MAKE section i.e. the name used in the script to MAKE new Instruments).<br>
+<br>
+<h5>Examples</h5>
+<span style="font-family: monospace;">Lakeshore 340.GPIBinstrument&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Lakeshore 340)</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">SRS DS345.GPIBinstrument.txt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (SRS DS345)<br>
+Ekspla PG122.RS232instrument.txt&nbsp;&nbsp;&nbsp; (Ekspla PG122)</span><br>
+<br>
+Each line in these text files contains defines one Device-Command.<br>
+<br>
+Comment lines have to start with % or // (no comments are allowed at the end of a line).<br>
+<br>
+Each line consists of Tokens that are separated by | (vertical line).<br>
+<br>
+Note that all fields can include escaped version of |, {}, [], and ().
+The escaped version will be substituted by the un-escaped character so
+that all<br>
+characters are available.<br>
+<br>
+<h5>Examples</h5>
+<span style="font-family: monospace;">%
+(1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(3)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(4)</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">setTemp_G | SETP %d,%.3f | Loop# {can be 1 or 2} [1, 2] (1) | Temperature {the new Set Point temperature in K} [295, 300] (295)</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">getTemp_G | KRDG? %.1s | Input Channel {can be A, B, C, or D} (A)</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">saveIDN_G {saves the Identification query to a file} | *IDN? | File Extension {will be added to the File Name}</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(5)</span><br>
+<br>
+More examples can be found in <code>iC/Generic Instruments</code> directory.<br>
+<br>
+<h5>Each line comprises the following Tokens</h5>
+(1) <span style="font-family: monospace;">Device-Command-Name {description for the user}</span><br>
+This name must not contain spaces and it is used in the Script as a command to <br>
+perform the desired action. The description for the user (which is shown as a <br>
+Tool Tip for the Device-Command) is optional and enclosed in {}.<br>
+&nbsp;<br>
+(2) <span style="font-family: monospace;">GPIB String</span><br>
+Use %d for a decimal integer value, %s for a String value, %e or %E or<br>
+%f for a double value, and %b or %B for a boolean value. Format specifiers<br>
+such as %.4e are be allowed.<br>
+&nbsp;<br>
+(3) <span style="font-family: monospace;">Parameter-Name {description for the user} [min value, max value] (default value)</span><br>
+The Parameter-Name is shown to the user in the Table of the Auto-GUI, and<br>
+the description as a Tool Tip. The min/max value are used in the Syntax-Check<br>
+to ensure the value specified by the user is within the range. The default<br>
+value is used to fill the Table in the Auto-GUI if the user selects this<br>
+Device-Command.<br>
+[], [], and () are all optional and can be given in any order. They should be separated<br>
+by a space, however (until I fix the RegEx).<br>
+&nbsp;<br>
+(4) more Parameter-Names if the GPIB String contains more than one %-character<br>
+&nbsp; <br>
+(5) if the Device-Command-Name starts with '<span style="font-family: monospace;">save</span>', then the last field is<br>
+interpreted as a File-Extension to save the data returned by the Instrument<br>
+to a corresponding file.<br>
+<br>
+<ul>
+
+</ul>
+
+</body></html>

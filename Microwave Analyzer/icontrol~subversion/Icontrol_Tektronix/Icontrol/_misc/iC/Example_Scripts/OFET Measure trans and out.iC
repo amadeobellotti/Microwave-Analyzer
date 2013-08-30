@@ -1,0 +1,100 @@
+%% Not well tested
+%% Measure the Transfer and Output characteristics of a FET
+%% kpp 120815
+
+MAKE iC; iC-control; none
+MAKE PA; Agilent 4155; GPIB=19
+
+%%%%%%%%%%%%%%
+%% Assignments
+
+%% assign SMU numbers
+|Gate = 2
+|Drain = 1
+|Source = 4
+
+%% Transfer characteristic
+|VgStart_t = 10
+|VgStop_t = -40
+|VgStep_t = -0.5
+|VdStart_t = -40
+|VdStop_t = -40
+|VdStep_t = -10
+
+%% Output characteristic
+// Vd spacing is logarithmic. to set to linear spacing see comment in Sweep Setup below
+|VdStart_o = -0.01
+|VdStop_o = -40     # must have same sign as Vdstart_o for log spacing
+|VdStep_o = 'L10'   # can be 'L10', 'L25', or 'L50'
+//|VdStep_o = -10   # for linear spacing of Vd; must have proper sign
+|VgStart_o = 0
+|VgStop_o = -50
+|VgStep_o = -10
+
+%% general
+|Icompliance = 100e-6	# current compliance for Id and Ig
+|DoubleSweep = True	    # single/double sweep for Vg/Vd sweep (transfer/output characteristic)
+|HoldTime = 1
+|DelayTime = 0
+|IntegrationTime = 'Short'   # can be 'Short', 'Medium', or 'Long'
+
+%% end Assignments
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Transfer characteristic
+
+%% configure SMUs
+|dispatch_command('PA', 'configSMU', Gate, 'Vg', 'Ig', 'V', 'Var1')
+|dispatch_command('PA', 'configSMU', Drain, 'Vd', 'Id', 'V', 'Var2')
+|dispatch_command('PA', 'configSMU', Source, 'Vs', 'Is', 'V', 'Constant')
+|for i in [1,2,3,4]:
+|   if i!=Gate and i!=Drain and i!=Source:
+|      dispatch_command('PA', 'configSMU', i, 'V', 'I', 'Common', 'Disable')
+|      break
+
+%% configure Measurement Mode
+PA configMeasurementMode Sweep
+|dispatch_command('PA', 'IntegrationTime', IntegrationTime)
+PA UserFunction ABSID; A; ABS(Id)
+
+%% configure displayed axis
+|dispatch_command('PA', 'DisplayAxis', 'X', 'Vg', 'Linear', min(VgStart_t, VgStop_t), max(VgStart_t, VgStop_t))
+|dispatch_command('PA', 'DisplayAxis', 'Y1', 'ABSID', 'Log', 1e-12, Icompliance)
+|dispatch_command('PA', 'DisplayAxis', 'Y2', 'Id', 'Linear', 0, Icompliance)
+
+%% Sweep setup
+|dispatch_command('PA', 'configSweep', 'Var1', DoubleSweep, 'Lin', VgStart_t, VgStop_t, VgStep_t, Icompliance, HoldTime, DelayTime)
+|dispatch_command('PA', 'configSweep', 'Var2', False, 'Lin', VdStart_t, VdStop_t, VdStep_t, Icompliance, HoldTime, DelayTime)
+|dispatch_command('PA', 'configSMUConstant', Source, 0.0, Icompliance)
+
+%% measure, save, and plot
+PA Measure 0; Id, Vd, Ig, Vg, Is; .trans; ""
+PA PlotData Vg; false; Id; true; Ig; false; .trans
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Output characteristics
+
+%% configure SMUs
+|dispatch_command('PA', 'configSMU', Gate, 'Vg', 'Ig', 'V', 'Var2')
+|dispatch_command('PA', 'configSMU', Drain, 'Vd', 'Id', 'V', 'Var1')
+
+%% configure displayed axis
+|dispatch_command('PA', 'DisplayAxis', 'X', 'Vd', 'Linear', min(VdStart_o, VdStop_o), max(VdStart_o, VdStop_o))
+|dispatch_command('PA', 'DisplayAxis', 'Y1', 'Id', 'Linear', 0, Icompliance)
+|dispatch_command('PA', 'DisplayAxis', 'Y2', 'Ig', 'Log', 1e-12, Icompliance)
+
+%% Sweep setup
+// for a linear spacing of Vd uncomment the next line and set VdStep_o above to the step size, e.g. 0.1
+//|dispatch_command('PA', 'configSweep', 'Var1', DoubleSweep, 'Lin', VdStart_o, VdStop_o, VdStep_o, Icompliance, HoldTime, DelayTime)
+
+// for a log spacing of Vd uncomment the next line and set VdStep_o above to 'L10', L25', or 'L50'
+|dispatch_command('PA', 'configSweep', 'Var1', DoubleSweep, VdStep_o, VdStart_o, VdStop_o, 1, Icompliance, HoldTime, DelayTime)
+
+|dispatch_command('PA', 'configSweep', 'Var2', False, 'Lin', VgStart_o, VgStop_o, VgStep_o, Icompliance, HoldTime, DelayTime)
+
+%% measure, save, and plot
+PA Measure 0; Vd, Id, Vg, Ig, Is; .out; ""
+PA PlotData Vd; false; Id; false; Ig; false; .out

@@ -1,0 +1,4 @@
+% Instrument Class Name | Device-Command-Name {description} | GPIB String | Parameter-Name {description} [min value, max value] (default value) | Parameter-Name ... | File-Extension {description}
+setTemp_G | SETP %d,%.3f | Loop# {can be 1 or 2} [1, 2] (1) | Temperature {the new Set Point temperature in K} [295, 300] (295)
+getTemp_G | KRDG? %.1s | Input Channel {can be A, B, C, or D} (A)
+saveIDN_G {saves the Identification query to a file} | *IDN? | File Extension {will be added to the File Name} (.idn.txt)

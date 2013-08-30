@@ -1,0 +1,23 @@
+// Demonstrates the use of a return value in 
+// a subsequent Python command
+
+
+// define a (generic) Instrument
+MAKE s; HP 8648D; GPIB=17
+ 
+
+// query the Instrument's name using iC-Commands
+s Query *IDN?
+|print 'The name is ' + str(_ans) 
+ 
+
+ 
+// query the Instrument's name using a generic GPIB command
+s saveIDN txt
+|print 'The name is ' + str(_ans) 
+ 
+
+ 
+// query the Instrument's name using Python
+|py_ans = dispatch_command('s', 'saveIDN', '.v2.txt')
+|print 'The name is ' + str(py_ans) 

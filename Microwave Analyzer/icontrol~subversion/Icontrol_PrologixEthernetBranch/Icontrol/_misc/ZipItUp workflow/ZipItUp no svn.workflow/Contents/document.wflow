@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>247.1</string>
+	<key>AMApplicationVersion</key>
+	<string>2.1.1</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.2.2</string>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>notificationDescription</key>
+					<dict/>
+					<key>notificationTitle</key>
+					<dict/>
+					<key>priority</key>
+					<dict/>
+					<key>sticky</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMRequiredResources</key>
+				<array>
+					<dict>
+						<key>Display Name</key>
+						<string></string>
+						<key>Resource</key>
+						<string>com.Growl.GrowlHelperApp</string>
+						<key>Type</key>
+						<string>application</string>
+						<key>Version</key>
+						<string>1.1</string>
+					</dict>
+				</array>
+				<key>ActionBundlePath</key>
+				<string>/Library/PreferencePanes/Growl.prefPane/Contents/Resources/GrowlHelperApp.app/Contents/Library/Automator/Show Growl Notification.action</string>
+				<key>ActionName</key>
+				<string>Show Growl Notification</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>notificationDescription</key>
+					<string>Compressing without .svn directories &amp; *.DS_Store files</string>
+					<key>notificationTitle</key>
+					<string>ZipItUp</string>
+					<key>priority</key>
+					<integer>0</integer>
+					<key>sticky</key>
+					<false/>
+				</dict>
+				<key>Application</key>
+				<array>
+					<string>GrowlHelperApp</string>
+				</array>
+				<key>BundleIdentifier</key>
+				<string>com.growl.GrowlAction</string>
+				<key>CFBundleVersion</key>
+				<string>1.2.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>Utility</string>
+				</array>
+				<key>Class Name</key>
+				<string>AMAppleScriptAction</string>
+				<key>InputUUID</key>
+				<string>E54B1591-A98A-4F10-99A4-8FD52626DB99</string>
+				<key>Keywords</key>
+				<array>
+					<string>Growl</string>
+					<string>Notification</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>B53ACD7C-EB79-4795-A8FA-5FE351C0501A</string>
+				<key>UUID</key>
+				<string>A8165403-9A37-4ECC-ACDA-16D8FD1F1AE9</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>GrowlHelperApp</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>notificationTitle</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>priority</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>sticky</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>notificationDescription</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>389.000000:949.000000</string>
+				<key>nibPath</key>
+				<string>/Library/PreferencePanes/Growl.prefPane/Contents/Resources/GrowlHelperApp.app/Contents/Library/Automator/Show Growl Notification.action/Contents/Resources/English.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.0.1</string>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<dict/>
+					<key>CheckedForUserDefaultShell</key>
+					<dict/>
+					<key>inputMethod</key>
+					<dict/>
+					<key>shell</key>
+					<dict/>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run Shell Script.action</string>
+				<key>ActionName</key>
+				<string>Run Shell Script</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<string># use command line zip
+# http://linux.die.net/man/1/zip
+# http://hints.macworld.com/article.php?story=20050902030458181
+
+# slit path into path and directory name
+path=${1%/*}
+dirname=${1##*/}
+
+echo --- path:
+echo ${path}
+echo --- dirname:
+echo ${dirname}
+
+# change dir to only add relative file names to the archive
+cd "${path}"
+echo ---pwd:
+pwd
+echo ---ls:
+ls
+
+
+
+zip --test --recurse-paths -9 "${dirname}.zip" "${dirname}" -x "*.DS_Store" "*.svn/*"
+#zip -sf --recurse-paths -9 "${dirname}.zip" "${dirname}" -x "*.DS_Store" "*.svn/*"
+# old: zip -sf --test --recurse-paths -9 "$1.zip" "$1" -x "*.DS_Store" "*.svn/*"
+
+# these options might come in handy
+# --delete (delete selected entries; example: zip --delete "test 2 copy" "test 2 copy\manifest.mf"
+
+# those options do not work
+# -sf show files (do a dry run)
+# --datafork --system-hidden --no-extra</string>
+					<key>CheckedForUserDefaultShell</key>
+					<true/>
+					<key>inputMethod</key>
+					<integer>1</integer>
+					<key>shell</key>
+					<string>/bin/bash</string>
+					<key>source</key>
+					<string></string>
+				</dict>
+				<key>Application</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>BundleIdentifier</key>
+				<string>com.apple.RunShellScript</string>
+				<key>CFBundleVersion</key>
+				<string>2.0.1</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunShellScriptAction</string>
+				<key>InputUUID</key>
+				<string>AAC47626-0345-499A-B381-93E9D0075DF7</string>
+				<key>Keywords</key>
+				<array>
+					<string>Shell</string>
+					<string>Script</string>
+					<string>Command</string>
+					<string>Run</string>
+					<string>Unix</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>1EAD8FB3-D5FD-4F1A-AAAA-7BED02754B5A</string>
+				<key>UUID</key>
+				<string>CBFE5929-1850-44F7-BD3D-18BC6920A641</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>inputMethod</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>CheckedForUserDefaultShell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>COMMAND_STRING</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+					<key>4</key>
+					<dict>
+						<key>default value</key>
+						<string>/bin/sh</string>
+						<key>name</key>
+						<string>shell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>4</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>389.000000:753.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.2.2</string>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>notificationDescription</key>
+					<dict/>
+					<key>notificationTitle</key>
+					<dict/>
+					<key>priority</key>
+					<dict/>
+					<key>sticky</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMRequiredResources</key>
+				<array>
+					<dict>
+						<key>Display Name</key>
+						<string></string>
+						<key>Resource</key>
+						<string>com.Growl.GrowlHelperApp</string>
+						<key>Type</key>
+						<string>application</string>
+						<key>Version</key>
+						<string>1.1</string>
+					</dict>
+				</array>
+				<key>ActionBundlePath</key>
+				<string>/Library/PreferencePanes/Growl.prefPane/Contents/Resources/GrowlHelperApp.app/Contents/Library/Automator/Show Growl Notification.action</string>
+				<key>ActionName</key>
+				<string>Show Growl Notification</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>notificationDescription</key>
+					<string>Compression done</string>
+					<key>notificationTitle</key>
+					<string>ZipItUp</string>
+					<key>priority</key>
+					<integer>0</integer>
+					<key>sticky</key>
+					<false/>
+				</dict>
+				<key>Application</key>
+				<array>
+					<string>GrowlHelperApp</string>
+				</array>
+				<key>BundleIdentifier</key>
+				<string>com.growl.GrowlAction</string>
+				<key>CFBundleVersion</key>
+				<string>1.2.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>Utility</string>
+				</array>
+				<key>Class Name</key>
+				<string>AMAppleScriptAction</string>
+				<key>InputUUID</key>
+				<string>CCF7784E-5FF8-4AD6-A547-8F445632D5C8</string>
+				<key>Keywords</key>
+				<array>
+					<string>Growl</string>
+					<string>Notification</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>96864381-8EBF-405C-B9E8-44274B0F8D74</string>
+				<key>UUID</key>
+				<string>A6407745-D143-4C9D-85C7-EAA51AEAF85E</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>GrowlHelperApp</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>notificationTitle</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>priority</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>sticky</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>notificationDescription</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>389.000000:216.000000</string>
+				<key>nibPath</key>
+				<string>/Library/PreferencePanes/Growl.prefPane/Contents/Resources/GrowlHelperApp.app/Contents/Library/Automator/Show Growl Notification.action/Contents/Resources/English.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict>
+		<key>464EC779-BC3D-4B8A-A18B-C5DB8A1221E8</key>
+		<dict>
+			<key>from</key>
+			<string>CBFE5929-1850-44F7-BD3D-18BC6920A641 - CBFE5929-1850-44F7-BD3D-18BC6920A641</string>
+			<key>to</key>
+			<string>A6407745-D143-4C9D-85C7-EAA51AEAF85E - A6407745-D143-4C9D-85C7-EAA51AEAF85E</string>
+		</dict>
+		<key>FD292F79-3217-4BC8-B161-3042FAF19531</key>
+		<dict>
+			<key>from</key>
+			<string>A8165403-9A37-4ECC-ACDA-16D8FD1F1AE9 - A8165403-9A37-4ECC-ACDA-16D8FD1F1AE9</string>
+			<key>to</key>
+			<string>CBFE5929-1850-44F7-BD3D-18BC6920A641 - CBFE5929-1850-44F7-BD3D-18BC6920A641</string>
+		</dict>
+	</dict>
+	<key>state</key>
+	<dict>
+		<key>AMLogTabViewSelectedIndex</key>
+		<integer>1</integer>
+		<key>libraryState</key>
+		<dict>
+			<key>actionsMajorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 462.000000, 656.000000, NO</string>
+					<string>0.000000, 657.000000, 462.000000, 239.000000, NO</string>
+				</array>
+			</dict>
+			<key>actionsMinorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 163.000000, 656.000000, NO</string>
+					<string>164.000000, 0.000000, 298.000000, 656.000000, NO</string>
+				</array>
+			</dict>
+			<key>variablesMajorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 350.000000, 555.000000, NO</string>
+					<string>0.000000, 556.000000, 350.000000, 148.000000, NO</string>
+				</array>
+			</dict>
+			<key>variablesMinorSplitViewState</key>
+			<dict>
+				<key>expandedPosition</key>
+				<real>0.0</real>
+				<key>subviewState</key>
+				<array>
+					<string>0.000000, 0.000000, 163.000000, 555.000000, NO</string>
+					<string>164.000000, 0.000000, 186.000000, 555.000000, NO</string>
+				</array>
+			</dict>
+		</dict>
+		<key>majorSplitViewState</key>
+		<dict>
+			<key>expandedPosition</key>
+			<real>338</real>
+			<key>subviewState</key>
+			<array>
+				<string>0.000000, 0.000000, 462.000000, 941.000000, NO</string>
+				<string>463.000000, 0.000000, 793.000000, 941.000000, NO</string>
+			</array>
+		</dict>
+		<key>minorSplitViewState</key>
+		<dict>
+			<key>expandedPosition</key>
+			<real>150</real>
+			<key>subviewState</key>
+			<array>
+				<string>0.000000, 0.000000, 793.000000, 772.000000, NO</string>
+				<string>0.000000, 782.000000, 793.000000, 140.000000, NO</string>
+			</array>
+		</dict>
+		<key>windowFrame</key>
+		<string>{{6, 40}, {1255, 1018}}</string>
+		<key>workflowViewScrollPosition</key>
+		<string>{{0, 232}, {778, 772}}</string>
+	</dict>
+	<key>variables</key>
+	<array>
+		<dict>
+			<key>UUID</key>
+			<string>11C92838-02CD-49F9-A72A-306BC4BCA217</string>
+			<key>identifier</key>
+			<string>com.apple.Automator.Variable.Storage</string>
+			<key>name</key>
+			<string>DirectoryName</string>
+		</dict>
+	</array>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>serviceApplicationBundleID</key>
+		<string>com.apple.finder</string>
+		<key>serviceApplicationPath</key>
+		<string>/System/Library/CoreServices/Finder.app</string>
+		<key>serviceInputTypeIdentifier</key>
+		<string>com.apple.Automator.fileSystemObject.folder</string>
+		<key>serviceOutputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.servicesMenu</string>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,29 @@
+ 
+// develop Jython integration
+// started 111118
+ 
+MAKE iC; iC-control; none
+ 
+iC DisplayStatusMessage before
+
+|print 'one line, next line empty'
+
+|print 'one line next line regular command'
+iC DisplayStatusMessage after
+
+|print 'two consecutive Python lines'
+|print 'line 2'
+
+
+|print "Dispatching iC command to wait 1 sec"
+|device.DispatchCommand("iC Wait 1.0")
+
+
+
+|for t in range(5):
+|   print t
+|print "done."
+ 
+ 
+//iC WaitForStop
+|print 'last line'

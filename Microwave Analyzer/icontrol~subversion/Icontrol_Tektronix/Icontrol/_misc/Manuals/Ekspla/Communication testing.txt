@@ -1,0 +1,19 @@
+Communication testing
+
+Because the communication is text string based, it is easy to test remote connection and commands by help of any terminal program. 
+
+Windows users may use hyperterminal. Go Start->Accessories->Communications->HyperTerminal.
+
+Hyperterminal is not very user friendly application. You may use OC CONSOLE intend: http://elmicro.com/files/occonsole_v30.zip
+
+The simplest way to test the connection is to enter command [SAY] in terminal window.
+
+Sender and receiver names may be omitted for a single device connection, so you may enter [SAY] instead of[PL:SAY\PC]. The device will reply with [MS:READY\XX]. XX is the device name.
+
+
+The data exchange parameters must be set in the following way:
+baud rate: 19200 (38400 for some older models PG4XX, PG501)
+data bits: 8
+parity: None
+stop bits: 1
+flow control: None

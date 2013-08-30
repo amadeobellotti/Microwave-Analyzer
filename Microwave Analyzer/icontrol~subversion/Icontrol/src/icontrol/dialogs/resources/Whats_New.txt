@@ -1,0 +1,41 @@
+130516
+- The National Instruments GPIB driver on _Windows_ machines now uses 
+  NI4882.dll instead of gpib-32.dll. This allows to run Instrument Control (iC)
+  on 64-bit and 32-bit Windows version, but requires NI-488.2 version 3.1 
+  or later. To use the old NI GPIB driver, add GPIB_NI.Use64BitDriver=0 to 
+  <user home>/iC/iC_User.properties. On Mac/Linux it might be necessary to 
+  specifically use the 32-bit drivers.
+
+
+120726
+- Lakeshore Temperature Controllers: enableHeaterOutput was removed and 
+  setHeaterRange now also acts on Loop2. The Termination characters \r\n
+  (defined in iC.properties) are now appended to each message to the instrument.
+
+
+120518
+- The Python scripts have been modified. To access the iC-Framework from your
+  modules you need to import iC.py module. Please modify your Python scripts if
+  necessary.
+
+120502
+- A description of Instrument Control (iC) has been published by the Journal of
+  Research of NIST: : http://dx.doi.org/10.6028/jres.117.010 .
+
+120424
+- changed character encoding used by iC and JNA from the default encoding,
+  respectively, from UTF-8 to ISO-8859-1
+
+120323
+- Agilent4155: Parameters for PlotData have changed as it can plot two
+  Data Variables now. Please adapt your script accordingly.
+
+120305
+- Agilent 4155: configDisplayAxis was changed. Please adapt your iC-scripts that 
+  use this command.
+
+120228
+- When sending data via RS232, a wait time has been introduced to ensure that,  
+  at least theoretically, the data was sent before the program proceeds. This 
+  seemed useful to ensure the data was received before a successive command 
+  tries to obtain an answer from this instrument.

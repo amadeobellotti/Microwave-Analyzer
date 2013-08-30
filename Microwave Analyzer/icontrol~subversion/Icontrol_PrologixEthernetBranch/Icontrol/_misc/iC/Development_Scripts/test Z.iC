@@ -1,0 +1,18 @@
+MAKE iC; iC-control; none
+MAKE Z; HP 4192; GPIB=17
+ 
+ 
+Z Init 8; false
+iC Pause
+ 
+Z setSpotBias 1.23
+Z setSpotFrequency 1.23
+Z setAC_Amplitude 0.123
+iC Pause
+ 
+Z Trigger
+iC Pause
+ 
+Z SweepFthenV 1.0; 100.0; 1.0; false; -0.5; 0.5; 1.0; false; 2; .CV
+ 
+ Z ClearQueue

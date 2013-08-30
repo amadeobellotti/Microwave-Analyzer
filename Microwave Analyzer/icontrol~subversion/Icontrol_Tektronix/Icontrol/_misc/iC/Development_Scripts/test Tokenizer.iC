@@ -1,0 +1,48 @@
+// generate empty lines with tabs
+
+   
+	
+				  
+	   		
+
+// generate comment lines
+% Comment
+  % Comment
+% Comment
+  % Comment
+// Comment
+  // Comment
+//Comment
+  //Comment
+
+// generate correct command lines
+ MAKE 	    Tstage ; Lakeshore 340 ;  GPIB 10  
+Tstage SetTemp; 300
+
+// Command Lines containing double-quotes
+MAKE	PA; Agilent 4155;	GPIB 19
+// why are the quotes escaped in the script file ??
+PA Measure; 0; V3,  I3,V2 , I2; .trans; \"Test ; Test\"
+PA Measure; 0; V3,  I3,V2 , I2; .trans; "Test ; Test"
+
+// an empty String at the end (; is last character)
+PA Measure; 0; V3,  I3,V2 , I2; .trans;
+
+
+  // comments in the line
+  Tstage SetTemp; 300//Comment
+  Tstage SetTemp; 300  //Comment
+Tstage SetTemp; 300 % Comment //Comment          
+  Tstage SetTemp; 300% Comment // Comment
+
+// wrong instrument class name
+MAKE	dT; Lakeshore340;  @1
+
+// to many arguments
+Tstage SetTemp; 300; error
+MAKE	Tstage;;  10  
+MAKE	Tstage;  ;  10  
+MAKE Tstage;  10  
+
+// escaped DELIMITER
+PA Measure; 0; V\;3,  I3,V2 , I2; .trans;	// won't work, but check in Measure if ';' "arrives"

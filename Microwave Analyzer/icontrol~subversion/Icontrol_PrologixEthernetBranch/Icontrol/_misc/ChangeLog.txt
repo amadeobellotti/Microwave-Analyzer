@@ -1,0 +1,226 @@
+Change Log - Instrument Control (iC) with JAVA
+==============================================
+
+KPP dedicates this work in devotion to Bhagavan Sri Sathya Sai Baba.
+http://kenai.com/projects/icontrol
+
+120307
+Branched out a Prologix_Ethernet version to java.net
+Added a new GPIB controller GPIB_Prologix_Ethernet
+Modified the constructor of GPIB_Prologix to store if native drivers or Ethernet 
+should be used
+
+
+120305
+changed Agilent4155.configDisplayAxis - untested
+added Agilent4155.genericGPIBinstrument
+
+120228
+added an extra StopScripting check in MonitorChart
+added a wait time after sending via RS232; needs testing first
+added WhatsNew dialog
+fixed Agilent4155.configDisplayAxis
+started with Keithley 2600
+
+120221
+debugged GPIB_NI.Send after Scott unraveled that saveIDN? sends *IDN? and a \n (or "")
+exporting result of last command to Python Interpreter as _ans
+added Device.Query
+
+120206
+tested on Lab Computer after merging with IOtech branch
+fixed minor bugs
+iC dir is now copied to the dist folder (javadoc is updated)
+
+120203
+merged IOtech branch into trunk
+
+120124
+debugged with the IOtech attached on Paul's computer
+fixed Regex for parsing Generic GPIB Instruments
+changed RS232_Driver.TimeOut from 100 to 250ms (for the IOtech to work properly)
+
+120122
+renamed dir Generic GPIB Instruments to Generic Instruments
+added local javadoc
+
+120119
+tweaked logging subversion number
+iC_Properties now closes the iC_User.properties file
+
+120118
+subversion number is now logged in iC_Logger
+
+120109
+ListTransferHandler is not a private class of IcontrolView, deleted iC_Logger
+more clean-up for the paper
+
+120105
+GPIB_IOtech should roughly work now. getStatusByte and CloseController are missing
+
+120102
+implemented IOtech.Send and checkCommunicationError
+
+111216
+found that library .jar files are copied twice to dist folder: once inside the
+Icontrol.jar (because the library jar files were stored under the src directory)
+and once in the lib directory (Project Directory/Build/Packaging/Copy Dependent 
+Libraries). These jars need to be in lib, so the files were moved to the _misc folder
+
+Updated from JFreeChart 1.0.13 to 1.0.14
+
+
+111215
+EurothermTC: fixed WriteA32bitValue, setRampRate
+implemented and tested ReadA32bitValue, getProcessvalue
+
+111213
+renamed iC.debug to iC.Debug
+added iC_User.properties to iC "distribution" folder
+selected GPIB controller is now saved as default selection when pressing Start
+
+111212
+convenience method RS232_Driver.ByteBufferToString
+cleaned up EurothermTC.setSP1, added setRamp1, 
+checkLoopBack is now called (all untested yet)
+
+111210
+cont' working on IOtech RS232-GPIB controller
+
+111205
+found the bug in CRC calculation of Eurotherm (needs further cleanup)
+branched out Icontrol_IOtechBranch
+started implementing support for IOtech Micro488 RS232-GPIB controller
+
+111130 revision 348
+merged Jython branch into trunk
+now storing the path to the iC directory (Startup.py was not found)
+
+111129
+corrected Regex in Tokenizer which stripped off the / of a path instead of comments
+implemented INCLUDE zyx.py
+
+111128
+Python integration should be more or less done (including javadoc)
+
+111126
+added Device.iSPaused and changed code in the Instruments that used isPaused, adapted javadoc
+added is_paused to Startup.py
+checked how to use return values in Python
+
+111123
+Jython appears to work
+single and multiple Python commands can now be sent
+
+111107
+Lakeshore340.UpdateCalibrationData: choosing no interpolation curve should work
+
+111104
+updated Apache Commons Math from 2.1 to 2.2
+allow to choose between Loess and Linear Interpolation for Temperature 
+    calibration (work in progress)
+debugged LakeshoreTC.autoSetPoint
+
+111103
+Serial Number for Input Curves (Lakeshore 340) is now MonthDate
+the last script loaded/saved last is now loaded automatically when iC.Debug=1
+added Lakeshore340.readCalibrationPoints
+now displaying 10000 data points max (manual GC might work)
+
+
+111102
+added manual garbage collection after displaying 500 data points in the hope to
+prevent further out-of-memory crashes
+worked on some minor ToDo's and bugfixes in setTempCalibrate
+changed default log level in debug mode from ALL to FINER
+iControlView.getFileName(String) now adds a counter if the file exists
+
+111027
+yesterday an OutOfMemory crashed iC.
+in GPIB_NI in CloseController the ByteBuffer is released and GarbageCollection started
+added Lakeshore340.setTempCalibrate
+
+111026
+debugged iC_ChartXY.AddXYDataPoint(ID, X[], Y[]): did not update correctly and did not show last data point
+continued improving Lakeshore340.addCalibrationData and .UpdateSensorCurve
+implemented LakeshoreTC.SetTemp with better wait for temperature
+ChangeLog is now in a separate file
+added (almost empty) skeleton for a HP3561 Dynamic Signal Analyzer
+
+111020
+continued improving Lakeshore340.addCalibrationData and .UpdateSensorCurve
+iC_Instrument.WaitForUser is now modeless
+
+111019
+added LakeshoreTC.autoSetPoint and iC_ChartXY.ClearSeries
+debugged Lakeshore340.addCalibrationData and .UpdateSensorCurve
+started with making iC_Instrument.WaitForUser a non-modal (modeless) Dialog
+
+111012
+added iC_Instrument.WaitDate
+
+110921
+added WaitForUser in iC_Instruments
+changed LakeshoreTC.Epsilon from 0.1 to 0.5 (sometimes the temperature change was 
+so high that the epsilon was too small
+
+110919
+Apparently the set point temperature is not changed when the command is sent
+directly after changing the ramp rate on a Lakeshore 332. No error was generated. 
+This was confirmed by sending RAMP 2,0,10.000\n\rSETP 2, 70 using NI Measurement
+and Automation Explorer. Adding a 100ms delay after setting the ramp rate helped. 
+Also added a 100 ms delay in other methods in LakeshoreTC.
+
+110916
+sub-scripts that do not include a full path are now searched first in the Project directory,
+then in the default iC directory
+sub-scripts can now also contain MAKE commands
+changed Test_Scripts (in _misc) to Development_Scripts and Example_Scripts
+
+110914
+fixed GUI bug (clear table and end editing when a different instrument/command is selected)
+
+110806
+added Agilent4155: disable a SMU (not yet tested)
+
+110727
+Agilent4155.configDisplayAxis did not set Y2 axis (but Y1 axis instead)
+
+110722
+the last Project Directory is now remembered
+branched out a RS232branch on the SVN repository
+cleaned up the main repository (I hope)
+
+110721
+added configDisplayAxis() to 4155
+branched out a MCCdaq branch
+deleted MCCdaq stuff from this trunk version
+
+110720
+added logX/logY option to 4155.PlotData
+removed auto cal on and display:window:state 1 from 4155.Close to not change the
+display when sequencing done. was unnecessary anyways
+
+
+110708 
+fixed Agilent4155.configSweep (error setting VAR2 number of points)
+added JFreeChart-1.0.x.jar which should prevent the queing of events that cuases
+the unresponsivness of iC. Select this jar in the project properties instead
+of JFreeChart-1.0.13.jar
+
+110707
+fixed Agilent4155.SaveData (data was not saved with the proper file name)
+Agilent4155 can now plot XY charts of data
+
+110705
+add lin/log scaling to Popup menu of iC_ChartXY
+HP4192 now selects log scaling of frequency axis when log frequency sweep was selected
+
+110609
+make max number of data points shown in a Chart an iC_Property (to prevent a bug)
+
+110606 (1.0.259)
+Agilent4155 made SaveData() public
+minor bug fix with escaped () in parsing generic GPIB command definitions
+
+Release version is 1.0.258, date 110523

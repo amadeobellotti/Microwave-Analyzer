@@ -1,0 +1,118 @@
+MAKE iC; iC-control; none
+MAKE fg; SRS DS345; GPIB=4
+MAKE osci; Yokogawa DL9000; TMCTL: USBTMC(DL9000) = 27E826755
+MAKE laser; Ekspla NT340; COM3, 19200, 8, 1, none
+MAKE opo; Ekspla PG122; COM4, 38400, 8, 1, none
+
+%%%%%%%%%%%%%%%%%
+%% prepare Python
+
+//|import time
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% config Frequency Generator
+
+// output
+fg setOutputFunction Arbitrary
+fg setOffset 0
+
+// Triggering (for illumination)
+fg setModulationType Burst
+fg setTriggerSource -Slope External
+fg setBurstCount 1.0
+fg enableModulation true
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%% config oscilloscope
+
+// Ch1 ... voltage of fg
+// Ch2 ... Current
+// Ch4 ... APD photodiode (Trigger on this channel)
+// Trigger out goes to fg
+// set averaging to 16(?) or use acquisition mode normal
+
+
+%%%%%%%%%%%%%%%
+%% config Laser
+
+laser getStatus
+opo getStatus
+
+opo setWavelength 528
+laser setNrPulses 1
+
+// internal Trigger
+laser configTriggerSource 0
+
+
+laser OutputPower Off   // switch off electrooptics
+laser Start             // start Flash lamps
+
+
+
+
+
+%%%%%%%%%%%%%%%
+%% measurements
+
+
+// program new CELIV pulse
+fg setARBtoCELIV 100.0; 1000.0; 2.0; 0.0
+
+// stop & start the scope to reset the display
+osci Stop
+osci Start
+
+// start Electrooptics
+laser OutputPower Max
+
+
+
+// manually fire 8 laser pulses 
+iC WaitForUser Will fire a Laser Pulse
+laser firePacket
+
+iC WaitForUser Will fire a Laser Pulse
+laser firePacket
+
+iC WaitForUser Will fire a Laser Pulse
+laser firePacket
+
+iC WaitForUser Will fire a Laser Pulse
+laser firePacket
+
+iC WaitForUser Will fire a Laser Pulse
+laser firePacket
+
+iC WaitForUser Will fire a Laser Pulse
+laser firePacket
+
+iC WaitForUser Will fire a Laser Pulse
+laser firePacket
+
+iC WaitForUser Will fire a Laser Pulse
+laser firePacket
+
+
+
+
+
+// fire 16 Laser Packets
+//|for i in range(1, 16, 1):
+//|   dispatch_command('laser', 'firePacket')
+//|   time.sleep(0.5)
+
+
+// stop Electrooptics
+laser OutputPower Off
+
+
+// save waveforms
+osci SaveWaveform 1,2; .celiv.txt; true
+
+
+
+// stop Flash Lamps
+//aser Stop

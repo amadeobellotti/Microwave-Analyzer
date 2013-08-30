@@ -1,0 +1,10 @@
+120305
+- Agilent 4155: configDisplayAxis was changed. Please adapt your iC-scripts that 
+  use this command. (untested)
+
+120228
+
+When sending data via RS232, a wait time has been introduced to ensure that,  
+at least theoretically, the data was sent before the program proceeds. This 
+seemed useful to ensure the data was received before a successive command tries 
+to obtain an answer from this instrument.

@@ -1,0 +1,78 @@
+%% Thermoelectric Measurements: calibrate Thermistors in Dave's Desert Cryogenic
+%% kpp 120725
+ 
+MAKE iC; iC-control; none
+MAKE Tstage; Lakeshore 340; GPIB=12
+MAKE InnerShield; Lakeshore 340; GPIB=12
+MAKE OuterShield; Lakeshore 332; GPIB=13
+MAKE Therm1; Lakeshore 340; GPIB=4
+MAKE Therm2; Lakeshore 340; GPIB=4
+MAKE Therm3; Lakeshore 340; GPIB=4
+ 
+ 
+%%%%%%%%%%%%%%%%%%%%%
+%% config instruments
+ 
+Tstage configDefaults A; 1
+Tstage setRampRate 0; true; 0.5
+Tstage setHeaterRange 5
+
+InnerShield configDefaults B; 2
+InnerShield setRampRate 0; false; 20
+InnerShield setHeaterRange 1
+
+OuterShield configDefaults A; 2
+OuterShield setRampRate 0; false; 20
+OuterShield setHeaterRange 1
+
+Therm1 configDefaults A; 1
+Therm1 setRampRate 0; false; 0.1
+Therm1 setHeaterRange 1
+
+Therm2 configDefaults B; 1
+Therm2 setRampRate 0; false; 0.1
+
+Therm3 configDefaults D; 1
+
+%% end config
+%%%%%%%%%%%%%
+
+ 
+%% set Temperature at which calibration should be done
+|Tcal = [305, 300, 295]
+|NrCalPoints = 1
+|InstrumentsToCal = 'Therm1, Therm2'
+
+%% allow outer shield to cool down as far as it likes
+OuterShield setTemp 0; 70; false; 1; 1
+
+ 
+%% prepare for Thermisors 1&2 (prevent Heaters 1&2 from heating)
+Therm1 setTemp 0; 70; false; 1; 1
+Therm2 setTemp 0; 70; false; 1; 1
+ 
+Tstage autoSetPoint default; 0 // set SP to current T
+ 
+ 
+/////////////////////////////////////////////// 
+// start monitoring
+iC MonitorChart 2; Temperature [K]; _monCryostat.txt; "Tstage getTemp default"; "InnerShield getTemp default"; "OuterShield getTemp default"; ""; ""
+iC MonitorChart 2; Temperature [K]; _monTherm.txt; "Therm1 getTemp default"; "Therm2 getTemp default"; ""; ""; ""
+ 
+ 
+// calibrate
+|for T in Tcal:
+|   print 'Calibrating at T=' + str(T)
+|   dispatch_command('InnerShield', 'setTemp', 0, T, False, 1, 1)
+|   dispatch_command('Tstage', 'setTempCalibrate', T, InstrumentsToCal, NrCalPoints, 1, 0.2, 60, True)
+// accurate calibration: 0.1, 180, True
+// fast calibration: 0.2, 60, True
+ 
+ 
+// "manual" calibration of Therm 1&2 at 300 K
+//InnerShield setTemp 0; 300.0; false; 1.0; 1.0
+//Tstage setTempCalibrate 300.0; Therm1, Therm2; 1; 1.0; 0.1; 3; true
+ 
+ 
+ 
+iC WaitForStop

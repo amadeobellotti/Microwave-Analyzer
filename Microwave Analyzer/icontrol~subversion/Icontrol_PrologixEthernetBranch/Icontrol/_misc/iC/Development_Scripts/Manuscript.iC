@@ -1,0 +1,19 @@
+MAKE Tsample; Lakeshore 340; GPIB 4
+MAKE PA; Agilent 4155; GPIB 2
+     
+INCLUDE setup PA.iC
+ 
+Tsample setTemp 300                    
+PA Measure 0; I,V; _300K.txt; ""
+  
+Tsample SetTemp 250
+PA Measure 0; I,V; ; "Tsample getTemp; A"
+
+// executed by the Python interpreter:
+|for T in range(200, 80, -10):
+|    # set Temperature
+|    dispatch_command('Tsample', 'setTemp', T)
+|
+|    # do something else
+|
+|print 'Done.'

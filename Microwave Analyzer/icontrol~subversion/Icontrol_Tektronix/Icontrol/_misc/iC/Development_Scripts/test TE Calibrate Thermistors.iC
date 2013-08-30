@@ -1,0 +1,32 @@
+%% Thermoelectric Measurements: calibrate Thermistors in Dave's Desert Cryogenic
+%% kpp 120711
+%% Make sure all heaters are switched on (max power)
+
+MAKE iC; iC-control; none
+MAKE Tstage; Lakeshore 340; GPIB=12
+MAKE InnerShield; Lakeshore 340; GPIB=12
+MAKE OuterShield; Lakeshore 332; GPIB=13
+MAKE Therm1; Lakeshore 340; GPIB=4
+MAKE Therm2; Lakeshore 340; GPIB=4
+MAKE Therm3; Lakeshore 340; GPIB=4
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%% config instruments
+
+Tstage configDefaults A; 1 
+InnerShield configDefaults B; 2
+OuterShield configDefaults A; 2
+Therm1 configDefaults A; 1
+Therm2 configDefaults B; 1
+Therm3 configDefaults D; 1
+
+%% end config
+
+//Tstage setTempCalibrate 295.0; ; 1; 0.1; 120.0; 0; false
+Tstage setTempCalibrate 295.0; Therm1, , Therm3; 1; 0.1; 120.0; 0; false
+//Tstage setTempCalibrate 295.0; Therm1, Therm2, Unknown; 1; 0.1; 120.0; 0; false
+//OuterShield setTempCalibrate 295.0; Therm1, Therm2, Therm3; 1; 0.1; 120.0; 0; false
+Tstage setTempCalibrate 295.0; Therm1, Therm2, Therm3; 1; 0.1; 120.0; 0; false
+
+iC WaitForStop

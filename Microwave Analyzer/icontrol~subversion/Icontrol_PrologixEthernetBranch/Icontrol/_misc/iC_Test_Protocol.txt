@@ -1,0 +1,91 @@
+Test protocol fro Instrument Control (iC):
+------------------------------------------
+
+110622 test Monitor Chart+.iC
+ir ran fine for 28h when 4 ChartXY windows were minimized and only one remained
+visible. I suspect that the events that get queued cause the crash. But iC appears
+to be stable and operational with the JNA version 3.3.0 and NI-488.2 v2.81
+
+110622 test Monitor Chart+.iC
+it crashes after 10 min. I happen to saw that the graphs were not updated anymore
+and after about a minute iC quit and even after starting it in debug mode
+no error message was created other than An unrecoverable stack overflow has occurred.
+Java Result: -1073741819
+=> 5 ChartXY windows are too much?!? (it worked before on 110404 - did I minimize
+all but one window back then?)
+
+110620: test Monitor Chart.iC
+now with new JNA version 3.3.0
+it ran fine for 43h 
+
+110616: test Monitor Chart.iC
+copied old JNA again, reboot computer
+it ran fine for 78h
+
+110614: test Monitor Chart+ fast.iC
+2 tests with JNA version 3.3.0: one with only 1000 data points shown in ChartXY
+one showing all data points
+Both tests failed catastrophically (iC quits without further notice:
+An unrecoverable stack overflow has occurred - maybe I should have started iC
+in the Debugger to get a better diagnostic instead of the regular Start)
+testing again with old version of JNA also crashed (ahhh!!)
+I think there was a Java update recently
+
+
+110404: test MonitoChart+ fast.iC
+* with NI and the iC version with generic GPIB support  framework integrated (v 232)
+* 50h okay !! 1514234 datapoints in 176297 (average time 0.116 sec)
+
+110404:
+* updated NI 488.2 from version 2.4 to version 2.81
+* using 488.2 Send/Receive still doesn't work; using ibrd/ibwrt is still okay
+
+110401 test MonitorChart+ fast.iC
+* now with Prologix over the weekend
+* 69h 30m no errors - yeahh!! thanks Swami :)
+* recorded 640120 data points in 250206 sec (average 0.4 sec)
+
+110331: test MonitorChart+ fast.iC
+* with NI and XYdata.setMaximumItemCount(1000); in iC_ChartXY
+* ran for 24h without error (yeah !!)
+* took 5 x 764059 measurements in 87532 sec (average time 0.115 sec instead of 0.1)
+
+110331: test MonitorChart+ fast.iC
+like test MonitorChart+.iC but taking a reading (nominally) every 0.1 sec.
+
+110325: test MonitorChart+.iC
+* with NI GPIB controller
+* monitoring 5 temperatures in 5 concurrent threads from 3 temperature controllers
+was successful (no error) for 45h !! yeah!
+* I assume that the Charts were closed, because otherwise, a Out-Of-Memory exception
+can crash the Java VM
+
+110322: test MonitorChart+.iC
+* with NI GPIB controller and NI spy recording in the background
+* no error occurred in 21 h
+
+110322 - 110323:
+after a two afternoon long confusion, I found that the IO traffic was logged before the Lock
+was obtained. Changed it, and now I need to test the new Lock-ing mechanism where the
+Lock is obtained on a per GPIB controller basis again.
+
+110322: test Monitorchart+.iC:
+monitors 5 temperatures approx. every sec. from 5 threads (it starts iC_Instrument.Monitorchart()
+five times with one command line each)
+
+110321:
+* test MonitorChart.iC: with Prologix
+* iC monitored 5 temperatures every second for 68h and 9 times a value could not be read (Prologix).
+* A brief analysis revealed, that not the entire String was read back from the Instrument, indicating
+that the USB timeout is too short (+295.803E instead of +295.803E+0)
+* There is no significant penalty in SpeedTest (max. turn-around time increased
+from 63 ms to 79ms)
+* The 159059 lines of data were taken in 246082 sec, so the average time between
+two measurements is not 1sec as specified but 1.54 sec
+
+110321: test MonitorChart.iC: 
+monitor 5 temperatures from 1 thread iC_Instrument.MonitorChart() is started once with 5 command lines
+
+
+110318:
+iC monitored 5 temperatures every second for 22h without error (NI GPIB, new Locking mechanism).

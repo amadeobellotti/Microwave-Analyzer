@@ -1,0 +1,3 @@
+This file is soley used to find the directory where the resources for JUint tests
+are located. Do not delete.
+KPP 130306

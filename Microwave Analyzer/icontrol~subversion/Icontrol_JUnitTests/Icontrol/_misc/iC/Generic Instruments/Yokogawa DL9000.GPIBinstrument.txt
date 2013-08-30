@@ -1,0 +1,8 @@
+%% Extension of the YokogawaDL9000 class (Instrument-Class-Name Yokogawa DL9000)
+%% author: KPP
+
+%% Defining generic TMCTL instruments works only because there is a class
+%% body defined that declares that this class supports TMCTL communication
+%% It's on the ToDo list to implement .genericTMCTLinstruments
+
+Stop {Stops acquisition} | STOP

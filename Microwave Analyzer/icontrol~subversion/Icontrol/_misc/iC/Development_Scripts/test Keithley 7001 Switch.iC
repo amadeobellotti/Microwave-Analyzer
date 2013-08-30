@@ -1,0 +1,33 @@
+MAKE iC; iC-control; none
+MAKE switch; Keithley 7001; GPIB=8
+
+
+switch DefineChannelList OPV1; 1!1, 2!1
+switch DefineChannelList OPV2; 1!2, 2!2
+switch DefineChannelList OPV3; 1!3, 2!3
+switch DefineChannelList OPV4; 1!4, 2!4
+
+
+
+switch OpenSwitch All
+iC WaitForUser All Switches Open?
+
+
+
+switch CloseSwitch OPV1
+iC WaitForUser OPV1?
+
+switch CloseSwitch OPV2
+iC WaitForUser OPV2 and OPV2?
+
+
+switch OpenSwitch OPV2
+iC WaitForUser OPV2 open again?
+
+
+
+switch CloseOnly OPV3
+iC WaitForUser OPV3?
+
+switch CloseOnly OPV4
+iC WaitForUser OPV4?

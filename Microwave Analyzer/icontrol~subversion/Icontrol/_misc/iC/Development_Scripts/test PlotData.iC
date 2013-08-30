@@ -1,0 +1,11 @@
+MAKE iC; iC-control; none
+MAKE PA; Agilent 4155; GPIB=7
+ 
+ 
+PA Measure 0; VA,IA,VK; .trans; ""
+PA PlotData VA; IA
+PA PlotData VA; IA
+
+PA SaveData VA,IA,VK; .transs; true
+PA PlotData VA; IA
+PA PlotData VA; IA

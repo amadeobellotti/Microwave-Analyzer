@@ -1,0 +1,616 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>iC Framework outline</title>
+  
+  <style type="text/css">
+  .code {  }
+  </style></head><body>
+<h2>How the iC-Framework works</h2>
+This document outlines in rough sketches how the iC-Framework works. This
+document is intended for developers that like to understand the
+iC-Framework. For developers that only like to write new Instrument
+Classes, the document 'How to write a new Instrument-Class' is better&nbsp;suited.<br>
+<h3><a name="Naming_Conventions"></a>Naming
+Conventions</h3>
+These naming conventions are helpful to clarify and better understand
+the comments in the source-code and some variable names. They are not
+particularly interesting for somebody
+how is not reading source code.<br>
+<br>
+
+
+<dl>
+<dt>Script</dt><dd>A text that contains the
+list of 'Command Lines'.</dd><dt>Sub-Script</dt><dd>Scripts can include other
+scripts, so called 'Sub-Scripts'. These
+Sub-Scripts can include 'MAKE' commands, but the Instruments defined
+there are not shown in the Instrument-List. Nevertheless they can be
+used when Command Lines are entered manually.
+Future implementations might improve this behavior.</dd><dt>Script-Command, or Command Line</dt><dd>A String which represents
+one line of a Script. It consists of either<br>
+    <ul><li>a Framework-Command (e.g. MAKE, INCLUDE) followed by an Argument-List</li><li>an Instrument-Name separated followed by a Device-Command and an Argument-List</li></ul>A
+space character separates the Framework-Command from it's
+Argument-List, and also the Device-Command from it's Arguments-List.
+The entries in the Argument-List are separated by semicolons (;). To
+use semicolons or double-quotes as characters (as opposed to
+separators) escape them (\; or \"). <br>
+</dd><dd><span style="text-decoration: underline;">Examples:</span><br>
+    <ul><li>
+MAKE Tsample Lakeshore 340; GPIB 17</li><li>
+MAKE PA Agilent 4155; GPIB 19</li><li>INCLUDE dT.init</li><li>Tsample SetTemp 200; true<br>
+      </li><li>PA Measure 0; Vg, Ig, Vd, Id, Is; .trans; ""<br>
+      </li></ul>
+  </dd><dt>Framework-Command<br>
+  </dt><dd>The first word in a Script-Command if the Script-Command does not address an Instrument. It can either be&nbsp;'MAKE'
+or 'INCLUDE'. A complete list of available Framework-Commands can be found in the javadoc of the <code>Dispatcher</code> class.</dd><dt>Instrument-Name</dt><dd>The Instrument-Name is the
+variable name used to access an
+Instrument from a script, for instance 'Tsample' or 'PA' in the above
+examples.
+It is assigned using the MAKE Framework-Command, and must
+not contain spaces.
+It is the first word in a Script-Command that addresses an Instrument. <br>
+  </dd><dt>Device-Command, or
+Instrument-Command, or Script-Command<br>
+</dt><dd>The second word in a Script-Command when the
+Script-Command&nbsp;addresses an Instrument. For instance 'SetTemp', or
+'Measure' in the above
+examples. These Device-Commands are processed by the 'Instrument
+Class'. All available Device-Commands are (or at least should be)
+listed in the javadoc of the implementing Instrument-Classes. </dd><dt>Scripting</dt><dd>Processing (or executing)
+the script is called 'scripting'.</dd><dt>Instrument, or Device</dt><dd>An 'Instrument' or 'Device'
+is a piece of measurement equipment,
+for instance a Lakeshore 340 Temperature controller or an Agilent 4155
+Semiconductor Parameter Analyzer.</dd><dt>Instrument-Class, Device-Class,&nbsp;or 'Driver-Class'<br>
+</dt><dd>Implements the
+functionality of an Instrument - it is so to speak the device driver.
+In the code sometimes Instrument-Class is used to refer to the fully
+qualified name of the Instrument-Class, for instance <code>icontrol.instruments.Lakeshore332</code>.<br>
+</dd><dt>Script-Method, Instrument-Method, or Java method (used in the publication)<br>
+</dt><dd>A 'Script-Method' is a Java method in a 'Driver-Class' that implements the functionality of an 'Instrument Command'</dd><dt>Instrument-Class-Name</dt><dd>The name of an Instrument-Class that is presented to the user in
+the GUI in the MAKE section. The Instrument is
+addressed in a 'MAKE' command using the 'Instrument-Class-Name'. It is
+set in <code>RegisterDeviceClasses</code>
+to, for instance, 'Lakeshore
+340' or 'Agilent 4155' (note the space).</dd><dt>Instrument-Instance</dt><dd>The actual instance (object) of the Instrument-Class addressing the Instrument with the Instrument-Name.<br>
+  </dd><dt>Communication protocol/port</dt><dd>Describes how the program
+communicates with the Instruments. At
+present, it can either be 'GPIB' or 'none'. Later implementations might
+also support, say, USB or Ethernet communication.</dd><dt>Communication Driver</dt><dd>A Java class encapsulating methods to communicate with the
+Instruments. It interfaces with the platform specific code to access
+the GPIB controller.<br>
+  </dd><dt>MAKE an instrument</dt><dd>To 'MAKE an Instrument'
+means to instantiate the Instrument's
+class and open the communication channel if any.</dd><dt>Used Instruments</dt><dd>A list of all instances of
+'Instrument-Classes' that are used in
+the script. Instruments 'made' in Sub-Scripts are not shown. Later
+implementation might change this behavior.</dd><dt>Registered Instruments</dt><dd>A list of all available
+'Instrument-Classes' that have been
+registered in <code>RegisterDeviceClasses</code>.</dd><dt>Instrument-List</dt><dd>A list of all
+'Instrument-Names'.</dd><dt>Device-Command-List</dt><dd>A list of
+'Instrument-Commands' of the instrument currently
+selected in the <code>JList</code>
+that displays the 'Instrument-List'.</dd><dt>No-Communication Mode</dt><dd>When 'No-Communication Mode'
+is enabled, no commands are sent or
+received from the I/O port. This means that the 'simulated' responses
+of the Instruments most often differ from real responses. This mode is
+thought to be useful to debug (parts) of the program without the need
+to have real Instruments attached. When this mode is used, some care
+has to be taken in methods processing the 'Instrument-Commands', and
+sometimes it can be beneficial for a method to return a defined answer
+when this mode is enabled (for instance the&nbsp;<code>WaitUntilReady</code>
+method in
+the <code>Agilent4155</code>
+class always returns true, simulating
+that the
+Instrument is ready to receive a command). <br>
+</dd><dt>Syntax-Check Mode</dt><dd>When the user starts
+processing the Script, the Script is first
+processed in Syntax-Check Mode, which tries to ensure that all Script
+Commands can be interpreted by the iC-Framework, respectively, the
+Instrument-Classes. Methods that support Syntax-Check Mode must return
+without any IO Communication and without performing any task when in
+Syntax-Check Mode. Once the Script is successfully processed in
+Syntax-Check Mode, it is processed again, this time in 'real' mode, so
+methods perform their intended task. The Syntax-Check Mode can be
+useful to prevent typos which is especially important for long,
+unattended&nbsp;measurements. <br>
+</dd><dt>Native Code<br>
+  </dt><dd>Operating System specific code used for the GPIB drivers; for instance gpib-32.dll (Windows), ftd2xx.dylib (Mac).</dd>
+</dl>
+<br>
+
+<h3>Program starts:</h3>
+
+
+<ul>
+  <li>The Command Line arguments are parsed and added to the User Properties (see <a href="#iC_Properties_class:">below</a>).<br>
+<code></code></li>
+  <li><code>IcontrolView.myInit()</code>
+is called:</li>
+
+  <ul>
+    <li>Do
+lot's of initializations.</li>
+  </ul>
+  <ul>
+    <li>Make a new instance of <code>Dispatcher</code> class:</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>The&nbsp;<code>Dispatcher</code> class gets access to the GUI
+and initializes access to the GUI for the&nbsp;<code>Device</code>
+class.</li>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <li>Calls <code>RegisterDeviceClasses()</code> to make all
+implemented Instrument-Classes known to the&nbsp;<code>Dispatcher.</code></li>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <li>The <code>Dispatcher </code>stores a list of all used
+Instruments, and passes this list to the <code>Device</code> class.</li>
+    </ul>
+  </ul>
+  <li>The static initialization block of <code>iC_Properties</code> is called.</li>
+  <ul>
+    <li>The <code>iC_Properties</code> class provides common, application-wide
+properties as well as Instrument specific properties. See description below.</li></ul></ul>
+<h3>User presses Start:</h3>
+
+<ul>
+  <li>Check file path etc.</li>
+  <li>Some GUI stuff</li>
+  <li>Enable GPIB logging</li>
+  <li>Copy the Script into
+    <code>ArrayList&lt;String&gt; CommandList</code></li>
+  <li>Pass <code>CommandList</code> to <code>Dispatcher</code> and make a new Thread from <code>Dispatcher</code><br>
+</li>
+  
+  <ul></ul>
+  <li>Start Scripting:</li>
+
+  <ul>
+    <li>Enable Syntax-Check mode<br>
+</li>
+    <li>Call the Dispatcher-Thread's <code>run</code> method (this does <em>not</em> execute <code>run</code> in a new Thread!) which processes all Command Lines in a way discussed next.<code></code></li>
+    <li>If no error occurred, disable SyntaxCheck-Mode and start the Thread (which executes <code>run </code>again, this time in a new Thread).</li>
+  </ul>
+
+</ul>
+<h3>Dispatcher's <code>run</code> method:</h3>
+
+<ul>
+  <li>Make a working copy (<code>CommandList</code>) of the Command List that has been passed (because the INCLUDE command alters the Command List<code></code>)<br>
+  </li>
+  <li>Iterate through all Command Lines:</li>
+  <ul>
+    <li>Split Command Line into Tokens.</li>
+    <li>Handle the commands MAKE and INCLUDE within the <code>Dispatcher</code> class.</li>
+    <ul>
+      <li><code>HandleMakeCommand</code>:</li>
+      <ul>
+        <li>Error checking.</li>
+        <li>From the Instrument-Name find the name of the Instrument-Class.</li>
+        <li>Instantiate that class.</li>
+        <li>Get the <code>iC_Annotation</code> and ensure the chosen Communication protocols is supported.<br>
+        </li>
+        <li>Call the instance's <code>OpenInstrument</code>
+method which establishes the communication channel with the Instrument
+by calling a specialized 'Open Port' method, for instance <code>OpenGPIB</code>.</li><li>Call the instance's <code>Open</code>
+method for additional initializations after establishing IO
+communication. This method might be overridden by Instrument classes.</li><ul><li>The default implementation clears the Instrument's interface by sending *SDC and calls <code>checkIDN</code>.</li></ul>
+        <ul>
+          <li>When the expected Instrument is not found, a <code>WrongIDN</code> dialog with different options to proceed is presented to the user <br>
+          </li>
+        </ul>
+
+        <li>Store (a reference to) the instance in <code>HashMap&lt;String, Device&gt; m_UsedInstruments</code><br>
+        </li>
+      </ul>
+      <li><code>HandleIncludeCommand</code>:</li>
+      <ul>
+        <li>Get the path to the Sub-Script and open the file.</li>
+        <li>Add all lines to <code>CommandList</code>.</li>
+        <li>Remember how many lines have been importet to display the correct line number in the case of an error.</li>
+
+      </ul>
+    </ul>
+    <li>Instantiate a temporary object of <code>Device</code>, and call it's&nbsp; <code>DispatchCommand</code>
+method, which dispatches the Device Command to the appropriate Instrument
+Instance (see below).</li>
+    <li>If no Instrument was addressed (the Instrument Name was not found in <code>m_UsedInstruments</code>) a <code>ScriptException</code> is thrown.<br>
+    </li>
+
+  </ul>
+</ul>
+<h3>Device's <code>DispatchCommand</code> method:</h3>
+
+
+
+<ul>
+  
+  <li>Split the Command Line into Tokens, and do lot's of error checking.</li>
+  <li>[Remark]: It is advantageous to pass the Command Line (and split
+the Command Line twice) to enable processing of Command Lines from
+within other Instrument objects.<br>
+  </li>
+  <li>Identify the object corresponding to the Instrument Name (<code>DeviceInstance</code>).</li>
+  <li>Find the method implemented in <code>DeviceInstance</code> which handles the Device Command by using <code>Device.findScriptMethod</code> which returns a ScriptMethod (see below).</li><li>Convert the parameters to pass.</li>
+  <li>If the method to invoke (<code>met</code>) checks the Syntax (bares an <code>@iC_Annotation(MethodChecksSyntax=true)</code>
+annotation, the method is also invoked during Syntax-Check mode. If the
+method does not perform a Syntax-Check, then the method is only invoked
+during the 'real run'. Note that during Syntax-Check mode no actions
+are to be performed by <code>CallThisMethod</code>, but only the integrity of the passed arguments is to be checked.<br>
+  </li>
+  <li>Any error should be handled in the invoked method (<code>CallThisMethod</code>) if&nbsp; possible. If an error cannot be handled there, a <code>ScriptException</code> should be thrown which will be presented to the User (in <code>Dispatcher.run</code>), after which Scripting is stopped.<br>
+  </li>
+  <li>The invoked method might return immediately, or after a short
+while. It can also start a new Thread to process the Device Command (see details below).</li>
+  
+
+</ul><h3>The <code>ScriptMethod</code> class:</h3><ul><li>An object of this class collects all data associated with an Instrument-Method.</li><li>It is used in <code>Device.DispatchCommand</code> to identify the method to be invoked and also in the Auto-GUI mechanism to access information about a method.</li><li>It contains information about:</li><ul><li>the
+method itself (Device-Command-Name, a reference to the method returned
+from the Reflection mechanism to invoke a programmatically defined
+Instrument-Method, if the method was defined as generic GPIB method,
+and the Parameter Types of the method's arguments)</li><li>the GPIB String for generically defined methods</li><li>all info about the Auto-GUI (Parameter-Names, default values, and&nbsp;Tool Tip texts) which is defined either in the&nbsp;<code>@AutoGUIAnnotation</code> for programmatic Instrument-Mehtods or in the {} and ()-fields of a generically defined method.</li><li>all
+info about the Syntax-Check (if a Syntax-Check is performed by this
+method and the&nbsp;min/max values) which is defined either in the <code>@AutoGUIAnnotation</code> for programmatic
+Instrument-Mehtods or in the []-field of a generically defined
+method.</li></ul><li>It contains a method that parses the text file containing the definitions of generic GPIB Instruments.</li></ul>
+<h3>All Command Lines have been processed:</h3>
+
+<ul>
+  <li>The following steps are executed after <code>Dispatcher.run</code> has finished processing the script:<br>
+</li>
+  <li>Call <code>StopScripting</code> to store a flag (<code>m_StopScripting</code>) in the <code>Dispatcher</code> class and also in the <code>Device</code> class.</li>
+
+  <li>Call <code>Device.Close</code> for all used Instruments<code></code>. This method can be overridden if some extra clean-up work needs to be done.</li>
+  <li>Call <code>Device.CloseInstrument </code>for all used Instruments, which closes the communication bridge to the Instrument.</li>
+  <li>Call <code>Device.CloseController </code>for one Instrument,&nbsp; which releases the Communication Interface (the GPIB controller).</li>
+
+  <li>Release all Instrument's instances and start Garbage Collection (just for fun).</li>
+  
+
+  <li>Call <code>DoneScripting</code> in the View class, which does the following:</li>
+  <ul>
+    <li>Prepare the GUI for a new start</li>
+    <li>Show elapsed time and more</li>
+  </ul>
+</ul>
+<h3>A method that handles a Device Command:</h3>
+
+<ul>
+  <li>See also <a href="programmatic.html">How to write a new Instrument Class</a>.
+  </li>
+  <li>If the method performes a Syntax-Check it checks the integrity of
+the passed arguments and must return without any further action. If
+Syntax-Check fails, it throws a <code>DataFormatException</code> which gets re-thrown as a <code>ScriptException</code> and presented to the User.</li>
+  <li>In
+No-Communication Mode, the method should return a valid, but obviously
+wrong (unphysical) result. This makes debugging the program easier. See the remark
+on global/local No-Communication mode in <a href="../../../../icontrol%7Esubversion/Icontrol/src/doc-files/iC_newInstrumentClasses.html">How to write a new Instrument Class</a>.<br>
+</li>
+  <li>Depending on the chosen communication protocol (defined in <code>Device.m_UsedCommPort</code>)
+the String which is to be sent to the Instrument is built and then
+sent, respectively, the answer of the Instrument is queried and used to
+perform some useful task. [Remark]: To prevent unintended behavior on non-english
+environments (where the decimal point might not be '.' but ',') it is
+recommended to use the <code>Locale.US</code>, for instance like <code>String.format(Locale.US, ...</code> .</li>
+  <li>The return value (must be a assignable to <code>Object</code>) is thus far only used from methods implementing a Device Command
+to query an other instruments (for instance <code>Agilent4155.Measure</code> invokes a Command Line to query&nbsp; the actual temperature from a different Instrument,
+and this temperature is appended to the file name used to store Agilent's
+measurements). <br>
+  </li>
+
+  <li>If a method takes longer to finish, it is advisable to check if scripting has been paused (by calling <code>isPaused(true)</code>) or if scripting has been stopped (by polling <code>m_StopScripting</code>).</li>
+  <li>Methods can start a new Thread but this Thread needs to terminate itself when scripting has been stopped (by polling <code>m_StopScripting</code>) and it should also observe if scripting has been paused (by calling <code>isPaused(true)</code>).</li>
+
+</ul>
+<h3>Generic Instruments</h3>
+<ul>
+  <li>Upon starting Instrument Control, <code>Dispatcher.RegisterDeviceClasses</code> calls <code>Device.loadGenericInstrument</code>, which <br>
+  </li>
+  <ul>
+    <li>Stores all generic Instruments in <code>Device.GenericInstrument m_GenericInstruments</code></li>
+    <li>Adds all generically defined commands as <code>ScriptMethod</code> in this new generic Instrument</li>
+    <li>Registers all generic Instruments that have not yet been
+registered, that is, every Instrument-Class-Name that is not yet
+included in <code>Dispatcher.m_RegisteredInstruments</code> is added to the list with <code>GenericGPIB</code> or <code>GenericRS232</code>
+as Instrument-Class depending on the File Extension of the file
+containing the generic commands (e.g. .GPIBinstrument.txt or&nbsp;
+.RS232instrument.txt)</li>
+  </ul>
+  <li>Device.DispatchCommand ... to be continued<br>
+  </li>
+</ul>
+
+<h3><code>m_Logger</code> member variable:</h3>
+
+
+<ul>
+<li>Most classes define a member variable <code>m_Logger</code> to log important messages to a file in the default log-directory specified in the <code>iC.properties</code> (the default path is <code>$userhome$/iC/iC log/</code>).</li>
+  <li>To log messages that are important for debugging - in contrast to routine logging - the Logger level <code>fine</code> is used. Only for very basic debugging lower levels <code>finer</code> and <code>finest</code> are used.<br>
+</li>
+  <li>The Logger level can be chosen from <code>iC.properties</code>.</li>
+  <li>There is a Logger <code>m_Comm_Logger</code> with name 'Comm' that logs all communication traffic via GPIB, RS232, TMCTL, ... .<br>
+</li>
+  <li>Every <code>ScriptException</code> is logged by the <code>Dispatcher</code>, every other <code>Exception</code> should be logged manually if desired.<br>
+  </li>
+
+</ul>
+
+
+<h3><a name="iC_Properties_class:"></a><code>iC_Properties</code> class:</h3>
+
+<ul>
+  <li>This class simplifies access to application wide resources (for
+instance the iC Logo), and also to access Instrument specific properties that usually do
+not need to be changed, but where it can be advantageous that they <span style="font-style: italic;">can be
+changed without having to recompile the program</span>. Examples are to change
+the default Logger level for GPIB traffic, the default path
+used to log GPIB traffic, and the String used in <code>getInstrumentNameIdentifier</code> for most Instruments.</li>
+  <li>The properties are divided in two parts, the Default properties and the User properties.<br>
+  </li>
+
+  <li>The Default properties are defined in the file <code>iC.properties</code> which is loaded in the static initialization block of the <code>iC_Properties</code> class and stored in a <code>Properties</code> structure.</li>
+  <li>The User properties inherit the Default properties, and additionally try to load a file <code>iC_User.properties</code> from the default iC-Directory defined in the <code>iC.properties</code> (usually <code>$userhome$/iC</code>).</li>
+  <li>Whenever a key/value pair is changed by the User, the User properties are stored in the afore mentioned file.</li>
+  <li>Access to the system wide properties is gained by instantiating the <code>iC_Properties</code> class. Most classes already define such an instance (<code>m_iC_Properties</code>). Instantiating <code>iC_Properties</code> again should not come with
+any significant disadvantages.&nbsp; <br>
+  </li>
+
+  <li>Note: It appears necessary to perform a Clean&amp;Build in Netbeans after changing <code>iC.properties</code>. <br>
+</li>
+  <li>Note: The debug mode (iC.Debug) can be enabled when the
+program is started from within Netbeans by adding the command line
+parameter "iC.Debug 1" (without quotes) in the project settings
+(Run/Arguments). When started from the command line, the debug is is
+disabled per default. Note that once the debug mode is enabled, the
+User
+properties are also updated and the debug mode is enalbed also when
+started from the command line; to disable this delete the file <code>iC_User.properties</code>.</li>
+
+
+</ul>
+<h3><code>Utilities</code> class</h3>
+<ul>
+  <li>This class contains some useful utility methos used throughout the program</li>
+  <li>Some frequently used methods are <code>static</code>, and to access others, a <code>Utility</code> object needs to be instantiated first.</li>
+  <li>To access the <code>static</code> methods, use the fully qualified name (<code>icontrol.Utilities.getInteger</code>) or use <code>import static icontrol.Utilities.getInteger</code> or <code>icontrol.Utilities.*</code> to use <code>static</code> methods without having to type the fully qualified name.<br>
+  </li>
+</ul>
+<br>
+
+<h3><code>icontrol.dialogs</code> package:</h3>
+
+
+This package contains a few classes that encapsulate interaction with the User via modal <code>JDialog</code>s. See the javadoc for the individual classes for details.<br>
+<h3><code><a name="Exception_handling"></a>Exception</code> handling:</h3>
+At least in theory all possible <code>Exceptions</code> are handled by the iC-Framework. There are three main&nbsp;<code>Exceptions</code>:<br><ul><li><code>ScriptException</code>s are thrown by&nbsp; methods in Instrument-Classes when something unexpected happened. The text of these&nbsp;<code>ScriptException</code>s is show to the User in <code>Dispatcher.run</code> and processing of the script stops. <br>This is&nbsp;at least true in most cases. At the time of writing, one&nbsp;exception to this rule is&nbsp;in <code>iC_Instrument.MonitorChart</code>
+which is viewed as a non-critical Instrument-Method, hence, an error
+that occurs during displaying a chart should not stop the measurements
+and is only presented to the User in the Status Text.</li><li><code>IOException</code>s
+are thrown when a communication error occures. When they are thrown by
+a method from an Instrument-Class (Instrument-Method),&nbsp;they are at
+first caught in <code>Device.SendToInstrument</code> and <code>Device.QueryInstrument</code> and re-thrown. Then, they are re-thrown as <code>ScriptException</code> in <code>Device.DispatchCommand</code> and finally they are presented to the User in <code>Dispatcher.run</code>. Such errors invariaby stop scripting. <br>Future releases of iC might present an option to the user or try to repeat sending/receiving a second time.<br>If an <code>IOException</code> is thrown from <code>Dispatcher.HandleMakeCommand</code> it is handled directly in <code>Dispatcher.run</code>.</li><li><code>DataFormatException</code>s are thrown by Instrument-Methods when the Syntax-Check fails. They are re-thrown as <code>ScriptExceptions</code> in <code>Device.DispatchCommand</code> and presented to the User in&nbsp; <code>Dispatcher.run</code>.</li></ul>The text of all <code>ScriptException</code>s is logged in <code>m_Logger</code>, hence, there is <span style="font-style: italic;">in general</span> no need for Instrument-Methods to log errors when they <code>throw</code> one of the above <code>Exceptions</code> because they are always logged when they are caught in <code>Dispatcher.run</code>.
+Exceptions to this rule of thumb could be when new code is developed and no errors are expected to occur once it works. In such
+cases the Logger level FINEST is recommended.<br>
+<h3>Python Integration<br>
+</h3>
+<ul>
+  <li>The first time a Python command is called (<code>Device.ecexPython</code>), a new <code>PythonInterpreter</code> object is created and also a <code>JythonPrompt</code> window is shown.</li>
+  <li>To show the Python window from the GUI, a Python command is sent.</li>
+  <li>Each time the user presses Start (and a Python Interpreter has
+been created in a previous run) a new Python Interpreter is
+instantiated to ensure that Python's namespace is empty.</li>
+  <li>After the Syntax-Check is performed, the Python Interpreter is
+also reset to ensure an empty namespace (no variables are defined).</li>
+  <li>Each time a new Python Interpreter is created, a file <code>iC/Startup.py</code> is executed that provides convenience mehtods to communicate with iC.</li>
+  <li>iC exports an instance of <code>Device</code> to Python as <code>_device</code>. Python's path is also set to include the Project directroy and the iC directory.<br>
+  </li>
+</ul>
+
+<h3>Some important data structures</h3>
+<h4>in class <code>IcontrolView</code></h4>
+<ul>
+  <li>&nbsp;&nbsp;&nbsp; <code>private HashMap&lt;String, String&gt; m_ScriptInstruments</code></li>
+  <ul>
+    <li>Contains Instrument-Name / Instrument-Class-Name pairs of all Instruments used in the Script.</li>
+    <li>Example: PA / Agilent 4155, Tsample / Lakeshore 340, srs / SRS DS 345<br>
+</li>
+    <li>It is populated in <code>ScriptAddLine</code>, and entries are deleted in <code>jScriptListKeyReleased</code>.</li>
+    <li>It is used in <code>jInstrumentNameSelected</code> to identify the Instrument-Class respectively the generic GPIB Instrument.</li>
+
+  </ul>
+</ul>
+<h4>in class <code>Dispatcher</code></h4>
+<ul>
+  <li><code>private HashMap&lt;String, String&gt; m_RegisteredInstruments</code></li>
+  <ul>
+    <li>Contains Instrument-Class-Name / Instrument-Class pairs of all
+available Instruments. Every new Device-class needs to be registered
+here to be accessible from the script.<br>
+    </li>
+    <li>Example: Lakeshore 332 / icontrol.instruments.Lakeshore332, SRS DS345 / icontrol.instruments.iC_GenericGPIB<br>
+</li>
+    <li> The Instrument-Class-Name is used to populate the ComboBox that allows to add MAKE commands. It is also used in <code>Device.DispatchCommand</code> to identify the instances the Script-Command is passed to, and in <code>IcontrolView.jInstrumentNameSelected</code> to search all available Script-Methods.</li>
+    <li>The Instrument-Class is a String that contains the actual class
+name of the class that implements the functionality of that Instrument.
+Note that it must contain the full class name including package, that
+is "icontrol.Lakeshore340" not only "Lakeshore340". Generic GPIB
+Instruments register as class <code>iC_GenericGPIB</code>.</li>
+  </ul>
+</ul>
+<ul>
+  <li><code>private HashMap&lt;String, Device&gt; m_UsedInstruments</code></li>
+  <ul>
+    <li>Instrument-Name / Instrument-Instance pairs of the Instruments
+used in the script.<br>
+</li>
+    <li>Example: Tsample / the instance of <code>Lakeshore340</code> for this Instrument, srs / the instance of <code>iC_GenericGPIB</code> with the Instrument-Name set to srs<br>
+</li>
+    <li>It is populated in <code>HandleMakeCommand</code>.<br>
+    </li>
+    <li>Class <code>Device</code> is passed a "reference" to this list from the constructor.</li>
+  </ul>
+  </ul>
+<h3>in class <code>Device</code></h3>
+<ul>
+  <li><code>protected static HashMap&lt;String, Device&gt; m_UsedInstruments</code></li>
+  <ul>
+    <li>A "refernce" to <code>Dispatcher.m_UsedInstruments</code>.</li>
+  </ul>
+  <li><code>protected static HashMap&lt;String, GenericGPIBInstrument&gt; m_GenericGPIBInstruments</code><br>
+  </li>
+  <ul>
+    <li>Stores all generically defined GPIB Instruments. Contains Instrument-Class-Name / instances of GenericGPIBInstrument pairs.</li>
+    <li>Example: SRS DS345 / instance of GenericGPIBInstrument</li>
+    <li>This map is populated in <code>loadGenericGPIBInstruments</code> and is used in conjunction with <code>m_InstrumentClassName</code> in <code>listAllScriptMethods</code> to find all Script-Methods (a public method in an Instrument-Class) for a given Instrument.</li>
+  </ul>
+</ul>
+<h3>Links</h3>Here are some links I found useful during development.<br>
+<br>
+
+<ul>
+  <li>Books</li>
+  <ul>
+    <li>http://java.sun.com/docs/books/jls/second_edition/html/expressions.doc.html#41147<br>
+    </li>
+    <li>http://java.sun.com/docs/books/jls/</li>
+  </ul>
+  <li>Project properties</li>
+  <ul>
+    
+    <li>http://netbeans.org/kb/docs/java/project-setup.html</li>
+<ul>
+      
+    </ul>
+  </ul>
+  <li>Tooltips</li>
+  <ul>
+    <li>http://download.oracle.com/javase/tutorial/uiswing/components/tooltip.html<br>
+    </li>
+  </ul>
+  <li>Focus Subsystem</li>
+  <ul>
+    <li>http://download.oracle.com/javase/tutorial/uiswing/misc/focus.html<br>
+    </li>
+  </ul>
+  <li>System Properties</li>
+  <ul>
+    <li>http://download.oracle.com/javase/tutorial/essential/environment/sysprop.html<br>
+    </li>
+  </ul>
+  <li>pass by reference</li>
+  <ul>
+    <li>http://www.yoda.arachsys.com/java/passing.html<br>
+    </li>
+  </ul>
+  <li>packaging the app</li>
+  <ul>
+    <li>http://netbeans.org/kb/articles/javase-deploy.html#troubleshooting<br>
+    </li>
+  </ul>
+  <li>pictures</li>
+  <ul>
+    <li>http://netbeans.org/kb/docs/java/gui-image-display.html<br>
+    </li>
+  </ul>
+  <li>pictures in javadoc</li>
+  <ul>
+    <li>http://www.javaworld.com/community/node/2587<br>
+    </li>
+  </ul>
+  <li>Regex: <br>
+</li>
+  <ul>
+    <li>http://oreilly.com/catalog/9780596528126<br>
+  </li>
+  </ul>
+
+  <ul>
+    <li>http://download.oracle.com/javase/tutorial/essential/regex/<br>
+    </li>
+  </ul>
+  <li>Distribute with OneJAR</li>
+  <ul>
+    <li>http://wiki.netbeans.org/PackagingADistributableJavaApp<br>
+    </li>
+  </ul>
+  <li>Serial Port</li>
+  <ul>
+    <li>http://mindprod.com/jgloss/serialport.html<br>
+    </li>
+  </ul>
+  <ul>
+    <li>http://java.giovynet.com/Giovynet/<br>
+    </li>
+    <li>http://users.frii.com/jarvi/rxtx/index.html</li>
+    <li>http://www.sparetimelabs.com/ (PureJavaComm)<br>
+    </li>
+  </ul>
+  <li>USB<br>
+  </li>
+  <ul>
+    <li>http://javax-usb.org/<br>
+    </li>
+  </ul>
+  <li>Prologix and Java <br>
+  </li>
+  <ul>
+    <li>http://www.ftdichip.com/Support/SoftwareExamples/CodeExamples/OtherPlatforms.htm<br>
+    </li>
+  </ul>
+  <ul>
+    <li>http://sourceforge.net/projects/ftd2xxj/<br>
+    </li>
+    <li>http://jd2xx.dev.java.net/</li>
+  </ul>
+  <li>Junction (create softlink in WinXP)<br>
+  </li>
+  <ul>
+    <li>http://technet.microsoft.com/en-us/sysinternals/bb896768.aspx</li>
+  </ul>
+  <li>JNAerator</li>
+  <ul>
+    <li>http://code.google.com/p/jnaerator/<br>
+    </li>
+  </ul>
+</ul>
+<br>
+
+</body></html>

@@ -1,0 +1,7 @@
+% Generic GPIB command definitions for a SRS DS345 Function Generator
+setAmplitude | AMPL %E Vpp | p-p Voltage (0.5)
+setFrequency | FREQ %E | Frequency \[Hz\] (100)
+setOffset | OFFS %E | Offset Voltage \[V\] (0)
+setBurstCount | BCNT %E | Nr. of Bursts (1) [1, 30000] {The Burst time must not exceed 500sec}
+setPhaseToZero {Sets the waveform phase to 0} | PCLR
+fireTrigger {Triggers a burst or a single sweep} | *TRG

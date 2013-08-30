@@ -1,0 +1,28 @@
+MAKE iC; iC-control; none
+MAKE LCR; Agilent E4980A; GPIB=17
+
+LCR setDCBias 1
+//iC WaitForUser Is DC bias 1 and switched on?
+
+LCR setDCBias 0
+//iC WaitForUser Is DC bias 0 and switched off?
+
+LCR setDCBias -1
+//iC WaitForUser Is DC bias -1 and switched on?
+
+
+
+LCR setAC_Amplitude 0.5
+//iC WaitForUser Is AC amplitude 0.5?
+
+LCR setAC_Amplitude 0.1
+//iC WaitForUser Is AC amplitude 0.1?
+
+
+LCR setFrequency 100
+//iC WaitForUser Is Frequency 100 Hz?
+
+LCR setFrequency 2311
+//iC WaitForUser Is Frequency 2311 Hz?
+
+LCR SweepFthenV 2000.0; 3000.0; 100.0; false; -0.5; 0.5; 1.0; false; 1; .CV.txt

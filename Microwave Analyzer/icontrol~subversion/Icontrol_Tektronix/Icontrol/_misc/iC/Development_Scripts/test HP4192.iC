@@ -1,0 +1,4 @@
+MAKE IA; HP 4192; GPIB=4
+IA Init 8; false; 1
+ 
+IA SweepFthenV 1.0; 100.0; 1.0; false; -0.5; 0.5; 1.0; false; 2; .CV

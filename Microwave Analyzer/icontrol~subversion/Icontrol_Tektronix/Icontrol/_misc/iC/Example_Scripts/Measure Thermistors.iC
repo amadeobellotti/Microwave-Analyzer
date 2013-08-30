@@ -1,0 +1,121 @@
+%% Measure resistance of the Thermistors in uHP MEMS2
+%% kpp
+%% SMU 1&2: V+/I+ respectively left side of thermistor
+%% SMU 3&4: V-/I- respectively right side of thermistors
+
+MAKE iC; iC-control; none
+MAKE PA; Agilent 4155; GPIB=19
+ 
+// general
+PA configMeasurementMode Sweep
+PA IntegrationTime Medium
+
+
+%% Left Connections
+
+PA UserFunction All; ; 	// delete all user functions before re-defining SMUs
+
+PA configSMU 1; V1; I1; V; Var1
+PA configSMU 2; V2; I2; V; Constant
+PA configSMU 3; V3; I3; V; Disable	// disable SMUs after assigning new var1 value
+PA configSMU 4; V4; I4; V; Disable
+
+PA configSMUConstant 2; 0.0; 50e-6
+
+PA UserFunction R; Ohm ; V1/I1
+ 
+// configure displayed axis
+PA DisplayAxis X; V1; Linear; -5e-3; 5e-3
+PA DisplayAxis Y1; I1; Linear; -30e-6; 30e-6
+PA DisplayAxis Y2; R; Linear; 0.0; 200
+ 
+// Sweep setup
+PA configSweep Var1; true; Lin; -5.25e-3; 5e-3; 0.5e-3; 50e-6; 1.0; 0.1
+
+// measure
+PA Measure 0; V1, I1, V2, R; .R12.txt; ""
+PA PlotData V1; false; I1; false; R; false; .R12
+
+
+%% Right Connections
+
+PA UserFunction All; ; 	// delete all user functions before re-defining SMUs
+
+PA configSMU 3; V3; I3; V; Var1
+PA configSMU 4; V4; I4; V; Constant
+PA configSMU 1; V1; I1; V; Disable
+PA configSMU 2; V2; I2; V; Disable
+
+PA configSMUConstant 4; 0.0; 50e-6
+
+PA UserFunction R; Ohm ; V3/I3
+ 
+// configure displayed axis
+PA DisplayAxis X; V3; Linear; -5e-3; 5e-3
+PA DisplayAxis Y1; I3; Linear; -30e-6; 30e-6
+PA DisplayAxis Y2; R; Linear; 0.0; 200
+ 
+// Sweep setup
+PA configSweep Var1; true; Lin; -5.25e-3; 5e-3; 0.5e-3; 50e-6; 1.0; 0.1
+ 
+
+// measure
+PA Measure 0; V3, I3, V4, R; .R34.txt; ""
+PA PlotData V3; false; I3; false; R; false; .R34
+
+
+
+%% R path 1
+
+PA UserFunction All; ; 	// delete all user functions before re-defining SMUs
+
+PA configSMU 1; V1; I1; V; Var1
+PA configSMU 4; V4; I4; V; Constant
+PA configSMU 2; V2; I2; V; Disable
+PA configSMU 3; V3; I3; V; Disable
+
+PA configSMUConstant 4; 0.0; 50e-6
+
+PA UserFunction R; Ohm ; V1/I1
+ 
+// configure displayed axis
+PA DisplayAxis X; V1; Linear; -5e-3; 5e-3
+PA DisplayAxis Y1; I1; Linear; -30e-6; 30e-6
+PA DisplayAxis Y2; R; Linear; 0.0; 200
+ 
+// Sweep setup
+PA configSweep Var1; true; Lin; -5.25e-3; 5e-3; 0.5e-3; 50e-6; 1.0; 0.1
+ 
+
+// measure
+PA Measure 0; V1, I1, V4, R; .R14.txt; ""
+PA PlotData V1; false; I1; false; R; false; .R14
+
+
+%% R path 2
+
+PA UserFunction All; ; 	// delete all user functions before re-defining SMUs
+
+PA configSMU 2; V2; I2; V; Var1
+PA configSMU 3; V3; I3; V; Constant
+PA configSMU 4; V4; I4; V; Disable
+PA configSMU 1; V1; I1; V; Disable
+
+PA configSMUConstant 3; 0.0; 50e-6
+
+PA UserFunction R; Ohm ; V2/I2
+ 
+ 
+// configure displayed axis
+PA DisplayAxis X; V2; Linear; -5e-3; 5e-3
+PA DisplayAxis Y1; I2; Linear; -30e-6; 30e-6
+PA DisplayAxis Y2; R; Linear; 0.0; 200
+ 
+///////////////
+// Sweep setup
+PA configSweep Var1; true; Lin; -5.25e-3; 5e-3; 0.5e-3; 50e-6; 1.0; 0.1
+ 
+
+// measure
+PA Measure 0; V2, I2, V3, R; .R23.txt; ""
+PA PlotData V2; false; I2; false; R; false; .R23

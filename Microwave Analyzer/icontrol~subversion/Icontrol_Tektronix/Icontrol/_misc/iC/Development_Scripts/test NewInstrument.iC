@@ -1,0 +1,11 @@
+MAKE iC; iC-control; none
+ 
+MAKE Tsample; Lakeshore 340; GPIB=6
+Tsample configDefaults A; 1
+ 
+MAKE ni; New Instrument; GPIB=6
+ 
+iC MonitorChart 1.0; Temperature [K]; .monT; "Tsample getTemp default"; ""; ""; ""; ""
+ 
+ni setTemp 296.0
+iC WaitForStop

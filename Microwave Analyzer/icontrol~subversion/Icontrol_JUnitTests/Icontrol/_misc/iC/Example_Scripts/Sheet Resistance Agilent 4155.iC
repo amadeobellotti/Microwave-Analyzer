@@ -1,0 +1,263 @@
+MAKE iC; iC-control; none
+MAKE PA; Agilent 4155; GPIB=19
+ 
+ 
+/////////////////////////////
+// configure Measurement Mode
+PA configMeasurementMode Sweep
+ 
+/////////////////
+// configure VMUs
+PA configVMU 1; Vm1; Disable
+PA configVMU 2; Vm2; Disable
+ 
+///////////////////////
+// set Integration Time
+PA IntegrationTime Medium
+
+
+// set min/max current, current step size and voltage compliance
+|Imin = 2e-6
+|Imax = 1.0E-4
+|Istep = 2.0E-6
+|Vcompliance = 20
+ 
+ 
+ 
+%%%%%%%%%%%
+%% Config 1
+
+// configure SMUs
+PA configSMU 1; V1; I1; I; Var1
+PA configSMU 2; V2; I2; V; Constant
+PA configSMU 3; V3; I3; I; Constant
+PA configSMU 4; V4; I4; I; Constant
+
+//////////////
+// Sweep setup
+
+// use iC commands directly (without variables)
+//PA configSweep Var1; true; Lin; 2e-6; 1.0E-4; 2.0E-6; 20.0; 1.0; 0.0
+
+// use Python to execute ic command (allows the use of variables)
+|dispatch_command("PA", "configSweep", "Var1", "true", "Lin", Imin, Imax, Istep, Vcompliance, "1", "0")
+
+
+// configure const-values 
+PA configSMUConstant 2; 0.0; 10e-3
+PA configSMUConstant 3; 0.0; 20
+PA configSMUConstant 4; 0.0; 20
+ 
+// User function
+PA UserFunction R; ; (V4-V3)/I1 // calc resistance (in the 4155)
+ 
+// graph setup
+PA DisplayAxis X; I1; Linear; 0.0; 1e-4
+PA DisplayAxis Y1; V1; Linear; 0.0; 20
+PA DisplayAxis Y2; R; Linear; 0.0; 1000
+ 
+ 
+//////////
+// measure
+PA Measure 0; V1, I1, V2, I2, V3, V4, R; .cfg1.txt; ""
+
+// plot measurements (must immediately follow the Measure or PlotData command)
+PA PlotData I1; false; R; false; V1; false; .cfg1
+
+
+
+
+
+%%%%%%%%%%%
+%% Config 2
+ 
+// configure SMUs
+PA configSMU 2; V1; I1; I; Var1
+PA configSMU 1; V2; I2; V; Constant
+PA configSMU 4; V3; I3; I; Constant
+PA configSMU 3; V4; I4; I; Constant
+ 
+// Sweep setup
+//PA configSweep Var1; true; Lin; 2e-6; 1.0E-4; 2.0E-6; 20.0; 1.0; 0.0
+|dispatch_command("PA", "configSweep", "Var1", "true", "Lin", Imin, Imax, Istep, Vcompliance, "1", "0")
+ 
+// config const values
+PA configSMUConstant 3; 0.0; 20
+PA configSMUConstant 1; 0.0; 10e-3
+PA configSMUConstant 4; 0.0; 20 
+ 
+//////////
+// measure
+PA Measure 0; V1, I1, V2, I2, V3, V4, R; .cfg2.txt; ""
+ 
+// plot measurements
+PA PlotData I1; false; R; false; V1; false; .cfg2
+
+
+
+
+
+%%%%%%%%%%%
+%% Config 3 
+
+// configure SMUs
+PA configSMU 2; V1; I1; I; Var1
+PA configSMU 3; V2; I2; V; Constant
+PA configSMU 4; V3; I3; I; Constant
+PA configSMU 1; V4; I4; I; Constant
+ 
+// Sweep setup
+|dispatch_command("PA", "configSweep", "Var1", "true", "Lin", Imin, Imax, Istep, Vcompliance, "1", "0")
+ 
+// config const values 
+PA configSMUConstant 1; 0.0; 20
+PA configSMUConstant 3; 0.0; 10e-3
+PA configSMUConstant 4; 0.0; 20
+ 
+ 
+//////////
+// measure
+PA Measure 0; V1, I1, V2, I2, V3, V4, R; .cfg3.txt; ""
+ 
+// plot measurements
+PA PlotData I1; false; R; false; V1; false; .cfg3
+
+
+
+
+
+%%%%%%%%%%%
+%% Config 4 
+
+// configure SMUs
+PA configSMU 3; V1; I1; I; Var1
+PA configSMU 2; V2; I2; V; Constant
+PA configSMU 1; V3; I3; I; Constant
+PA configSMU 4; V4; I4; I; Constant
+ 
+// Sweep setup
+|dispatch_command("PA", "configSweep", "Var1", "true", "Lin", Imin, Imax, Istep, Vcompliance, "1", "0")
+
+// config const values
+PA configSMUConstant 4; 0.0; 20
+PA configSMUConstant 2; 0.0; 10e-3
+PA configSMUConstant 1; 0.0; 20
+ 
+//////////
+// measure
+PA Measure 0; V1, I1, V2, I2, V3, V4, R; .cfg4.txt; ""
+ 
+// plot measurements
+PA PlotData I1; false; R; false; V1; false; .cfg4
+
+
+
+
+
+%%%%%%%%%%%
+%% Config 5
+
+// configure SMUs
+PA configSMU 3; V1; I1; I; Var1
+PA configSMU 4; V2; I2; V; Constant
+PA configSMU 1; V3; I3; I; Constant
+PA configSMU 2; V4; I4; I; Constant
+ 
+// Sweep setup
+|dispatch_command("PA", "configSweep", "Var1", "true", "Lin", Imin, Imax, Istep, Vcompliance, "1", "0")
+
+// config const values
+PA configSMUConstant 1; 0.0; 20
+PA configSMUConstant 4; 0.0; 10e-3
+PA configSMUConstant 2; 0.0; 20
+ 
+//////////
+// measure
+PA Measure 0; V1, I1, V2, I2, V3, V4, R; .cfg5.txt; ""
+ 
+// plot measurements
+PA PlotData I1; false; R; false; V1; false; .cfg5
+
+
+
+
+
+%%%%%%%%%%%
+%% Config 6
+
+// configure SMUs
+PA configSMU 4; V1; I1; I; Var1
+PA configSMU 3; V2; I2; V; Constant
+PA configSMU 2; V3; I3; I; Constant
+PA configSMU 1; V4; I4; I; Constant
+ 
+// Sweep setup
+|dispatch_command("PA", "configSweep", "Var1", "true", "Lin", Imin, Imax, Istep, Vcompliance, "1", "0")
+
+// config const values
+PA configSMUConstant 2; 0.0; 20
+PA configSMUConstant 3; 0.0; 10e-3
+PA configSMUConstant 1; 0.0; 20
+ 
+//////////
+// measure
+PA Measure 0; V1, I1, V2, I2, V3, V4, R; .cfg6.txt; ""
+ 
+// plot measurements
+PA PlotData I1; false; R; false; V1; false; .cfg6
+
+
+
+
+
+%%%%%%%%%%%
+%% Config 7
+
+// configure SMUs
+PA configSMU 4; V1; I1; I; Var1
+PA configSMU 1; V2; I2; V; Constant
+PA configSMU 2; V3; I3; I; Constant
+PA configSMU 3; V4; I4; I; Constant
+ 
+// Sweep setup
+|dispatch_command("PA", "configSweep", "Var1", "true", "Lin", Imin, Imax, Istep, Vcompliance, "1", "0")
+
+// config const values
+PA configSMUConstant 2; 0.0; 20
+PA configSMUConstant 1; 0.0; 10e-3
+PA configSMUConstant 3; 0.0; 20
+ 
+//////////
+// measure
+PA Measure 0; V1, I1, V2, I2, V3, V4, R; .cfg7.txt; ""
+ 
+// plot measurements
+PA PlotData I1; false; R; false; V1; false; .cfg7
+
+
+
+
+
+%%%%%%%%%%%
+%% Config 8
+
+// configure SMUs
+PA configSMU 1; V1; I1; I; Var1
+PA configSMU 4; V2; I2; V; Constant
+PA configSMU 3; V3; I3; I; Constant
+PA configSMU 2; V4; I4; I; Constant
+ 
+// Sweep setup
+|dispatch_command("PA", "configSweep", "Var1", "true", "Lin", Imin, Imax, Istep, Vcompliance, "1", "0")
+
+// config const values
+PA configSMUConstant 2; 0.0; 20
+PA configSMUConstant 4; 0.0; 10e-3
+PA configSMUConstant 3; 0.0; 20
+ 
+//////////
+// measure
+PA Measure 0; V1, I1, V2, I2, V3, V4, R; .cfg8.txt; ""
+ 
+// plot measurements
+PA PlotData I1; false; R; false; V1; false; .cfg8

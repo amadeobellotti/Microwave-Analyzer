@@ -1,0 +1,7 @@
+MAKE iC; iC-control; none
+MAKE Z; HP 4192; GPIB=17
+ 
+ 
+Z Init 8; false
+ 
+Z SweepFthenV 1.0; 100.0; 1.0; false; -0.5; 0.5; 1.0; false; 2; .CV

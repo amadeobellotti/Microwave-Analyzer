@@ -1,0 +1,28 @@
+MAKE iC; iC-control; none
+MAKE PA; Agilent 4155; GPIB=7
+
+MAKE dT; Lakeshore 340; GPIB=4
+dT configDefaults A; 1
+
+/////////////////////////////
+// configure Measurement Mode
+PA configMeasurementMode Sweep
+
+
+
+/////////////////
+// configure SMUs
+PA configSMU 1; Vd; Id; V; Var2
+PA configSMU 2; Vg; Ig; V; Var1
+PA configSMU 3; Vs; Is; Common; Constant
+
+
+///////////////
+// Sweep setup
+PA configSweep Var1; true; Lin; 10; -40; -1; 10e-6; 3; 0
+PA configSweep Var2; false; Lin; -40; -40; -10; 10e-6; 3; 0
+
+//////////
+// measure
+
+PA Measure 0; Id, Vd, Ig, Vg; .trans; "dT getTemp default"

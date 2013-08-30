@@ -1,0 +1,12 @@
+// too few parameters
+%setDC
+%setDC | SETDC %E
+%setDC | SETDC %E %E | name1
+
+// too many parameters
+%setDC | SETDC %E | name1 | name2
+%savesetDC | SETDC %E | name1 | name2 | name3
+
+// correct
+setDC | SETDC %E | name1
+savesetDC | SETDC %E | name1 | name2

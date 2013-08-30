@@ -1,0 +1,63 @@
+MAKE iC; iC-control; none
+MAKE SM; Keithley 2600; GPIB=4
+ 
+
+// configure mode of operation
+SM configSMUChannel a; v
+iC WaitForUser Waiting ...
+
+SM configSMUChannel A; I
+ 
+
+ 
+// configure Analog Filters
+SM configAnalogFilters a; 1
+
+
+
+// configure Off Limits
+SM configOffLimit A; I; 1.0E-4
+SM configOffLimit A; V; 2
+iC WaitForUser Waiting ...
+
+
+// config Integration Aperture
+SM configNPLC a; 7.0
+iC WaitForUser Waiting ...
+
+
+
+// set output levels
+SM OutputV A; 0.0
+SM OutputI A; 0.0
+
+// switch on Output
+SM OutputState A; on; 0
+iC WaitForUser Waiting ...
+
+// switch off Output
+SM OutputState A; off; 0.1
+iC WaitForUser Waiting ...
+
+// switch Output to HighZ
+SM OutputState A; highZ; 0
+iC WaitForUser Waiting ...
+
+
+
+// Output something
+SM configNPLC a; 1
+SM OutputV A; 7.7
+SM OutputState A; on
+
+ 
+// measure current
+SM MeasureI a
+ 
+ 
+// keep monitoring the current 
+iC MonitorChart 0.5; Current [A]; .txt; "SM MeasureI a"; ""; ""; ""; ""
+ 
+ 
+ 
+iC WaitForStop

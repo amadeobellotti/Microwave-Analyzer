@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>JUnit Tests in iC</title></head><body>
+<br>
+
+<h2>JUnit Tests in iC<br>
+</h2>
+
+Starting with version around v1.3.469 JUnit tests were implemented in
+iC. To do so, the iC-Framework had to be decoupled from the View (which
+also comes in handy once the new GUI will be implemented). Therefore,&nbsp;a
+new interface <code>GUI_Interface</code> was defined which declares
+all GUI related methods that are called by the iC-Framework. The most
+prominent of such member is the <code>DisplayStatusMessage</code> method.<br><br>In the course of decoupling it was discovered, that not all classes that accessed the View (mainly, if not exclusively, for the <code>DisplayStatusMessage </code>method) had a <code>m_GUI&nbsp;</code>member variable defined. Previously, this was solved by declaring <code>DisplayStatusMessage</code> as<span style="font-family: monospace;"> static</span><code> </code>but this was no longer possible with the new Interface. To solve this, it was chosen to implement a <code>getView </code>in&nbsp;<code>Utilities </code>which is still static and returns either the GUI from <code>IcontrolApp.getView</code> or the GUI from <span style="font-family: monospace;">IcontrolAppMockup</span><code>.getView&nbsp;</code>and allows to get access to the GUI at runtime.<br><br>The Tests itself reside in a parallel <code>test/</code> directory but are in the same package as the corresponding file.<br><br>To write a test class, simply extend <code>IcontrolTests</code> which takes care of setting up the Test Environment. It grants access to the GUI via <code>m_GUI.</code> <code>IcontrolTests </code>instantiates IcontrolAppMockup, which in turn instantiates Dispatcher<br>
+<br>
+The first test class was&nbsp;<code>Keithley2600 </code>and it is still
+in it's infant state. At the time of writing it is not clear how to
+write proper tests with respect to Syntax-Check mode: some methods
+might not perform a Syntax-Check in the "real" run, while certainly not
+all functionality can be tested in Syntax-Check mode. Maybe it's
+necessary to decide on a case by case basis; some tests might need to
+run twice, once in Syntax-Check mode, once in the "real" run.<br>
+<h3></h3>
+<br>
+</body></html>

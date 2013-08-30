@@ -1,0 +1,12 @@
+// load configuration for thermoelectric measurements
+// in Dave's Desert Cryogenics
+INCLUDE TEsetup Desert Cryo Dave.iC
+ 
+ 
+Tstage setRampRate 0; true; 0.5
+Tstage autoSetPoint default; 0 // set SP to current T
+ 
+ 
+iC WaitForUser Waiting ...
+Tstage setTemp 0; 300.0; true
+ 

@@ -1,0 +1,7 @@
+% SRS SR810 Lock-In Amplifier
+
+// (1)   (2)          (3)           (4)
+setAUX | AUXV %d,%f | AUX channel | Voltage
+getAUX | AUXV? %d | AUX channel {can be 1..4} [1,4] (1)
+saveIDN | *IDN? | File Extension
+//                (5)

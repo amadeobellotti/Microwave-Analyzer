@@ -1,0 +1,513 @@
+Change Log - Instrument Control (iC) with JAVA
+==============================================
+
+KPP dedicates this work in devotion to Bhagavan Sri Sathya Sai Baba.
+http://java.net/projects/icontrol
+
+130407
+added TektronixTDS.HardCopy
+
+121116
+YokogawaDL9000 did not save the time correctly; the fix needs to be tested
+first commit from ZHAW
+
+120827
+added iC_instrument.getFreeMemory
+
+
+120818
+tweaked the Unit Tests
+added LevenbergMarquardt copyright notice
+
+120817
+Agilent4155.configSweep set the step value even for Log sweeps
+started to rename Agilent package
+changed GUI_InterfaceMockup to be not from JFrame
+added YokogawaDL9000.setTimeBase + Tests
+
+120815
+merged with JUnit test branch
+YokogawaDL9000.Start now resets the Extended Event Register so that saveWaveform 
+   works after automated Start with aquisition set to Normal (no averaging)
+
+120814
+fixed Lakeshore332.setHeaterRange
+
+120810
+made Python Prompt window focusable so that text can be copied
+added Device.getFileName
+added YokogawaDL9000.setTimeBase
+
+120808
+tweaked axis labels in the chart in AgilentE4980A.SweepFthenV
+started to add YokogawaDL9000.getParameter
+
+120806
+fixed exiting in Lakeshore340.setTempCalibrate when user pressed stop
+
+120731
+change Lakeshore340.setTempCalibrate to allow calibrating multiple Instruments 
+not only two.
+Keithley2600.SweepVMeasureI now saved the Detail graph as png
+
+120730
+added LakeshreTC.getTempSU (SensorUnits)
+
+120725
+introduced Device.m_TerminationCharacters after it occurred that Lakeshore332 does
+not execute the RANGE 3 command any more w/o \r\n appended (maybe it's because
+an updated NI 488.2 version, who knows)
+renamed LM 500 LCLM to Cryomagnetics LM 500 (for MAKE command)
+re-implemented LakeshoreXX.setHeaterRange to also act on Loop2
+removed LakeshoreTC.enableHeaterOutput
+fixed setHeaterRange (on Lakeshore 340)
+changed TerminationCharacters to be assigned for all classes where iC.properties 
+contains a key 'ClassName'.TerminationCharacters
+
+
+120724
+LakeshoreTC.setTemp always queried Kelvin reading of channel A to wait for temperature
+
+120723
+iC_ChartXY: use setStandardTickUnits(...) to show very large or very small numbers with
+proper tick marks and labels; use setAutoRangeMinimumSize() to allow auto ranging
+to very small numbers
+updated Keithley2600, Agilent E4980A, HP4192 to better cope with smaller numbers
+
+120719
+implemented LM500.Refill
+Keithley2600.EvaluateOPV now evaluates Pmax in 2nd and 4th quadrant (for inverted devices)
+
+
+120711
+SRS_DS345.setARBtoCELIV now sets the amplitude properly and allows negative 
+voltage slop values
+updated Measure CELIV.iC and Setup CELIV.iC in the Example Scripts
+
+120707
+Agilent4155.configSMUconstant used %f instead of %E, hence compliance values 
+smaller than 1e-6 translated to 0, which also set the measurement range to 10 pA
+which significantly slowed down the measurements
+LM-500: measuring the liquid cryogen level works
+Ensured that the thread is started in iC_Instrument.MonitorChart
+
+120706
+fixed bug with getting the proper Y2 axis in iC_Chart
+Started with Cryomagnetics LM 500; needs testing
+
+120703
+UserFunction is now defined in Agilent4155 not as generic command and it allows
+to delete a user function as well
+
+120626
+Yokogawa DL9000.SaveWaveform now checks if the waveforms to save are "valid", i.e.
+they are not remains of a previous measurement. Also added a test in C++ to check
+if  :Waveform:Record minimum? returns NaN if the scope has not triggered (it does not)
+
+120621
+Agilent E4980A now measures and saves data in the selected circuit mode
+implemented  configCircuitMode, and AC amplitude + Averaging is saved in sweepFthenV
+iC_Instrument.WaitForDate parsed different then promised in the ToolTips
+
+120608
+Templating the DefaultListModel is not supported by Java JDE 1.6, but in 1.7, so
+I remove it again
+deleted CleanUpCode branch
+
+120607
+added Type to the DefaultListModel in IcontrolView
+added Keithley2600.configVoltageSourceRange
+modified Utilities.GenerateValues to exclude identical values in log sweep
+iC_ChartXY.AddXYDataPoint threw an Exception when a negative value was added to log axis
+
+120601
+worked on Keithley2600.EvaluateOPV: Rseries & Rshunt should now be estimated correctly
+EurothermTC: checkLoopback is called from setModbusAdr (not before)
+
+120530
+Keithley2600.EvaluateOPV changed GaussNewtonOptimizer to LevenbergMarquardtOptimizer
+as the former stalls without notice in some circumstances
+tried to fix Utilities.GenerateValues (it stopped at 0.699 not at 0.7)
+
+120524 (published as v 1.3.444)
+merged branch clean Up Code into trunk
+had to increase EOT-WaitTime in EurothermTC and add it to Device.QueryViaRS232
+
+120523
+Keithley7001 now waits a bit after opening/closing the switches
+fixed Utilities.GenerateValues which did not work when Start>Stop
+MeasureOPV now evaluates Rshunt, Rseries using straight line fits
+
+120522
+AgilentE4980 displays a status message when an invalid measurement is taken
+changed version number from 1.2 to 1.3
+iC_Utilities.GenerateValues missed the last data point due to numerical inaccuracies
+set Loess Bandwidth to 0.01 for Wei's data
+
+120521
+updated Apache Commons Math from 2.2 to 3.0
+implemented most of Keithley2600.EvaluateOPV (using the overkill solution of
+interpolating the data and using a solver to find Voc)
+implemented iC_Instrument.StopOrGo
+
+120519
+Tested and fixed Python with new iC.py
+added iC_ChartXY.ShowZeroLines
+started with Keithley2600.MeasureOPV
+
+120518
+changed Startup.py to iC.py and fixed access to _device from other modules
+
+120516
+added support for the Agilent E4980A Precision LCR Meter
+renamed KeithleySwitch to Keithley7001 and tested and debugged it
+
+120514
+YokogawaDL9000.setAcquisitionMode
+fixed Ekspla Generic Instruments (there must not be a space before \iC)
+renamed GPIB_Logger to Comm_Logger
+moved Startup.py into iC/Python_Scripts and added this path 
+started with evaluate OPV.py
+
+120511
+migration from Send/QueryVia... to SendToInstrument and QueryInstrument complete
+Keithley2600.SweepVmeasureI now returns the measured values (untested)
+implemented KeithleySwitch.CloseSwitch (untested)
+
+120509
+added links to the publication
+cont' with SendToInstrument/QueryInstrument
+fixed Device-classes import on Win (Netbeans and Command Line)
+tested EurothermTC and it works
+
+
+120508
+implemented SendToInstrument, QueryInstrument for GPIB and RS232
+updated and cleaned up Agilent4155 and EurothermTC
+
+120504
+moved some methods from Device to Utilities class
+moved Instruments into icontrol.drivers.instruments.ZYX
+
+120502
+started changing genericGPIBinstruments to genericInstruments
+Ekspla PG122 works with 38400 baud
+Branched out Clean-Up-Code:
+fixed registering Device classes in a subdirectory of instrument package (from NB)
+finished with genericInstruments (GPIB and RS232)
+
+
+120501
+Ekspla works except for setting wavelength (cannot talk to OPO)
+started with Keithley Switch
+tested current version with Agilent4155 and Eurotherm
+
+120430
+added EksplaNT340.NullmodemTest() => RS232 communication appears to work after 
+new character encoding is used.
+jna.encoding is not set in IcontrolView.myInit
+
+120427
+started to universally use ISO-8859-1 character encoding
+DS345.setARBtoCELIV works
+
+120426 
+Solved (supposedly) the mystery of converting String to byte[]: UTF-8 does not
+behave as I thought, ISO-8895-1 does. Need to set that iC-wide
+can send arbitray waveforms to SRS DS345
+
+120424
+fixed YokogawaDL9000.Savewaveform
+compared saved data by iC with saved data from oscilloscope (difference < 6uV)
+
+120423
+YokogawaDL9000.SaveWaveform saves and plots multiple channels (averaging does not work)
+started with SRS DS345
+
+120420
+Can receive Waveforms from the DL9240
+TMCTL_Driver is done so far.
+
+120419
+changed invokeGenericScriptMethod to also send via RS232 & TMCTL
+can talk to Yokogawa DL9240
+TMCTL_Driver.Receive works (for arbitrarily long answers)
+
+120417
+added "Close TMCTL" to Device.CloseController
+renamed Devce.Send/Query to SendCommand/QueryCommand
+
+120416
+contd' with TMCTL - it is ready for testing with a DL9000 osci
+Device.QueryViaGPIB did not query when a IOtech GPIB controller was used
+
+120414
+contd' with TMCTL
+moved Agilet4155 into a new package (see if this makes sense)
+
+120413
+started with tmctl.dll (ic does not compile)
+
+120412
+added Keithley2600.configDelayTime, .configFilters
+started Yokogawa DL9000
+
+120411
+fixed iC_Chart's AutoRanging problem for small numbers on a log scale
+changed Keithley2600.OutputState (needs testing on the instrument)
+
+120409
+debugged Agilent4155.configSweep (set number of points for Var2)
+added Keithley2600.checkErrorQueue
+debugged Keithley2600 on the instrument
+
+120405
+Keithley2600.SweepVmeasureI should be done. needs testing in the lab
+
+120403
+implemented Keithley2600.SweepVmeasureIconfig and contd' with SweepVmeasureI
+
+120402
+The iC directory is now searched first in the user home, then in the working directory
+
+120329
+Agilent4155.PlotData can now optionally save the plot as png
+Auto-Load now stores the entire path to the script last loaded/saved
+started implementing Keithley2600.SweepVMeasureI
+
+120323
+the last session is now automatically loaded upon startup of iC
+iC_Properties.getPath now includes the file separator at the end
+Agilent4155.PlotData now autoscales without including 0
+Agilent4155.PlotData should plot Y1 and Y2 axis; test and rename to PlotData
+    tested and renamed
+
+120321
+renamed Agilent4155 configDisplayAxis to DisplayAxis and debugged it
+debugged Agilent.configSweep
+added Agilent4155.configSMUconstant and configVMUconstant
+
+120319
+replace kenai.com with java.net & update screen casts
+Tried to copy RxTx libraries into lib directory and add lib dir to java.library.path, but
+the RxTx libs were not found. It's not nice but easiest to let them remain in the root dir.
+I noticed that when started from the command line, the user directory needs to
+be the dir where Icontrol.jar resides. Finding the dir where Icontrol.jar resides
+is cumbersome (considering that it might be started from Netbeans)
+
+120309
+added various methods to Keithley2600
+
+120305
+changed Agilent4155.configDisplayAxis - untested
+added Agilent4155.genericGPIBinstrument
+
+120228
+added an extra StopScripting check in MonitorChart
+added a wait time after sending via RS232; needs testing first
+added WhatsNew dialog
+fixed Agilent4155.configDisplayAxis
+started with Keithley 2600
+
+120221
+debugged GPIB_NI.Send after Scott unraveled that saveIDN? sends *IDN? and a \n (or "")
+exporting result of last command to Python Interpreter as _ans
+added Device.Query
+
+120206
+tested on Lab Computer after merging with IOtech branch
+fixed minor bugs
+iC dir is now copied to the dist folder (javadoc is updated)
+
+120203
+merged IOtech branch into trunk
+
+120124
+debugged with the IOtech attached on Paul's computer
+fixed Regex for parsing Generic GPIB Instruments
+changed RS232_Driver.TimeOut from 100 to 250ms (for the IOtech to work properly)
+
+120122
+renamed dir Generic GPIB Instruments to Generic Instruments
+added local javadoc
+
+120119
+tweaked logging subversion number
+iC_Properties now closes the iC_User.properties file
+
+120118
+subversion number is now logged in iC_Logger
+
+120109
+ListTransferHandler is not a private class of IcontrolView, deleted iC_Logger
+more clean-up for the paper
+
+120105
+GPIB_IOtech should roughly work now. getStatusByte and CloseController are missing
+
+120102
+implemented IOtech.Send and checkCommunicationError
+
+111216
+found that library .jar files are copied twice to dist folder: once inside the
+Icontrol.jar (because the library jar files were stored under the src directory)
+and once in the lib directory (Project Directory/Build/Packaging/Copy Dependent 
+Libraries). These jars need to be in lib, so the files were moved to the _misc folder
+
+Updated from JFreeChart 1.0.13 to 1.0.14
+
+
+111215
+EurothermTC: fixed WriteA32bitValue, setRampRate
+implemented and tested ReadA32bitValue, getProcessvalue
+
+111213
+renamed iC.debug to iC.Debug
+added iC_User.properties to iC "distribution" folder
+selected GPIB controller is now saved as default selection when pressing Start
+
+111212
+convenience method RS232_Driver.ByteBufferToString
+cleaned up EurothermTC.setSP1, added setRamp1, 
+checkLoopBack is now called (all untested yet)
+
+111210
+cont' working on IOtech RS232-GPIB controller
+
+111205
+found the bug in CRC calculation of Eurotherm (needs further cleanup)
+branched out Icontrol_IOtechBranch
+started implementing support for IOtech Micro488 RS232-GPIB controller
+
+111130 revision 348
+merged Jython branch into trunk
+now storing the path to the iC directory (Startup.py was not found)
+
+111129
+corrected Regex in Tokenizer which stripped off the / of a path instead of comments
+implemented INCLUDE zyx.py
+
+111128
+Python integration should be more or less done (including javadoc)
+
+111126
+added Device.iSPaused and changed code in the Instruments that used isPaused, adapted javadoc
+added is_paused to Startup.py
+checked how to use return values in Python
+
+111123
+Jython appears to work
+single and multiple Python commands can now be sent
+
+111107
+Lakeshore340.UpdateCalibrationData: choosing no interpolation curve should work
+
+111104
+updated Apache Commons Math from 2.1 to 2.2
+allow to choose between Loess and Linear Interpolation for Temperature 
+    calibration (work in progress)
+debugged LakeshoreTC.autoSetPoint
+
+111103
+Serial Number for Input Curves (Lakeshore 340) is now MonthDate
+the last script loaded/saved last is now loaded automatically when iC.Debug=1
+added Lakeshore340.readCalibrationPoints
+now displaying 10000 data points max (manual GC might work)
+
+
+111102
+added manual garbage collection after displaying 500 data points in the hope to
+prevent further out-of-memory crashes
+worked on some minor ToDo's and bugfixes in setTempCalibrate
+changed default log level in debug mode from ALL to FINER
+iControlView.getFileName(String) now adds a counter if the file exists
+
+111027
+yesterday an OutOfMemory crashed iC.
+in GPIB_NI in CloseController the ByteBuffer is released and GarbageCollection started
+added Lakeshore340.setTempCalibrate
+
+111026
+debugged iC_ChartXY.AddXYDataPoint(ID, X[], Y[]): did not update correctly and did not show last data point
+continued improving Lakeshore340.addCalibrationData and .UpdateSensorCurve
+implemented LakeshoreTC.SetTemp with better wait for temperature
+ChangeLog is now in a separate file
+added (almost empty) skeleton for a HP3561 Dynamic Signal Analyzer
+
+111020
+continued improving Lakeshore340.addCalibrationData and .UpdateSensorCurve
+iC_Instrument.WaitForUser is now modeless
+
+111019
+added LakeshoreTC.autoSetPoint and iC_ChartXY.ClearSeries
+debugged Lakeshore340.addCalibrationData and .UpdateSensorCurve
+started with making iC_Instrument.WaitForUser a non-modal (modeless) Dialog
+
+111012
+added iC_Instrument.WaitDate
+
+110921
+added WaitForUser in iC_Instruments
+changed LakeshoreTC.Epsilon from 0.1 to 0.5 (sometimes the temperature change was 
+so high that the epsilon was too small
+
+110919
+Apparently the set point temperature is not changed when the command is sent
+directly after changing the ramp rate on a Lakeshore 332. No error was generated. 
+This was confirmed by sending RAMP 2,0,10.000\n\rSETP 2, 70 using NI Measurement
+and Automation Explorer. Adding a 100ms delay after setting the ramp rate helped. 
+Also added a 100 ms delay in other methods in LakeshoreTC.
+
+110916
+sub-scripts that do not include a full path are now searched first in the Project directory,
+then in the default iC directory
+sub-scripts can now also contain MAKE commands
+changed Test_Scripts (in _misc) to Development_Scripts and Example_Scripts
+
+110914
+fixed GUI bug (clear table and end editing when a different instrument/command is selected)
+
+110806
+added Agilent4155: disable a SMU (not yet tested)
+
+110727
+Agilent4155.configDisplayAxis did not set Y2 axis (but Y1 axis instead)
+
+110722
+the last Project Directory is now remembered
+branched out a RS232branch on the SVN repository
+cleaned up the main repository (I hope)
+
+110721
+added configDisplayAxis() to 4155
+branched out a MCCdaq branch
+deleted MCCdaq stuff from this trunk version
+
+110720
+added logX/logY option to 4155.PlotData
+removed auto cal on and display:window:state 1 from 4155.Close to not change the
+display when sequencing done. was unnecessary anyways
+
+
+110708 
+fixed Agilent4155.configSweep (error setting VAR2 number of points)
+added JFreeChart-1.0.x.jar which should prevent the queing of events that cuases
+the unresponsivness of iC. Select this jar in the project properties instead
+of JFreeChart-1.0.13.jar
+
+110707
+fixed Agilent4155.SaveData (data was not saved with the proper file name)
+Agilent4155 can now plot XY charts of data
+
+110705
+add lin/log scaling to Popup menu of iC_ChartXY
+HP4192 now selects log scaling of frequency axis when log frequency sweep was selected
+
+110609
+make max number of data points shown in a Chart an iC_Property (to prevent a bug)
+
+110606 (1.0.259)
+Agilent4155 made SaveData() public
+minor bug fix with escaped () in parsing generic GPIB command definitions
+
+Release version is 1.0.258, date 110523

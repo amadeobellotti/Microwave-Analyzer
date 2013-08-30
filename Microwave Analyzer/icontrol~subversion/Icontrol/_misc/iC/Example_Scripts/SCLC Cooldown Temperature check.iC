@@ -1,0 +1,163 @@
+%% Coold down the Flow Cryostat used for SCLC measurements and check if the Stage Temperatuer
+%% equals the Sample Temperature. To measure the Sample Temperature a Si Diode is mounted
+%% instead of a sample.
+%% kpp 2012, last update 120726
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Instrument definitions
+
+MAKE iC; iC-control; none
+MAKE LM; Cryomagnetics LM 500; COM2,9600,8,1,none
+MAKE Tgas; Lakeshore 332; GPIB=11
+MAKE Tstage; Lakeshore 332; GPIB=11
+MAKE Tsample; Lakeshore 332; GPIB=12 // for checking Tsample with Si diode from Curt
+
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% config Temperature Controller
+
+Tgas configDefaults A; 1
+Tgas setHeaterRange 3
+Tgas setRampRate 0; true; 10.0
+
+Tstage configDefaults B; 2
+Tstage setHeaterRange 1
+Tstage setRampRate 0; true; 10.0
+
+Tsample configDefaults A; 1
+Tsample setHeaterRange 0
+ 
+%% end configurations
+
+
+iC MonitorChart 1.0; Temperature [K]; .monT; "Tgas getTemp default"; "Tstage getTemp default"; "Tsample getTemp default"; ""; ""
+iC MonitorChart 20.0; LN2 level; .monLN2; "LM Measure 2"; ""; ""; ""; ""
+ 
+
+// refill LN2 reservoir if necessary
+LM Refill 2; 60.0
+
+ 
+%%%%%%%%%%%%%%%%%
+%% check T @ 250K
+
+// for a faster ramp (approx. 4 K/min) set Tgas to SP - 50K
+Tgas setTemp 0; 200.0; false; 0.1; 180.0
+
+// when Tstage is within 5K of Set Point ...
+Tstage setTemp 0; 255.0; true; 0.5; 1
+
+// ... set Tstage to SetPoint and Tgas to SP - 3K
+Tstage setTemp 0; 250.0; false; 0.1; 10.0
+Tgas setTemp 0; 247.0; true; 0.1; 300.0
+
+// after Tgas has stabilized, wait to check if Tsample equals Tstage
+iC Wait 3600.0
+
+// set Tgas to SP - 0K
+Tgas setTemp 0; 250.0; true; 0.1; 180.0
+
+// after Tgas has stabilized, wait to check if Tsample equals Tstage
+iC Wait 3600.0
+
+
+// refill LN2 reservoir if necessary
+LM Refill 2; 40.0
+
+ 
+
+
+
+%%%%%%%%%%%%%%%%%
+%% check T @ 200K
+
+// for a faster ramp (approx. 4 K/min) set Tgas to SP - 50K
+Tgas setTemp 0; 150.0; false; 0.1; 180.0
+
+// when Tstage is within 5K of Set Point ...
+Tstage setTemp 0; 205.0; true; 0.5; 1
+
+// ... set Tstage to SetPoint and Tgas to SP - 3K
+Tstage setTemp 0; 200.0; false; 0.1; 10.0
+Tgas setTemp 0; 197.0; true; 0.1; 300.0
+
+// after Tgas has stabilized, wait to check if Tsample equals Tstage
+iC Wait 3600.0
+
+// set Tgas to SP - 0K
+Tgas setTemp 0; 200.0; true; 0.1; 180.0
+
+// after Tgas has stabilized, wait to check if Tsample equals Tstage
+iC Wait 3600.0
+
+
+// refill LN2 reservoir if necessary
+LM Refill 2; 40.0
+
+
+
+%%%%%%%%%%%%%%%%%
+%% check T @ 150K
+
+// for a faster ramp (approx. 4 K/min) set Tgas to SP - 50K
+Tgas setTemp 0; 100.0; false; 0.1; 180.0
+
+// when Tstage is within 5K of Set Point ...
+Tstage setTemp 0; 155.0; true; 0.5; 1
+
+// ... set Tstage to SetPoint and Tgas to SP - 3K
+Tstage setTemp 0; 150.0; false; 0.1; 10.0
+Tgas setTemp 0; 147.0; true; 0.1; 300.0
+
+// after Tgas has stabilized, wait to check if Tsample equals Tstage
+iC Wait 3600.0
+
+// set Tgas to SP - 0K
+Tgas setTemp 0; 150.0; true; 0.1; 180.0
+
+// after Tgas has stabilized, wait to check if Tsample equals Tstage
+iC Wait 3600.0
+
+
+// refill LN2 reservoir if necessary
+LM Refill 2; 40.0
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%% check T @ 100K
+
+// for a faster ramp (approx. 4 K/min) set Tgas to SP - 50K
+Tgas setTemp 0; 80.0; false; 0.1; 180.0
+
+// when Tstage is within 5K of Set Point ...
+Tstage setTemp 0; 105.0; true; 0.5; 1
+
+// ... set Tstage to SetPoint and Tgas to SP - 3K
+Tstage setTemp 0; 100.0; false; 0.1; 10.0
+Tgas setTemp 0; 97.0; true; 0.1; 300.0
+
+// after Tgas has stabilized, wait to check if Tsample equals Tstage
+iC Wait 3600.0
+
+// set Tgas to SP - 0K
+Tgas setTemp 0; 100.0; true; 0.1; 180.0
+
+// after Tgas has stabilized, wait to check if Tsample equals Tstage
+iC Wait 3600.0
+
+
+// refill LN2 reservoir if necessary
+LM Refill 2; 40.0
+
+
+
+
+%% switch off heaters to conserve LN2
+Tgas setHeaterRange 0
+Tstage setHeaterRange 0
+ 
+iC WaitForStop

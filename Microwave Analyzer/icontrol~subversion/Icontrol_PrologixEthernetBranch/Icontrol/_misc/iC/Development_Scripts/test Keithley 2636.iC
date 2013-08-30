@@ -1,0 +1,22 @@
+MAKE iC; iC-control; none
+MAKE SM; Keithley 2600; GPIB=4
+ 
+// configure mode of operation
+SM configSMUChannel a; i
+ 
+ 
+ // configure Analog Filters
+SM configAnalogFilters a; 1
+ 
+ 
+ 
+// measure current (GUI less method)
+SM measureI a
+ 
+ 
+// keep monitoring the current 
+iC MonitorChart 1.0; Current [A]; .txt; "SM measureI a"; ""; ""; ""; ""
+ 
+ 
+ 
+iC WaitForStop

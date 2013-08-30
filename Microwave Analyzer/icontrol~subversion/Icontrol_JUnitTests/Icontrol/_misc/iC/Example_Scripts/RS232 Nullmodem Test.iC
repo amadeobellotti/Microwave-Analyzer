@@ -1,0 +1,2 @@
+MAKE laser; Ekspla NT340; COM1, 9600, 8, 1, none
+laser NullmodemTest

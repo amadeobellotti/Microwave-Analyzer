@@ -1,0 +1,15 @@
+MAKE iC; iC-control; none
+ 
+MAKE dT; Lakeshore 340; GPIB 4
+dT configDefaults A; 1
+ 
+dT configControlLoopLimit 1; 350.0; 10.0; 50.0; 5; 2
+dT configInputCurve A; 21
+dT configLoopParameters 1; A; K
+dT configRelay low; manual; false
+dT getTemp default
+dT setHeaterCurrentLimit 0.1
+dT setHeaterRange 1
+dT enableHeaterOuput false
+dT setRampRate 0; true; 10.0
+dT setTemp 0; 295.0; false

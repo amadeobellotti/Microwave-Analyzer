@@ -1,0 +1,47 @@
+MAKE iC; iC-control; none
+ 
+MAKE PA; Agilent 4155; GPIB=7
+
+
+
+/////////////////////////////
+// configure Measurement Mode
+
+PA configMeasurementMode Sampling
+%%%iC Pause
+
+PA configMeasurementMode QSCV
+%%%iC Pause
+
+PA configMeasurementMode Sweep
+%%%iC Pause
+
+/////////////////
+// configure SMUs
+PA configSMU 1; Vd; Id; V; Var2
+PA configSMU 2; Vg; Ig; V; Var1
+PA configSMU 3; Vs; Is; Common; Constant
+%%%iC Pause
+
+// configure VMUs
+PA configVMU 1; Vm1; DVolt
+%%%iC Pause
+PA configVMU 1; Vm1; V
+PA configVMU 2; Vm2; V
+%%%iC Pause
+
+/////////////////////////
+// test for correct names
+// these script-commands must fail
+
+%PA configVMU 1; TooLong; V
+%PA configVMU 1; 1nono; V
+%PA configVMU 1;  ; V
+
+///////////////////
+// test Sweep setup
+PA configSweep Var1; true; L10; 0.1; 5.1; 0.11; 1.11E-4; 1.0; 1.1
+PA configSweep Var2; false; Lin; 0.2; 5.2; 0.22; 1.22E-5; 2.0; 2.2
+iC Pause
+
+PA configSweep Var1; true; L10; 0.0; 5.0; 0.1; 100E-6; 1.0; 0.0

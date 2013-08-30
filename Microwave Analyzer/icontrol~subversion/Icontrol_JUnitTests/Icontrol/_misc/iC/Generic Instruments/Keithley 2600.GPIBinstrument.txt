@@ -1,0 +1,7 @@
+// Extension of the Keithley2600 class
+// Some not so important commands are implemented here as it is faster.
+// The comes at the expense that the Syntax check is not so rigorous.
+// author: KPP
+
+// configures the Integration Aperture
+configNPLC {sets the Integration Aperture in # of power line cycles } | smu%s.measure.nplc = %f | Channel Name \{a, b\} {Case sensitive!} (a) | NPLC \{0.001, 25\} [0.001,25] (7)

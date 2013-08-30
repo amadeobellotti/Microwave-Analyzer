@@ -1,0 +1,58 @@
+// load configuration for thermoelectric measurements
+// in Dave's Desert Cryogenics
+INCLUDE TEsetup Desert Cryo Dave.iC
+ 
+// make sure all heaters are switched on (max power)
+iC WaitForUser Switch on all heaters, attach LN2
+ 
+// initialize Temperature controllers
+OuterShield setRampRate 0; false; 5
+OuterShield setTemp 0; 70; false; 1; 1
+ 
+InnerShield setRampRate 0; true; 10
+InnerShield autoSetPoint default; 0     // set SP to current T
+//InnerShield setTemp 0; 250; false; 1; 1
+ 
+Therm1 setRampRate 0; false; 5
+Therm1 setTemp 0; 70; false; 1; 1
+ 
+Therm2 setRampRate 0; false; 5
+Therm2 setTemp 0; 70; false; 1; 1
+ 
+Tstage setRampRate 0; true; 5
+Tstage autoSetPoint default; 0 	// set SP to current T
+ 
+ 
+// start monitoring
+iC MonitorChart 1; Temperature [K]; _monT.txt; "Tstage getTemp default"; "Therm1 getTemp default"; "Therm2 getTemp default"; "InnerShield getTemp default"; "OuterShield getTemp default"
+
+ 
+// cal @ 290
+InnerShield setTemp 0; 290.0; false; 1.0; 1.0
+Therm1 setTempCalibrate 290.0; 2; 1.0; Tstage; 0.1; 180; false 
+ 
+// cal @ 250
+InnerShield setTemp 0; 250.0; false; 1.0; 1.0
+Therm1 setTempCalibrate 250.0; 2; 1.0; Tstage; 0.1; 180; false
+
+// cal @ 200
+InnerShield setTemp 0; 200.0; false; 1.0; 1.0
+Therm1 setTempCalibrate 200.0; 2; 1.0; Tstage; 0.1; 180; false
+
+// cal @ 150
+InnerShield setTemp 0; 150.0; false; 1.0; 1.0
+Therm1 setTempCalibrate 150.0; 2; 1.0; Tstage; 0.1; 180; false
+
+// cal @ 120
+InnerShield setTemp 0; 120.0; false; 1.0; 1.0
+Therm1 setTempCalibrate 120.0; 2; 1.0; Tstage; 0.1; 180; false
+
+// cal @ 80
+InnerShield setTemp 0; 80.0; false; 1.0; 1.0
+Therm1 setTempCalibrate 80.0; 2; 1.0; Tstage; 0.1; 180; true
+
+// wait at 81 K
+Tstage setTemp 0; 81; false; 1; 1
+ 
+ 
+iC WaitForStop

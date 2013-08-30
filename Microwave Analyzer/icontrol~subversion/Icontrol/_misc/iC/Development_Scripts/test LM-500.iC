@@ -1,0 +1,6 @@
+MAKE iC; iC-control; none
+MAKE LN2; LM 500 LCLM; COM2,9600,8,1,none
+ 
+LN2 Measure 2
+iC MonitorChart 2.0; LN2 level; .monLN2; "LN2 Measure 2"; ""; ""; ""; ""
+iC WaitForStop

@@ -1,0 +1,31 @@
+MAKE iC; iC-control; none
+MAKE SM; Keithley 2600; GPIB=4
+ 
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Setup the Instrument
+
+// configure mode of operation
+SM configSMUChannel A; V
+
+// config Integration Aperture
+SM configNPLC a; 1.0 
+ 
+// configure Off Limits
+SM configOffLimit A; I; 1.0E-4
+
+// switch off Output
+SM OutputState A; off; 0.1
+ 
+
+
+%% test new methods
+SM SweepVMeasureI A; -0.0010; 10.0; 5.0; true; 1000; 100; 15.0; 5.0; false; ".txt"
+SM SweepVMeasureI A; 0.0010; -10.0; 5.0; true; 1000; 100; 15.0; 5.0; false; ".txt"
+SM SweepVMeasureI A; 0.0010; 10.0; -5.0; true; 1000; 100; 15.0; 5.0; false; ".txt"
+SM SweepVMeasureI A; 0.0010; 10.0; 5.0; true; -1000; 100; 15.0; 5.0; false; ".txt"
+SM SweepVMeasureI A; 0.0010; 10.0; 5.0; true; 1000; -100; 15.0; 5.0; false; ".txt"
+SM SweepVMeasureI A; 0.0010; 10.0; 5.0; true; 1000; 100; -15.0; 5.0; false; ".txt"
+SM SweepVMeasureI A; 0.0010; 10.0; 5.0; true; 1000; 100; 15.0; -5.0; false; ".txt"
+ 
+ 
+iC WaitForStop

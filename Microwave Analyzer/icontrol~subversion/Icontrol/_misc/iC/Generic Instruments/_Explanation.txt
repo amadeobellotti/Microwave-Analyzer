@@ -1,0 +1,75 @@
+Quick intro on how to write generic GPIB Instruments
+====================================================
+
+Any text file containing '.GPIBInstrument' (case insensitive) in it's filename is 
+considered a definition for a generic GPIB Instrument. The filename can end 
+with an extension, for instance '.txt'.
+
+The characters before the first occurrence of a'.' (dot) are taken as the 
+Instrument-Class-Name (the name that shows up in the GUI in the MAKE section i.e.
+the name used in the script to MAKE new Instruments).
+
+If an instrument with the same Instrument-Class-Name already exists, the generic commands
+are appended to the existing commands.
+
+Examples
+--------
+Lakeshore 340.GPIBinstrument        (Lakeshore 340)
+SRS DS345.GPIBinstrument.txt        (SRS DS345)
+
+
+
+
+Each line in these text files contains defines one Device-Command.
+
+Comment lines have to start with % or // (no comments are allowed at the end of
+a line)
+
+Each line consists of Tokens that are separated by | (vertical line)
+
+Note that all fields can include escaped version of |, {}, [], and (). The
+escaped version will be substituted by the un-escaped character so that all
+characters are available.
+
+
+
+Examples
+--------
+% (1)       (2)            (3)                                (4)
+setTemp_G | SETP %d,%.3f | Loop# {can be 1 or 2} [1, 2] (1) | Temperature {the new Set Point temperature in K} [295, 300] (295)
+getTemp_G | KRDG? %.1s | Input Channel {can be A, B, C, or D} (A)
+saveIDN_G {saves the Identification query to a file} | *IDN? | File Extension {will be added to the File Name}
+%                                                              (5)
+
+More examples can be found in iC/Generic Instruments directory.
+
+
+Each line comprises the following Tokens
+----------------------------------------
+
+(1) Device-Command-Name {description for the user}
+This name must not contain spaces and it is used in the Script as a command to 
+perform the desired action. The description for the user (which is shown as a 
+Tool Tip for the Device-Command) is optional and enclosed in {}.
+ 
+(2) GPIB String
+Use %d for a decimal integer value, %s for a String value, %e or %E or
+%f for a double value, and %b or %B for a boolean value. Format specifiers
+such as %.4e are be allowed.
+ 
+(3) Parameter-Name {description for the user} [min value, max value] (default value)
+The Parameter-Name is shown to the user in the Table of the Auto-GUI, and
+the description as a Tool Tip. The min/max value are used in the Syntax-Check
+to ensure the numerical value specified by the user is within the range. The default
+value is used to fill the Table in the Auto-GUI if the user selects this
+Device-Command.
+[], [], and () are all optional and can be given in any order. They should be separated
+by a space, however (until I fix the RegEx).
+ 
+(4) more Parameter-Names if the GPIB String contains more than one %-character
+  
+(5) if the Device-Command-Name starts with 'save', then the last field is
+interpreted as a File-Extension to save the data returned by the Instrument
+to a corresponding file.
+  
+

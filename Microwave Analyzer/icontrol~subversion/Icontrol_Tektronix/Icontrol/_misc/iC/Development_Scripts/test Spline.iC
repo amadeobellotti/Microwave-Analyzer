@@ -1,0 +1,4 @@
+MAKE iC; iC-control; none
+
+MAKE dT; Lakeshore 340; GPIB=4
+dT addCalibrationPoint true; true; "dT getTemp A"; false; .cal

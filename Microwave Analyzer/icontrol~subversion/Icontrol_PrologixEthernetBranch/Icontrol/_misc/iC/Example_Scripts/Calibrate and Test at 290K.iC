@@ -1,0 +1,35 @@
+// load configuration for thermoelectric measurements
+// in Dave's Desert Cryogenics
+INCLUDE TEsetup Desert Cryo Dave.iC
+ 
+// make sure all heaters are switched on (max power)
+ 
+// initialize Temperature controllers
+OuterShield setRampRate 0; false; 5
+OuterShield setTemp 0; 70; false; 1; 1
+ 
+InnerShield setRampRate 0; false; 5
+InnerShield setTemp 0; 250; false; 1; 1
+ 
+Therm1 setRampRate 0; false; 5
+Therm1 setTemp 0; 70; false; 1; 1
+ 
+Therm2 setRampRate 0; false; 5
+Therm2 setTemp 0; 70; false; 1; 1
+ 
+Tstage setRampRate 0; true; 0.5
+Tstage autoSetPoint default; 0 // set SP to current T
+ 
+ 
+/////////////////////////////////////////////// 
+// start monitoring
+iC MonitorChart 0.25; Temperature [K]; _monAll.txt; "Tstage getTemp default"; "Therm1 getTemp default"; "Therm2 getTemp default"; "InnerShield getTemp default"; "OuterShield getTemp default"
+iC MonitorChart 0.25; Temperature [K]; _monTherm.txt; "Therm1 getTemp default"; "Therm2 getTemp default"; ""; ""; ""
+ 
+InnerShield setTemp 0; 290.0; false; 1.0; 1.0
+Therm1 setTempCalibrate 290.0; 4; 1.0; Tstage; 0.1; 180; true
+ 
+ 
+Tstage setTemp 0; 291.0; false; 0.1; 10.0
+ 
+iC WaitForStop

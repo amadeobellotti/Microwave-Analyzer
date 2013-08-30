@@ -1,0 +1,23 @@
+MAKE iC; iC-control; none
+
+//MAKE PA; Agilent 4155; GPIB=2
+//MAKE srs; SRS DS345; GPIB=14
+
+MAKE dT; Lakeshore 340; GPIB=4
+dT configDefaults A; 1
+
+//dT setTemp_G 1; 301
+//dT setTemp_G 1; 294
+
+//dT setTemp_G 1; 300
+//iC Wait 0.5
+//dT setTemp_G 1; 295
+
+dT getTemp_G A
+
+ 
+iC MonitorChart 1; Temperature [K]; .monT; "dT getTemp default"; "dT getTemp_G A"; ""; ""; ""
+
+dT saveIDN_G .idn.txt
+
+iC Wait 3

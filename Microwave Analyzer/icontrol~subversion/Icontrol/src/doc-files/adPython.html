@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Python integration</title></head><body>
+<br>
+
+<h2><span style="font-weight: bold;"></span>About Python Integration in iC<br>
+</h2>
+<ul>
+  <li>Any iC script can also execute Python commands. Python commands have to start with a vertical bar (|), for instance:</li>
+</ul>
+<br>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;"><code>|a=42</code><br>
+<code>|print a</code><br>
+<code></code><br>
+<code>|ans = dispatch_command('Tstage', 'getTemp', 'A')</code><br>
+<code>|print 'The current temperature is ' + str(ans)</code><br>
+<code></code><br>
+<code>|for T in range(295, 77, -10):</code><br>
+<code>|&nbsp;&nbsp;&nbsp; # set Temperature</code><br>
+<code>|&nbsp;&nbsp;&nbsp; dispatch_command('Tstage', 'setTemp', 1, T, 0, 0, 0)<br>
+|<br>
+|&nbsp;&nbsp;&nbsp; # display a message<br>
+|&nbsp;&nbsp;&nbsp; print 'Now measuring at T = ' + str(T)<br>
+</code>
+<code>|</code><br>
+<code>|&nbsp;&nbsp;&nbsp; # do something else</code><br>
+<code>|</code><br>
+<code>|print 'Done.'<br>
+<br>
+|import subscript.py<br>
+</code>
+</div>
+<code></code></div>
+<br>
+<ul>
+  <li>Note that becuase Python is sensitive to indentation, there
+must not be a space between the vertical bar (|) and the python
+command, unless a previous Python command requires a certain
+indentation.<br>
+</li>
+  <li>Successive lines starting with | are treated as a block and
+executed as one line, which enables to execute multi line statements with indentations etc.</li>
+  <li>Because a Python block is executed without interception from the
+iC-Framework, it is highly recommended to check if the Stop button was
+pressed using<code> is_stop_scripting()</code>, especially when loops are used in the Python part. See the examples in the iC directory.<br>
+  </li>
+
+
+  <li>Upon (re-)starting the Python interpreter, a Python script
+    <code>iC/Startup.py</code> is executed. This module provides the following functions
+to handle access to Instrument-Control (iC). <br>
+  </li>
+  <ul>
+    <li><code>dispatch_command(InstrumentName, CommandName, *Parameters)</code></li>
+    <li><code>getFileName(Extension)</code><br>
+    </li>
+
+    <li><code>is_syntax_check_mode()</code></li>
+    <li><code>is_stop_scripting()</code></li>
+    <li><code>is_paused(wait_until_not_paused)</code></li>
+    <li><code>is_no_communication_mode()</code></li>
+
+  </ul>
+  <li>The Python script is executed during Syntax-Check mode as well. It is, therefore, recommended to check <code>is_syntax_check_mode()</code> to supress output during Syntax-Check mode.</li>
+  <li>After the Syntax-Check has been performed, a new Python
+Interpreter is created, hence, variables defined during the
+Syntax-Check are not available in the 'real' run. In other words, the
+script sees a 'clean' Python Interpreter (a namespace where only <code>_device</code> (see <code>Startup.py</code>) and a few other variables are defined).</li>
+  <li>Python's standard output is shown in the Python Prompts window, which also allows to enter Python commands.</li>
+  <li>To call other Python scripts from Python, use <code>import</code> (and define a function and use <code>if __name__ == '__main__': ... </code>) or use <code>execfile</code> (which needs the proper path).</li>
+  <li>Jython provides access to Java's libraries as illustrated in the example which askes the user to input a number:<br>
+    <code>|from javax.swing import JOptionDialog<br>
+|ans = JOptionPane.showInputDialog('Please enter a number')<br>
+|print ans</code><br>
+    <br>
+  </li>
+
+
+</ul>
+
+
+
+
+
+
+<h5>Remarks</h5>
+<ul>
+  <li>The MAKE command is not supported from Python, one must use iC instead. See javadoc comment to <code>Device.execPython</code>.</li>
+  <li>Note that it is not possible to use Python code based on C code (such as  <code>matplotlib</code>, <code>numpy</code>, <code>scipy</code>),
+because iC uses Jython and Jython is a Java implementation of Python
+which does not support such calls. There might be other alternatives,
+such as PyPlot or jyplot2 (which uses JFreeChart which is already
+included in iC).<br>
+  </li>
+
+</ul>
+<br>
+
+</body></html>

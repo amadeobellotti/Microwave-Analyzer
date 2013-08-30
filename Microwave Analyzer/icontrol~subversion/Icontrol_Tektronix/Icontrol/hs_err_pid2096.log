@@ -1,0 +1,317 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x18fb4ce0, pid=2096, tid=2784
+#
+# JRE version: 6.0_21-b07
+# Java VM: Java HotSpot(TM) Client VM (17.0-b17 mixed mode windows-x86 )
+# Problematic frame:
+# C  0x18fb4ce0
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x18891400):  JavaThread "Thread-5" [_thread_in_native, id=2784, stack(0x18f60000,0x18fb0000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x18fb4ce0
+
+Registers:
+EAX=0x18fb4ce0, EBX=0x13ff4dc0, ECX=0x18891518, EDX=0x13ff8828
+ESP=0x18fae73c, EBP=0x18fae780, ESI=0x13ff4dc0, EDI=0x18891400
+EIP=0x18fb4ce0, EFLAGS=0x00010283
+
+Top of Stack: (sp=0x18fae73c)
+0x18fae73c:   0092e772 18891518 18fae788 6ab552d0
+0x18fae74c:   00000000 00000000 18fae790 00000007
+0x18fae75c:   000b35e3 18fae760 00000000 18fae79c
+0x18fae76c:   13ff8828 00000000 13ff4dc0 00000000
+0x18fae77c:   18fae7a0 18fae9c8 00cbbe44 13ff7170
+0x18fae78c:   0092b789 0312cdd0 00000000 6ab552d0
+0x18fae79c:   00000000 6ab552d0 00000000 6dab4e80
+0x18fae7ac:   6dab7300 ffffffff 18fae7c4 6d8b10e0 
+
+Instructions: (pc=0x18fb4ce0)
+0x18fb4cd0:   
+[error occurred during error reporting (printing registers, top of stack, instructions near pc), id 0xc0000005]
+
+Stack: [0x18f60000,0x18fb0000],  sp=0x18fae73c,  free space=13918fadbfck
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  0x18fb4ce0
+J  com.sun.jna.Function.invoke([Ljava/lang/Object;Ljava/lang/Class;Z)Ljava/lang/Object;
+J  com.sun.jna.Function.invoke(Ljava/lang/Class;[Ljava/lang/Object;Ljava/util/Map;)Ljava/lang/Object;
+J  com.sun.jna.Library$Handler.invoke(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;
+j  icontrol.drivers.$Proxy12.ibwrt(ILjava/nio/ByteBuffer;J)I+30
+j  icontrol.drivers.GPIB_NI.Send(Ljava/lang/String;)J+73
+j  icontrol.drivers.Device.QueryInstrument(Ljava/lang/String;)Ljava/lang/String;+191
+j  icontrol.drivers.instruments.lakeshore.LakeshoreTC.getTemp(Ljava/lang/String;)F+62
+j  icontrol.drivers.instruments.lakeshore.LakeshoreTC.setTemp(IFZFF)V+328
+j  sun.reflect.GeneratedMethodAccessor10.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+508
+J  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+J  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+j  icontrol.drivers.Device.DispatchCommand(Ljava/lang/String;)Ljava/lang/Object;+498
+j  icontrol.drivers.instruments.lakeshore.Lakeshore340.setTempCalibrate(FIFLjava/lang/String;FIZ)V+301
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0xf3abc]
+V  [jvm.dll+0x1865b1]
+V  [jvm.dll+0xf3b3d]
+V  [jvm.dll+0x1a0ebb]
+V  [jvm.dll+0x1a18d6]
+V  [jvm.dll+0x11f423]
+C  [java.dll+0x7127]
+j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+87
+J  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+J  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+j  icontrol.drivers.Device.DispatchCommand(Ljava/lang/String;)Ljava/lang/Object;+498
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0xf3abc]
+V  [jvm.dll+0x1865b1]
+V  [jvm.dll+0xf3b3d]
+V  [jvm.dll+0x1a0ebb]
+V  [jvm.dll+0x1a18d6]
+V  [jvm.dll+0x11f423]
+C  [java.dll+0x7127]
+j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+87
+J  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+J  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+j  org.python.core.PyReflectedFunction.__call__(Lorg/python/core/PyObject;[Lorg/python/core/PyObject;[Ljava/lang/String;)Lorg/python/core/PyObject;+217
+j  org.python.core.PyReflectedFunction.__call__([Lorg/python/core/PyObject;[Ljava/lang/String;)Lorg/python/core/PyObject;+43
+j  org.python.core.PyObject.__call__(Lorg/python/core/PyObject;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+16
+j  org.python.core.PyObject.__call__(Lorg/python/core/ThreadState;Lorg/python/core/PyObject;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+3
+j  org.python.core.PyMethod.__call__(Lorg/python/core/ThreadState;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+28
+j  iC$py.dispatch_command$1(Lorg/python/core/PyFrame;Lorg/python/core/ThreadState;)Lorg/python/core/PyObject;+295
+j  iC$py.call_function(ILorg/python/core/PyFrame;Lorg/python/core/ThreadState;)Lorg/python/core/PyObject;+52
+j  org.python.core.PyTableCode.call(Lorg/python/core/ThreadState;Lorg/python/core/PyFrame;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+129
+j  org.python.core.PyBaseCode.call(Lorg/python/core/ThreadState;[Lorg/python/core/PyObject;[Ljava/lang/String;Lorg/python/core/PyObject;[Lorg/python/core/PyObject;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+718
+j  org.python.core.PyFunction.function___call__(Lorg/python/core/ThreadState;[Lorg/python/core/PyObject;[Ljava/lang/String;)Lorg/python/core/PyObject;+19
+j  org.python.core.PyFunction.__call__(Lorg/python/core/ThreadState;[Lorg/python/core/PyObject;[Ljava/lang/String;)Lorg/python/core/PyObject;+4
+j  org.python.core.PyFunction.__call__(Lorg/python/core/ThreadState;[Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+6
+j  org.python.pycode._pyx8.f$0(Lorg/python/core/PyFrame;Lorg/python/core/ThreadState;)Lorg/python/core/PyObject;+265
+j  org.python.pycode._pyx8.call_function(ILorg/python/core/PyFrame;Lorg/python/core/ThreadState;)Lorg/python/core/PyObject;+24
+j  org.python.core.PyTableCode.call(Lorg/python/core/ThreadState;Lorg/python/core/PyFrame;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+129
+j  org.python.core.PyCode.call(Lorg/python/core/ThreadState;Lorg/python/core/PyFrame;)Lorg/python/core/PyObject;+4
+j  org.python.core.Py.runCode(Lorg/python/core/PyCode;Lorg/python/core/PyObject;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+97
+j  org.python.core.Py.exec(Lorg/python/core/PyObject;Lorg/python/core/PyObject;Lorg/python/core/PyObject;)V+226
+j  org.python.util.PythonInterpreter.exec(Ljava/lang/String;)V+22
+j  icontrol.drivers.Device.execPython(Ljava/lang/String;)V+85
+j  icontrol.Dispatcher.run()V+516
+j  java.lang.Thread.run()V+11
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0xf3abc]
+V  [jvm.dll+0x1865b1]
+V  [jvm.dll+0xf3c87]
+V  [jvm.dll+0xf3cfd]
+V  [jvm.dll+0x11dac0]
+V  [jvm.dll+0x1e6fb4]
+V  [jvm.dll+0x185f5c]
+C  [msvcr71.dll+0x9565]
+C  [kernel32.dll+0xb729]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  com.sun.jna.Native.invokeInt(JI[Ljava/lang/Object;)I+0
+J  com.sun.jna.Function.invoke([Ljava/lang/Object;Ljava/lang/Class;Z)Ljava/lang/Object;
+J  com.sun.jna.Function.invoke(Ljava/lang/Class;[Ljava/lang/Object;Ljava/util/Map;)Ljava/lang/Object;
+J  com.sun.jna.Library$Handler.invoke(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;
+j  icontrol.drivers.$Proxy12.ibwrt(ILjava/nio/ByteBuffer;J)I+30
+j  icontrol.drivers.GPIB_NI.Send(Ljava/lang/String;)J+73
+j  icontrol.drivers.Device.QueryInstrument(Ljava/lang/String;)Ljava/lang/String;+191
+j  icontrol.drivers.instruments.lakeshore.LakeshoreTC.getTemp(Ljava/lang/String;)F+62
+j  icontrol.drivers.instruments.lakeshore.LakeshoreTC.setTemp(IFZFF)V+328
+j  sun.reflect.GeneratedMethodAccessor10.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+508
+J  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+J  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+j  icontrol.drivers.Device.DispatchCommand(Ljava/lang/String;)Ljava/lang/Object;+498
+j  icontrol.drivers.instruments.lakeshore.Lakeshore340.setTempCalibrate(FIFLjava/lang/String;FIZ)V+301
+v  ~StubRoutines::call_stub
+j  sun.reflect.NativeMethodAccessorImpl.invoke0(Ljava/lang/reflect/Method;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+0
+j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+87
+J  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+J  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+j  icontrol.drivers.Device.DispatchCommand(Ljava/lang/String;)Ljava/lang/Object;+498
+v  ~StubRoutines::call_stub
+j  sun.reflect.NativeMethodAccessorImpl.invoke0(Ljava/lang/reflect/Method;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+0
+j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+87
+J  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+J  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+j  org.python.core.PyReflectedFunction.__call__(Lorg/python/core/PyObject;[Lorg/python/core/PyObject;[Ljava/lang/String;)Lorg/python/core/PyObject;+217
+j  org.python.core.PyReflectedFunction.__call__([Lorg/python/core/PyObject;[Ljava/lang/String;)Lorg/python/core/PyObject;+43
+j  org.python.core.PyObject.__call__(Lorg/python/core/PyObject;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+16
+j  org.python.core.PyObject.__call__(Lorg/python/core/ThreadState;Lorg/python/core/PyObject;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+3
+j  org.python.core.PyMethod.__call__(Lorg/python/core/ThreadState;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+28
+j  iC$py.dispatch_command$1(Lorg/python/core/PyFrame;Lorg/python/core/ThreadState;)Lorg/python/core/PyObject;+295
+j  iC$py.call_function(ILorg/python/core/PyFrame;Lorg/python/core/ThreadState;)Lorg/python/core/PyObject;+52
+j  org.python.core.PyTableCode.call(Lorg/python/core/ThreadState;Lorg/python/core/PyFrame;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+129
+j  org.python.core.PyBaseCode.call(Lorg/python/core/ThreadState;[Lorg/python/core/PyObject;[Ljava/lang/String;Lorg/python/core/PyObject;[Lorg/python/core/PyObject;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+718
+j  org.python.core.PyFunction.function___call__(Lorg/python/core/ThreadState;[Lorg/python/core/PyObject;[Ljava/lang/String;)Lorg/python/core/PyObject;+19
+j  org.python.core.PyFunction.__call__(Lorg/python/core/ThreadState;[Lorg/python/core/PyObject;[Ljava/lang/String;)Lorg/python/core/PyObject;+4
+j  org.python.core.PyFunction.__call__(Lorg/python/core/ThreadState;[Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+6
+j  org.python.pycode._pyx8.f$0(Lorg/python/core/PyFrame;Lorg/python/core/ThreadState;)Lorg/python/core/PyObject;+265
+j  org.python.pycode._pyx8.call_function(ILorg/python/core/PyFrame;Lorg/python/core/ThreadState;)Lorg/python/core/PyObject;+24
+j  org.python.core.PyTableCode.call(Lorg/python/core/ThreadState;Lorg/python/core/PyFrame;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+129
+j  org.python.core.PyCode.call(Lorg/python/core/ThreadState;Lorg/python/core/PyFrame;)Lorg/python/core/PyObject;+4
+j  org.python.core.Py.runCode(Lorg/python/core/PyCode;Lorg/python/core/PyObject;Lorg/python/core/PyObject;)Lorg/python/core/PyObject;+97
+j  org.python.core.Py.exec(Lorg/python/core/PyObject;Lorg/python/core/PyObject;Lorg/python/core/PyObject;)V+226
+j  org.python.util.PythonInterpreter.exec(Ljava/lang/String;)V+22
+j  icontrol.drivers.Device.execPython(Ljava/lang/String;)V+85
+j  icontrol.Dispatcher.run()V+516
+j  java.lang.Thread.run()V+11
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x1763b000 JavaThread "Thread-1" daemon [_thread_in_native, id=1764, stack(0x195d0000,0x19620000)]
+  0x17604400 JavaThread "Thread-8" [_thread_blocked, id=1628, stack(0x19490000,0x194e0000)]
+  0x1777a400 JavaThread "Thread-7" [_thread_blocked, id=2132, stack(0x19440000,0x19490000)]
+=>0x18891400 JavaThread "Thread-5" [_thread_in_native, id=2784, stack(0x18f60000,0x18fb0000)]
+  0x16f90c00 JavaThread "org.python.google.common.base.internal.Finalizer" daemon [_thread_blocked, id=3044, stack(0x173c0000,0x17410000)]
+  0x17147400 JavaThread "TimerQueue" daemon [_thread_blocked, id=2172, stack(0x17810000,0x17860000)]
+  0x002b7400 JavaThread "DestroyJavaVM" [_thread_blocked, id=3252, stack(0x008c0000,0x00910000)]
+  0x16ffc800 JavaThread "AWT-EventQueue-0" [_thread_blocked, id=3600, stack(0x17320000,0x17370000)]
+  0x16ff7800 JavaThread "AWT-Shutdown" [_thread_blocked, id=3384, stack(0x17240000,0x17290000)]
+  0x16fef800 JavaThread "Java2D Disposer" daemon [_thread_blocked, id=4092, stack(0x171f0000,0x17240000)]
+  0x16b86800 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=2420, stack(0x16ed0000,0x16f20000)]
+  0x16b84400 JavaThread "CompilerThread0" daemon [_thread_blocked, id=4052, stack(0x16e80000,0x16ed0000)]
+  0x16b78c00 JavaThread "JDWP Command Reader" daemon [_thread_in_native, id=828, stack(0x16e30000,0x16e80000)]
+  0x16b76c00 JavaThread "JDWP Event Helper Thread" daemon [_thread_blocked, id=1336, stack(0x16de0000,0x16e30000)]
+  0x16b74800 JavaThread "JDWP Transport Listener: dt_shmem" daemon [_thread_blocked, id=3640, stack(0x16d90000,0x16de0000)]
+  0x16b69400 JavaThread "Attach Listener" daemon [_thread_blocked, id=1228, stack(0x16d20000,0x16d70000)]
+  0x16b68000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=3004, stack(0x16cd0000,0x16d20000)]
+  0x16b58c00 JavaThread "Finalizer" daemon [_thread_blocked, id=2688, stack(0x16c80000,0x16cd0000)]
+  0x16b54000 JavaThread "Reference Handler" daemon [_thread_blocked, id=2512, stack(0x16c30000,0x16c80000)]
+
+Other Threads:
+  0x16b51800 VMThread [stack: 0x16be0000,0x16c30000] [id=2368]
+  0x16b91c00 WatcherThread [stack: 0x16f20000,0x16f70000] [id=2176]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 14592K, used 9577K [0x029a0000, 0x03970000, 0x07ef0000)
+  eden space 12992K,  73% used [0x029a0000, 0x032fa5e0, 0x03650000)
+  from space 1600K,   0% used [0x03650000, 0x03650000, 0x037e0000)
+  to   space 1600K,   0% used [0x037e0000, 0x037e0000, 0x03970000)
+ tenured generation   total 32212K, used 19326K [0x07ef0000, 0x09e65000, 0x129a0000)
+   the space 32212K,  59% used [0x07ef0000, 0x091cf9e8, 0x091cfa00, 0x09e65000)
+ compacting perm gen  total 25856K, used 25650K [0x129a0000, 0x142e0000, 0x169a0000)
+   the space 25856K,  99% used [0x129a0000, 0x142aca58, 0x142acc00, 0x142e0000)
+No shared spaces configured.
+
+Dynamic libraries:
+0x00400000 - 0x00424000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\java.exe
+0x7c900000 - 0x7c9b2000 	C:\WINDOWS\system32\ntdll.dll
+0x7c800000 - 0x7c8f6000 	C:\WINDOWS\system32\kernel32.dll
+0x77dd0000 - 0x77e6b000 	C:\WINDOWS\system32\ADVAPI32.dll
+0x77e70000 - 0x77f03000 	C:\WINDOWS\system32\RPCRT4.dll
+0x77fe0000 - 0x77ff1000 	C:\WINDOWS\system32\Secur32.dll
+0x7c340000 - 0x7c396000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\msvcr71.dll
+0x6d8b0000 - 0x6db57000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\client\jvm.dll
+0x7e410000 - 0x7e4a1000 	C:\WINDOWS\system32\USER32.dll
+0x77f10000 - 0x77f59000 	C:\WINDOWS\system32\GDI32.dll
+0x76b40000 - 0x76b6d000 	C:\WINDOWS\system32\WINMM.dll
+0x629c0000 - 0x629c9000 	C:\WINDOWS\system32\LPK.DLL
+0x74d90000 - 0x74dfb000 	C:\WINDOWS\system32\USP10.dll
+0x6d860000 - 0x6d86c000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\verify.dll
+0x6d3e0000 - 0x6d3ff000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\java.dll
+0x6d340000 - 0x6d348000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\hpi.dll
+0x76bf0000 - 0x76bfb000 	C:\WINDOWS\system32\PSAPI.DLL
+0x6d430000 - 0x6d459000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\jdwp.dll
+0x6d750000 - 0x6d756000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\npt.dll
+0x6d8a0000 - 0x6d8af000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\zip.dll
+0x6d2a0000 - 0x6d2a8000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\dt_shmem.dll
+0x6d0b0000 - 0x6d1fa000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\awt.dll
+0x73000000 - 0x73026000 	C:\WINDOWS\system32\WINSPOOL.DRV
+0x77c10000 - 0x77c68000 	C:\WINDOWS\system32\msvcrt.dll
+0x76390000 - 0x763ad000 	C:\WINDOWS\system32\IMM32.dll
+0x774e0000 - 0x7761e000 	C:\WINDOWS\system32\ole32.dll
+0x773d0000 - 0x774d3000 	C:\WINDOWS\WinSxS\x86_Microsoft.Windows.Common-Controls_6595b64144ccf1df_6.0.2600.6028_x-ww_61e65202\COMCTL32.dll
+0x77f60000 - 0x77fd6000 	C:\WINDOWS\system32\SHLWAPI.dll
+0x5ad70000 - 0x5ada8000 	C:\WINDOWS\system32\uxtheme.dll
+0x74720000 - 0x7476c000 	C:\WINDOWS\system32\MSCTF.dll
+0x7c9c0000 - 0x7d1d7000 	C:\WINDOWS\system32\shell32.dll
+0x6d2e0000 - 0x6d334000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\fontmanager.dll
+0x6d6c0000 - 0x6d6d3000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\net.dll
+0x71ab0000 - 0x71ac7000 	C:\WINDOWS\system32\WS2_32.dll
+0x71aa0000 - 0x71aa8000 	C:\WINDOWS\system32\WS2HELP.dll
+0x6d6e0000 - 0x6d6e9000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\nio.dll
+0x769c0000 - 0x76a74000 	C:\WINDOWS\system32\USERENV.dll
+0x77920000 - 0x77a13000 	C:\WINDOWS\system32\SETUPAPI.dll
+0x5b860000 - 0x5b8b5000 	C:\WINDOWS\system32\netapi32.dll
+0x77b40000 - 0x77b62000 	C:\WINDOWS\system32\appHelp.dll
+0x76fd0000 - 0x7704f000 	C:\WINDOWS\system32\CLBCATQ.DLL
+0x77050000 - 0x77115000 	C:\WINDOWS\system32\COMRes.dll
+0x77120000 - 0x771ab000 	C:\WINDOWS\system32\OLEAUT32.dll
+0x77c00000 - 0x77c08000 	C:\WINDOWS\system32\VERSION.dll
+0x77a20000 - 0x77a74000 	C:\WINDOWS\System32\cscui.dll
+0x76600000 - 0x7661d000 	C:\WINDOWS\System32\CSCDLL.dll
+0x17ba0000 - 0x17e65000 	C:\WINDOWS\system32\xpsp2res.dll
+0x179c0000 - 0x17a23000 	C:\Program Files\Common Files\Adobe\Acrobat\ActiveX\PDFShell.dll
+0x78480000 - 0x7850e000 	C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.6161_x-ww_31a54e43\MSVCP90.dll
+0x78520000 - 0x785c3000 	C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.30729.6161_x-ww_31a54e43\MSVCR90.dll
+0x71b20000 - 0x71b32000 	C:\WINDOWS\system32\MPR.dll
+0x60f80000 - 0x60f86000 	C:\Program Files\Symantec\Symantec Endpoint Protection\SnacNp.dll
+0x75f60000 - 0x75f67000 	C:\WINDOWS\System32\drprov.dll
+0x71c10000 - 0x71c1e000 	C:\WINDOWS\System32\ntlanman.dll
+0x71cd0000 - 0x71ce7000 	C:\WINDOWS\System32\NETUI0.dll
+0x71c90000 - 0x71cd0000 	C:\WINDOWS\System32\NETUI1.dll
+0x71c80000 - 0x71c87000 	C:\WINDOWS\System32\NETRAP.dll
+0x71bf0000 - 0x71c03000 	C:\WINDOWS\System32\SAMLIB.dll
+0x75f70000 - 0x75f7a000 	C:\WINDOWS\System32\davclnt.dll
+0x76c30000 - 0x76c5e000 	C:\WINDOWS\system32\WINTRUST.dll
+0x77a80000 - 0x77b15000 	C:\WINDOWS\system32\CRYPT32.dll
+0x77b20000 - 0x77b32000 	C:\WINDOWS\system32\MSASN1.dll
+0x76c90000 - 0x76cb8000 	C:\WINDOWS\system32\IMAGEHLP.dll
+0x76980000 - 0x76988000 	C:\WINDOWS\system32\LINKINFO.dll
+0x76990000 - 0x769b5000 	C:\WINDOWS\system32\ntshrui.dll
+0x76b20000 - 0x76b31000 	C:\WINDOWS\system32\ATL.DLL
+0x68000000 - 0x68036000 	C:\WINDOWS\system32\rsaenh.dll
+0x71a50000 - 0x71a8f000 	C:\WINDOWS\System32\mswsock.dll
+0x76f20000 - 0x76f47000 	C:\WINDOWS\system32\DNSAPI.dll
+0x76d60000 - 0x76d79000 	C:\WINDOWS\system32\iphlpapi.dll
+0x76fb0000 - 0x76fb8000 	C:\WINDOWS\System32\winrnr.dll
+0x76f60000 - 0x76f8c000 	C:\WINDOWS\system32\WLDAP32.dll
+0x63560000 - 0x63568000 	C:\Program Files\National Instruments\Shared\mDNS Responder\nimdnsNSP.dll
+0x63550000 - 0x63559000 	C:\WINDOWS\system32\nimdnsResponder.dll
+0x76fc0000 - 0x76fc6000 	C:\WINDOWS\system32\rasadhlp.dll
+0x65340000 - 0x65355000 	C:\Documents and Settings\kurtp\Local Settings\Temp\jffi4054461765395353702.tmp
+0x6ab50000 - 0x6ab65000 	C:\WINDOWS\system32\gpib-32.dll
+0x64000000 - 0x64060000 	C:\WINDOWS\system32\NIPALU.dll
+0x64500000 - 0x64506000 	C:\WINDOWS\system32\nipalut.dll
+0x1f700000 - 0x1f707000 	C:\WINDOWS\system32\NIPAL32.dll
+0x6ab00000 - 0x6ab0c000 	C:\WINDOWS\system32\gpibconf.dll
+0x63800000 - 0x63810000 	C:\WINDOWS\system32\NiSpyLog.dll
+0x6aba0000 - 0x6abe2000 	C:\WINDOWS\system32\ni4882.dll
+0x6d250000 - 0x6d273000 	C:\Program Files\Java\jdk1.6.0_21\jre\bin\dcpr.dll
+
+VM Arguments:
+jvm_args: -Xdebug -Xrunjdwp:transport=dt_shmem,address=javadebug -Dfile.encoding=UTF-8 -Djava.library.path=dist 
+java_command: icontrol.IcontrolApp
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=C:\Program Files\Measurement Computing\DAQ\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Common Files\Roxio Shared\DLLShared\;C:\Program Files\Common Files\Roxio Shared\9.0\DLLShared\;C:\WINDOWS\system32\WindowsPowerShell\v1.0;C:\Program Files\IVI Foundation\VISA\WinNT\Bin\;C:\Program Files\IVI Foundation\VISA\WinNT\Bin
+USERNAME=kurtp
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 23 Stepping 10, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows XP Build 2600 Service Pack 3
+
+CPU:total 2 (2 cores per cpu, 1 threads per core) family 6 model 23 stepping 10, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1
+
+Memory: 4k page, physical 2027028k(1022612k free), swap 3962520k(3036308k free)
+
+vm_info: Java HotSpot(TM) Client VM (17.0-b17) for windows-x86 JRE (1.6.0_21-b07), built on Jul 17 2010 01:10:15 by "java_re" with MS VC++ 7.1 (VS2003)
+
+time: Fri Jul 27 09:53:26 2012
+elapsed time: 189 seconds
+

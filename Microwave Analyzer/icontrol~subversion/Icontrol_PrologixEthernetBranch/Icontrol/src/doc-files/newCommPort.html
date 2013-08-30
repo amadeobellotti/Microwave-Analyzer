@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Implement a new Communication Port</title></head><body>
+<br>
+
+<h2>How to implement support for a new Communication Port<br>
+</h2>
+This document describes step-by-step how to implement a new
+Communication Port such as USB or Ethernet. This document uses the implementation of the RS232 port as an example.<br>
+Support for
+communication ports usually requires calling native code. Calling native code can
+either be done using JNA, or sometimes a JAVA package is available that
+handles calling the native code already. For the discussed example of
+implementing support for the RS232, the <a href="http://rxtx.qbang.org/wiki/index.php/Main_Page" target="_blank">RxTx package</a>
+is used, which consists of native code (e.g. rxtxSerial.dll,
+librxtxSerial.jnilib, and more) and also a .jar file (e.g.
+RXTXcomm.jar).
+<h2>If a .jar file is available to call native code<br>
+</h2>
+<h3>Preparations<br>
+</h3>
+
+<ul>
+
+</ul>
+
+<ol>
+  <li>If no .jar file to call native code is available, the
+communication with native code will have to be implemented using JNA in
+the Driver class as discussed below.If a .jar file to call native code is available: <br>
+  </li>
+  <ul>
+    <li>Copy the .jar file into a new folder inside the Icontrol/src folder<code></code></li>
+  </ul>
+  <ul>
+    <li>Include the new .jar file in the project properties (Libraries)</li>
+  </ul>
+
+  
+  <li>Copy the native code into _misc/libraries</li>
+  <li>Modify build.xml so that Ant copies the native code files into
+the distribution directory. This should ensure that they are available
+when Instrument Control is executed without having to install support
+for the new communication port manualy. The Ant command to copy is:<br>
+    <code>&lt;copy file="_misc/libraries/rxtxSerial.dll todir="${dist.dir}" /&gt;</code></li>
+</ol>
+<h3>Modify Instrument Control</h3>
+<ol>
+  <li>Add the new port to <code>public enum CommPorts {GPIB, RS232, none}</code> in class <code>Device</code></li>
+  <li>Modify <code>IcontrolView.ScriptAddMake</code> to define the string used in the MAKE script-command</li>
+  <li>Add <code>else if</code> branch in <code>Dispatcher.HandleMakeCommand </code>to remember the chosen communication port. This method also calls <code>Device.OpenInstrument</code>.<br>
+</li>
+  <li>Modify <code>Device.OpenInstrument</code> to call the specialized Open method for the new communication port, e.g. <code>OpenRS232</code>. <br>
+</li>
+  <li>Implement the specialized 'OpenPort' method, for instance <code>OpenRS232</code>. Essentially, these steps are necessary:</li>
+  <ul>
+    <li>Add a member variable that holds a handle to the new driver class.</li>
+    <li>Instantiate a new driver.<br>
+    </li>
+    <li>Call the method in the driver class (<code>RS232_Driver.OpenPort</code>)
+that opens the communication port. Note that not all communication
+ports need to be opened (for instance GPIB does not require that, but
+requires to open a dedicated instrument instead).</li>
+    <li>If instruments attached to the new communication port need to be opened, call this open method (see <code>Device.OpenGPIB</code>).</li>
+  </ul>
+  <li>Update <code>Device.CloseInstrument</code> as required (for RS232 this closes the COM port because there is only one instrument per serial port).</li>
+  <li>Update <code>Device.CloseController</code> as required (for RS232 no change is required).</li>
+  <li>Implement <code>Device.SendViaZYX</code> (for instance <code>Device.SendViaRS232</code>). See <code>Device.SendViaGPIB</code> for an example.<br>
+  </li>
+  <li>Implement <code>Device.QueryViaZYX</code> (for instance <code>Device.QueryViaRS232</code>). See <code>Device.QueryViaGPIB</code> for an example.</li>
+
+
+</ol>
+<h3>The new Driver class</h3>
+<ol>
+  <li>Create a new class for the new communication port, e.g. <code>RS232_Driver</code></li>
+  <li>Define member variables for a new Logger and <code>iC_Properties</code>.<br>
+  </li>
+  <li>Implement a constructor that:</li>
+  <ol>
+    <li>Initialize the logger and iC_Properties (see <code>GPIB_NI</code>)</li>
+    <li>If JNA is used to call native code, the native library should be loaded.<br>
+    </li>
+    
+  </ol>
+  <li>Implement a method that opens the connection to the port if
+necessary. Remark: For GPIB no "port" needs to be opened, while for
+serial communication, the RS232 needs to be opened.</li>
+  <li>Implement a method that opens the connection to a specific
+instrument if necessary (for GPIB this is necessary, for RS232 it's
+not).</li>
+  <li>Implement <code>Send(String Message)</code></li>
+  <li>Implement <code>String Receive()</code></li>
+  <li><br>
+  </li>
+
+
+
+</ol>
+<h3>A new Instrument Class using the new communication port</h3>
+<ol>
+  <li>Make a new instrument class derived from Device<br>
+</li>
+  <li>Add a <code>@iC_Annotation(CommPorts, InstrumentClassName)</code> to the class</li>
+
+  <li>in Device.OpenInstrument add case new interface</li>
+  <li>in Device implement specialized Open method for new interface (e.g. OpenMCCdaq)</li>
+  <li>dfads</li>
+</ol>
+
+<br>
+<h2>Write a class to support the new Comm Port</h2>
+When no Java package is available which supports the new communication
+port, a new class is required which typically uses JNA to call native code. The
+example described here is to implement support for the MCCdaq
+communication port.<br>
+<h3>Preparations<br>
+</h3>
+
+
+
+
+<ol>
+<li>TODO update link to MCCdaq above, change file name to copy below<br>
+</li>
+  <li>Copy the native code into _misc/libraries</li>
+<li>Modify build.xml so that Ant copies the native code files into
+the distribution directory. This should ensure that they are available
+when Instrument Control is executed without having to install support
+for the new communication port manualy. The Ant command to copy is:<br>
+    <code>&lt;copy file="_misc/libraries/rxtxSerial.dll todir="${dist.dir}" /&gt;</code></li>
+</ol>
+<h3>Modify Instrument Control</h3>
+Additionally to the above modifications to Instrument Control, the following modifications are necessary.<br>
+<ol>
+  <li>Create a new class in the instrument package (e.g. <code>MCCdaq_Driver</code>)</li>
+  <li>Define a Logger (see e.g. <code>MCCdaq_Driver</code>)</li>
+  <li>in the new driver class implement the Open method</li>
+  <li>implement a constructor that loads the native library<br>
+&nbsp;* and brings the controller to a status that enables opening the instrument <br>
+&nbsp;* by calling Open (follow the example of GPIB_NI)<br>
+  </li>
+</ol>
+
+
+
+<br>
+<br>
+</body></html>

@@ -1,0 +1,78 @@
+// a demonstration of Python Integration in Instrument Control (iC)
+
+// A quick primer:
+// Python commands start with |
+// Consecutive lines starting with | are executed as one line
+// All Python commands are also executed during Syntax-Check Mode
+// The Python Interpreter is reset after Syntax-Check (see Python output)
+// The MAKE command needs to be issued as regular (non-Python) script command
+// see iC/Startup.py for a list of functions related to iC
+
+ 
+MAKE iC; iC-control; none
+MAKE Tstage; Lakeshore 340; GPIB=4
+
+
+// dispatching a command (check the Status Area in the GUI)
+|dispatch_command('iC', 'DisplayStatusMessage', 'A message from Python')
+
+
+// dispatch a command with more parameters
+|dispatch_command('iC', 'MonitorChart', 1.0, 'Temperature [K]', '.monT',
+|                 '\"Tstage getTemp A\"', '\"\"', '\"\"', '\"\"', '\"\"')
+
+
+// detecting Syntax-Check Mode
+|if is_syntax_check_mode():
+|    print '\nPython script is executed in Syntax-Check Mode'
+|else:
+|    print '\nDispatched Commands are now sent to Instruments'
+
+
+// detecting No-Communication Mode
+|if is_no_communication_mode():
+|    print 'In Simulation mode: No commands are sent to the Instruments.'
+|    print 'Returned values are most likely invalid.'
+|else:
+|    print 'Commands are sent to the Instruments.'
+
+
+// check isPaused
+|print '\nScripting will be paused from Python now, and Python will check when to continue,'
+|print 'which is why the MonitorChart is not updated.'
+|
+|dispatch_command('iC', 'Pause')
+|is_paused(1)
+|print 'Thanks for pressing continue. MonitorChart now records the Temperatures.'
+
+
+// check return value
+|ans = dispatch_command('Tstage', 'getTemp', 'A')
+|print '\nThe current temperature is ' + str(ans)
+
+// use return value of a previous iC-Command
+Tstage Query *IDN?
+|print '\nThe name of the Instrument is ' + str(_ans)
+
+
+// check a loop
+|for T in range(295, 77, -10):
+|    # set Temperature
+|    dispatch_command('Tstage', 'setTemp', 1, T, 0, 0, 0)
+|
+|    # display a message
+|    print 'Now measuring at T = ' + str(T)
+|
+|    # do something else
+|
+|print 'Done.'
+
+
+// check detecting Stop Scripting
+|print '\nPress Stop to continue'
+|if not is_syntax_check_mode():
+|    while(1):
+|        if is_stop_scripting():
+|            break
+
+|print 'You should only see this during Syntax-Check Mode'

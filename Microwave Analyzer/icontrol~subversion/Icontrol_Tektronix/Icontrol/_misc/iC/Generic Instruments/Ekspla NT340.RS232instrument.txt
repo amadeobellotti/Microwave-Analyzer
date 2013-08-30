@@ -1,0 +1,32 @@
+%% Extension of the EksplaNT340 class
+%% author: KPP
+
+% General Message format: [ReceiverName:MessageBody\SenderName]
+% 
+% A message might contain one or more commands and up to 127 bytes. Commands are
+% space delimited.
+% 
+% Receiver Names:   NL ... Laser
+%                   MS ... Main Control Program (Error Messages)
+%                   D1 ... The PG122 optical parametric oscillator (OPO)
+%
+% Use a straight RS232 cable where pins 2-2, 3-3, 5-5 are connected
+% Our NT340 is set to 19200 bauds, 8 data bits, 1 stop bit, parity none
+
+// config number of pulses in a packet
+setNrPulses {Sets the number of pulses in a packet} | [NL:P0/S%d\iC] | Nr. of Pulses (3) [1, 100] {Must be between 1...100}
+
+// Fire a packet of pulses
+firePacket {Produces a packet of optical pulses} | [NL:PACK\iC]
+
+// set Trigger source
+configTriggerSource | [NL:C0/S%d\iC] | Trigger Source {0...internal Trigger, 1... external Trigger} [0, 1] (1)
+
+// start Flash lamps
+Start {Starts the Flash lamps} | [NL:START\iC]
+
+// stops the flash lamps
+Stop {Stops the Flash lamps} | [NL:STOP\iC]
+
+// set Repetition Rate Divider
+setRepetionRateDivider | [NL:F0/S%d\iC] | Divisor (5) [1, 10] {Must be between 1...10}

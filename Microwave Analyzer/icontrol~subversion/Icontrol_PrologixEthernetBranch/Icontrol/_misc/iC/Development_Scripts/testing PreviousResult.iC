@@ -1,0 +1,10 @@
+MAKE Tsample; Lakeshore 340; GPIB=4
+Tsample configDefaults A; 1
+ 
+MAKE NewI; New Instrument; GPIB=8
+ 
+Tsample getTemp default
+NewI DisplayPreviousResult
+ 
+Tsample getTemp default
+NewI DisplayPreviousResult

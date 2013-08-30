@@ -1,0 +1,2 @@
+MAKE fg; SRS DS345; GPIB=4
+fg setARBtoCELIV 100.0; 1000.0; 2.0; 100.0

@@ -1,0 +1,1 @@
+setAveraging | :APERture %s,%d | Measurement Time {Can be Short, Medium, or Long} (Medium) | Moving Average Count {Can be 1 to 256} [1, 256] (1)

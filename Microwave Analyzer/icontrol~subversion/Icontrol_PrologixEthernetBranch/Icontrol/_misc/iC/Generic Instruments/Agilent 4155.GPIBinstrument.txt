@@ -1,0 +1,2 @@
+IntegrationTime {sets the Integration Time} | :PAGE:MEASure:MSETup:ITIMe %s | Short, Medium, or Long
+UserFunction {allows to set up to 6 user functions} | :PAGE:CHANnels:UFUNction:DEFine '%s','%s','%s' | Name {6 characters, must start with a letter} | Unit {can be empty} | Definition {e.g. ABS(Id)}

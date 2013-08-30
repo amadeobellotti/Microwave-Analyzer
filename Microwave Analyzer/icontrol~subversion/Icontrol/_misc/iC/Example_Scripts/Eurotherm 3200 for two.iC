@@ -1,0 +1,10 @@
+MAKE iC; iC-control; none
+MAKE ET1; Eurotherm TC; COM1, 9600, 8, 1, none
+MAKE ET2; Eurotherm TC; COM4, 9600, 8, 1, none
+
+ET1 setModbusAddress 1
+ET2 setModbusAddress 2
+ 
+iC MonitorChart 1.0; Temperature [K]; .monT; "ET1 getProcessValue"; "ET2 getProcessValue"; ""; ""; ""
+
+iC WaitForStop
